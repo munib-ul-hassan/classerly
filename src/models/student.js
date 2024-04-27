@@ -7,7 +7,8 @@ const StudentSchema=new Schema({
         type:String,
         required:true,
         trim:true,
-        index:true
+        index:true,
+        
     },
     username:{
         type:String,
@@ -22,18 +23,33 @@ const StudentSchema=new Schema({
     },
     rollno:{
         type:String,
+        
+    },
+    role:{
+       type:String,
+       default: 'student'
     },
     emailaddress:{
          type:String,
          required:true,
          unique:true
     },
+    grade:{
+        type:String,
+        required:true
+    },
     fulladdress:{
         type:String,
         required:true
     },
-    refreshtoken:{
+    refreshToken:{
         type:String
+    },
+    forgetPasswordOtp:{
+        type:Number
+    },
+    forgetPasswordOtpExpiry:{
+        type:Number
     }
 
 
@@ -62,10 +78,14 @@ StudentSchema.pre("save",async function (next){
     }
    
 })
- StudentSchema.methods.generateAccessToken=function(){
+ StudentSchema.methods.isPasswordCorrect=async function
+ (password){
+    return await bcrypt.compare(password,this.password)
+ }
+ StudentSchema.methods.generateAccessToken= function(){
   return  jwt.sign({
         _id:this._id,
-        email:this.email,
+        emailaddress:this.emailaddress,
         fullname:this.fullname,
         username:this.username
     },
@@ -78,8 +98,7 @@ StudentSchema.pre("save",async function (next){
 StudentSchema.methods.generateRefreshToken=function(){
   return  jwt.sign({
         _id:this._id,
-        email:this.email,
-       
+
     },
     process.env.REFRESH_TOKEN_SECRET,
     {

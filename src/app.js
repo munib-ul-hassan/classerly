@@ -1,13 +1,13 @@
 const express=require('express');
 const app=express();
 const cors=require('cors')
-const cookie_parser=require('cookie-parser')
+const cookieparser=require('cookie-parser')
 
 app.use(express());
 app.use(express.json({limit: "50mb"}))
 
 app.use(express.urlencoded({extended:true}))
-app.use(cookie_parser())
+app.use(cookieparser())
 
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
