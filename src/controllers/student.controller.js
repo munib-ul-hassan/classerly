@@ -6,6 +6,12 @@ const jwt=require('jsonwebtoken');
 const sendEmail = require('../utils/sendemail.js');
 const generateOTP = require('../utils/generateotp.js');
 
+
+const options={
+   httpOnly:true,
+   secure:true
+}
+
 const generateAccessAndRefreshToken=async(studentId)=>{
  
    try {
@@ -84,13 +90,9 @@ exports.loginstudent=asyncHandler(async(req,res)=>{
       }
 
    const{accessToken,refreshToken}=await generateAccessAndRefreshToken(studentexist._id);
-   console.log("login accesstoken",accessToken)
    const studentloggedIn=await StudentModel.findById(studentexist._id).select("-password -refreshToken")
     
-   const options={
-      httpOnly:true,
-      secure:true
-   }
+ 
    return res
    .status(200)
     .cookie("accessToken",accessToken,options)
@@ -121,10 +123,7 @@ exports.logoutstudent=asyncHandler(async(req,res)=>{
       new:true
    }
 )
-const options={
-   httpOnly:true,
-   secure:true
-}
+
  return res
  .status(200)
  .clearCookie("accessToken",options)
@@ -149,10 +148,6 @@ exports.refreshAccessToken=asyncHandler(async(req,res)=>{
         throw ApiError(401,"refresh token is experied and used")
         
      }
-     const options={
-        httpOnly:true,
-        secure:true
-     }
      const {accessToken,newrefreshToken}=await generateAccessAndRefreshToken(student._id)
      return res
      .status(200)
@@ -171,7 +166,6 @@ exports.refreshAccessToken=asyncHandler(async(req,res)=>{
 })
 
 
-
 exports.forgetPasswordstudent=asyncHandler(async(req,res)=>{
    console.log(req.body);
      const {emailaddress}=req.body;
@@ -181,12 +175,13 @@ exports.forgetPasswordstudent=asyncHandler(async(req,res)=>{
          if(!findStudent){
             throw new ApiError(404,"user not exist");
          }
-         console.log("student",findStudent);
          const otp=generateOTP();
         findStudent.forgetPasswordOtp=otp;
-        findStudent.forgetPasswordOtpExpiry=Date.now() + 60000;
+        findStudent.forgetPasswordOtpExpiry= Date.now() + 120000;
         findStudent.save();
-          await sendEmail(findStudent.emailaddress,otp);
+          const requesttype="You have requested to reset your password. Please use the following OTP to proceed:"
+          const requestvalidefor="This OTP is valid for a 2 minutes. Do not share it with anyone.";
+          await sendEmail(findStudent.emailaddress,otp,requesttype,requestvalidefor);
           const options={
             httpOnly:true,
             secure:true
@@ -195,34 +190,52 @@ exports.forgetPasswordstudent=asyncHandler(async(req,res)=>{
          .status(200)
          .cookie("forgetpasswordemail",{emailaddress:findStudent.emailaddress},options)
          .json(
-            
-         )
-
-          
-
+            new ApiResponse (200,{},"OTP sended Successffully")
+         ) 
      } catch (error) {
       throw new ApiError(500,"something went wrong");
      }
 })
 
 exports.verifyOtp=asyncHandler(async(req,res)=>{
-   const {emailaddress,otp}=req.body;
+   const {otp}=req.body;
+   const emailaddress=req.cookies.forgetpasswordemail || req.body.emailaddress;
    try {
-      const findstudent=await StudentModel.findOne({emailaddress})
+      const findstudent=await StudentModel.findOne(emailaddress);
       if(!findstudent){
          throw new ApiError(404,"user not found")
       }
-      if(findstudent.forgetPasswordOtp !==otp && findstudent.forgetPasswordOtpExpiry < Date.now()){
-         throw new ApiError(401,"invalid otp or expired")
+     
+      if(findstudent.forgetPasswordOtp !== otp || findstudent.forgetPasswordOtpExpiry < Date.now()){
+         throw new ApiError(401,"invalid or expired Otp")
       }
-      return res.status(200).json(
-         new ApiResponse(
-            200,
-            {eamil:findstudent.emailaddress},
+      return res.status(200).json(new ApiResponse(200, "OTP verification successful"));
+   } catch (error) {
+      throw new ApiError(500,error?.message || "something went wrong")
+   }
+})
 
+exports.resetPassword=asyncHandler(async(req,res)=>{
+   const {newpassword}=req.body;
+   const emailaddress=req.cookies.forgetpasswordemail || req.body.emailaddress;
+   try {
+        const findstudent=await StudentModel.findOne(emailaddress);
+        if(!findstudent){
+         throw new ApiError(404,"user not exist")
+        }
+        findstudent.password=newpassword;
+       await findstudent.save();
+       const message="your password changed successfuly";
+       const requesttype="you have request to go to login page and login to your acccount"
+        await sendEmail(findstudent.emailaddress,message,requesttype)
+       return res
+       .status(200)
+       .clearCookie("accessToken",options)
+       .clearCookie("resfreshToken",options)
+       .json(
+         new ApiResponse(200,{},"password changed succesfuly")
+       )
 
-         )
-      )
    } catch (error) {
       
    }
