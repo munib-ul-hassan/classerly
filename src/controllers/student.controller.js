@@ -165,7 +165,6 @@ exports.refreshAccessToken=asyncHandler(async(req,res)=>{
  }
 })
 
-
 exports.forgetPasswordstudent=asyncHandler(async(req,res)=>{
    console.log(req.body);
      const {emailaddress}=req.body;
@@ -219,24 +218,28 @@ exports.resetPassword=asyncHandler(async(req,res)=>{
    const {newpassword}=req.body;
    const emailaddress=req.cookies.forgetpasswordemail || req.body.emailaddress;
    try {
-        const findstudent=await StudentModel.findOne(emailaddress);
+        const findstudent=await StudentModel.findOne({emailaddress});
         if(!findstudent){
          throw new ApiError(404,"user not exist")
         }
         findstudent.password=newpassword;
+        findstudent.forgetPasswordOtp=undefined;
+        findstudent.forgetPasswordOtpExpiry=undefined;
        await findstudent.save();
+       const emailsubject="password request"
        const message="your password changed successfuly";
        const requesttype="you have request to go to login page and login to your acccount"
-        await sendEmail(findstudent.emailaddress,message,requesttype)
+        await sendEmail(emailsubject,findstudent.emailaddress,message,requesttype)
        return res
        .status(200)
        .clearCookie("accessToken",options)
        .clearCookie("resfreshToken",options)
+       .clearCookie("forgetpasswordemail",options)
        .json(
-         new ApiResponse(200,{},"password changed succesfuly")
+         new ApiResponse(200,{},"password changed succesfully")
        )
 
    } catch (error) {
-      
+      throw new ApiError(500,error?.message,"something went wrong")
    }
 })

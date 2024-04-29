@@ -2,7 +2,7 @@
 const nodemailer=require('nodemailer');
 const ApiError = require('./Apierror');
 
-const sendEmail=(async(email,message,requesttype,timeofrequest)=>{
+const sendEmail=(async(emailsubject,email,message,requesttype,timeofrequest)=>{
     console.log("email body",email);
     try {
         const transporter=nodemailer.createTransport({
@@ -18,7 +18,7 @@ const sendEmail=(async(email,message,requesttype,timeofrequest)=>{
         const Mailoptions={
             from:process.env.SMTP_EMAIL,
             to:email,
-            subject:"Password Reset OTP",
+            subject:`${emailsubject}`,
             body:"resetPassword OTP",
             html:`
             <div style="font-family: Arial, sans-serif; padding: 7px;">
