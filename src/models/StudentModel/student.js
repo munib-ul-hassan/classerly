@@ -59,18 +59,7 @@ const StudentSchema=new Schema({
 )
 
 StudentSchema.pre("save",async function (next){
-     if(this.isNew && !this.rollno){
-        const lastStudent= await StudentModel.findOne({},{},{sort:{rollno:-1}});
-        let rollNosuffix=1;
-        if(lastStudent && lastStudent.rollno){
-            const lastRollno=lastStudent.rollno.slice(-1);
-            rollNosuffix=parseInt(lastRollno)+1;
-        }
-        this.rollno=`S2324${rollNosuffix}`
-
-     }
-       
-     
+    
 
     if(this.isModified("password")){
         this.password=await bcrypt.hash(this.password,10);
@@ -87,7 +76,8 @@ StudentSchema.pre("save",async function (next){
         _id:this._id,
         emailaddress:this.emailaddress,
         fullname:this.fullname,
-        username:this.username
+        username:this.username,
+        role:this.role
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
@@ -98,6 +88,7 @@ StudentSchema.pre("save",async function (next){
 StudentSchema.methods.generateRefreshToken=function(){
   return  jwt.sign({
         _id:this._id,
+        role:this.role
 
     },
     process.env.REFRESH_TOKEN_SECRET,

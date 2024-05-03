@@ -15,11 +15,13 @@ app.use(cors({
 }))
 
 //routes
-const studentRouter = require('./routes/student.routes.js');
 
-
-
+const studentRoutes=require("./routes/StudentRoutes/student.routes")
+const userRoutes =require("./routes/AllusersRoutes/users.routes")
+const curriculumRoutes=require("./routes/CurriculumRoutes/curriculum.routes")
 //declare
-app.use('/api/v1/student',studentRouter)
+app.use('/api/v1/student',studentRoutes)
+app.use('/api/v1/user',userRoutes)
+app.use('/api/v1/curriculum',curriculumRoutes);
 
 module.exports=app;

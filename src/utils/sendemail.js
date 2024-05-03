@@ -2,7 +2,7 @@
 const nodemailer=require('nodemailer');
 const ApiError = require('./Apierror');
 
-const sendEmail=(async(emailsubject,email,message,requesttype,timeofrequest)=>{
+const sendEmail=(async(emailsubject,email,message,requestType)=>{
     console.log("email body",email);
     try {
         const transporter=nodemailer.createTransport({
@@ -26,12 +26,12 @@ const sendEmail=(async(emailsubject,email,message,requesttype,timeofrequest)=>{
          <h2 style="">Learning Portal Classerly</h2>
           </div>
             <p style="color: #666;">Dear User,</p>
-            <p style="color: #666;">${requesttype}</p>
+            <p style="color: #666;">${requestType}</p>
             <div style="text:center">
-                <h3 style="padding: 5px;background-color: #fff;color: #333; font-size: 20px; margin: 0; width: 40% ;">${message}</h3>
+                <p style="padding: 5px;background-color: #fff;color: #333;  margin: 0; width: 90% ;">${message}</p>
             </div>
-            <p style="color: #666;">${timeofrequest}</p>
-            <p style="color: #666;">If you did not request this password reset, you can ignore this email.</p>
+            
+            <p style="color: #666;">If you did not request this, you can ignore this email.</p>
             <p style="color: #666;">Regards,<br/>Team,<br/>Learning Portal Classerly</p>
         </div>
         `
