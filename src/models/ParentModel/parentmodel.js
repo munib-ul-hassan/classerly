@@ -3,6 +3,8 @@ const mongoose=require("mongoose");
 const {Schema}=require('mongoose');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+
+// ################## Parent Schema ##########################
 const parentSchema=new Schema({
     fullname:{
     type:String,

@@ -1,7 +1,8 @@
 const mongoose=require("mongoose");
 
 const {Schema}=require('mongoose');
-
+ 
+// ########################## Teacher Schema #################################
 const teacherSchema=new Schema({
     fullname:{
     type:String,

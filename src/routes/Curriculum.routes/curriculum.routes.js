@@ -8,13 +8,13 @@ const { addsubjects, addTopic, addlesson, allsubjects, alltopicsofsubject, allLe
 
 const router=Router();
 
-// admin routes
+// ############################ admin routes of curriculum ##############################
 router.route('/addsubject').post(addsubjects);
 router.route('/addtopic').post(addTopic)
 router.route('/addlesson').post(addlesson);
 
 
-//public routes
+// ####################### public routes of curriculum ##############################
 router.route('/allsubjects').post(allsubjects)
 router.route('/alltopics').post(alltopicsofsubject);
 router.route('/allLessons').post(allLessonsoftopics);

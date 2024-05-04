@@ -5,7 +5,7 @@ const verfiyJWT = require('../../middlewares/auth.middleware');
 const router=Router();
 
 
-// all users
+// ########################### all users Routes ##############################
 router.route("/userlogin").post(userlogin)
 router.route("/userlogout").post(verfiyJWT,userlogout)
 router.route("/forgetuserPassword").post(userforgetPassword)

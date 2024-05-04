@@ -6,7 +6,7 @@ const { registerparent } = require("../../controllers/ParentControllers/parent.c
 const router=Router();
 
 
-
+// ###################### Parents Routes #########################
 router.route('/registerParent').post(registerparent);
 
 module.exports=router;

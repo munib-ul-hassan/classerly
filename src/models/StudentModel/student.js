@@ -2,6 +2,8 @@ const mongoose=require('mongoose');
 const {Schema}=require('mongoose');
 const bcrypt=require('bcrypt');
 const jwt=require('jsonwebtoken');
+
+// ############## student Schema ######################
 const StudentSchema=new Schema({
     fullname:{
         type:String,
