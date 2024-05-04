@@ -46,13 +46,12 @@ exports.registerStudent = asyncHandler(async (req, res) => {
            throw new ApiError(409, 'User already exists');
        }
 
-       let rollNoSuffix = 1;
-       const lastStudent = await StudentModel.findOne({}, {}, { sort: { rollno: -1 } });
-       if (lastStudent && lastStudent.rollno) {
-           const lastRollNoSuffix = parseInt(lastStudent.rollno.slice(-1));
-           rollNoSuffix = lastRollNoSuffix + 1;
-       }
-       const rollno = `Id2324${rollNoSuffix}`;
+       const generateId = () => {
+        return Math.floor(1000000 + Math.random() * 9000000).toString();
+      };
+
+      const stdid=generateId();
+       
 
        const student = await StudentModel.create({
            fullname,
@@ -61,7 +60,7 @@ exports.registerStudent = asyncHandler(async (req, res) => {
            fulladdress,
            password,
            grade,
-           rollno
+           stdid
        });
 
        if (!student) {
@@ -77,7 +76,7 @@ exports.registerStudent = asyncHandler(async (req, res) => {
        // Send email after response is sent
        const emailsubject = "Student Registration";
        const email = emailaddress;
-       const message = `You are registered successfully. Your student ID is ${student.rollno}.`
+       const message = `You are registered successfully. Your student ID is ${student.stdid}.`
        const requestType = "Your request for student registration is done"
        await sendEmail(emailsubject, email, message, requestType);
 

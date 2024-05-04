@@ -19,9 +19,11 @@ app.use(cors({
 const studentRoutes=require("./routes/StudentRoutes/student.routes")
 const userRoutes =require("./routes/AllusersRoutes/users.routes")
 const curriculumRoutes=require("./routes/CurriculumRoutes/curriculum.routes")
+const parentRoutes=require("./routes/ParentRoutes/parent.routes")
 //declare
 app.use('/api/v1/student',studentRoutes)
 app.use('/api/v1/user',userRoutes)
 app.use('/api/v1/curriculum',curriculumRoutes);
+app.use('/api/v1/parent',parentRoutes);
 
 module.exports=app;

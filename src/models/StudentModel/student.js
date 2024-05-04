@@ -21,7 +21,7 @@ const StudentSchema=new Schema({
           type:String,
           required:[true,'Password is required']
     },
-    rollno:{
+    stdid:{
         type:String,
         
     },

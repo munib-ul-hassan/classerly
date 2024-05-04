@@ -31,14 +31,14 @@ emailaddress:{
      required:true,
      unique:true
 },
-grade:{
-    type:String,
-    required:true
-},
 fulladdress:{
     type:String,
     required:true
 },
+childIds: [{
+    type: Schema.Types.ObjectId,
+    ref: 'students' 
+}],
 refreshToken:{
     type:String
 },
