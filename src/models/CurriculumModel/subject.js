@@ -5,7 +5,17 @@ const {Schema}=require('mongoose');
 // ######################## Subject Schema #####################
 const subjectSchema=new Schema({
     subjectname:String,
-    grade:String,
+    subjectTopics : [{
+        topicId : 
+        {
+            type : Schema.Types.ObjectId,
+            ref : "Topic"
+        } 
+    }] ,
+    gradeId:{
+        type:Schema.Types.ObjectId,
+        ref: "Grade"
+    }
 },{
     timestamps:true
     })

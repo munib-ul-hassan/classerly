@@ -33,9 +33,9 @@ const generateAccessAndRefreshToken=async(studentId)=>{
 
 exports.registerStudent = asyncHandler(async (req, res) => {
    try {
-       const { fullname, username, password, emailaddress, fulladdress, grade } = req.body;
+       const { fullname, username, password, emailaddress, fulladdress, gradeId } = req.body;
 
-       if ([fullname, username, password, emailaddress, fulladdress, grade].some(field => !field || field.trim() === "")) {
+       if ([fullname, username, password, emailaddress, fulladdress, gradeId].some(field => !field || field.trim() === "")) {
            throw new ApiError(400, 'All fields are required');
        } else if (emailaddress && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailaddress)) {
            throw new ApiError(400, 'Invalid email address');
@@ -52,14 +52,13 @@ exports.registerStudent = asyncHandler(async (req, res) => {
 
       const stdid=generateId();
        
-
        const student = await StudentModel.create({
            fullname,
            username: username.toLowerCase(),
            emailaddress,
            fulladdress,
            password,
-           grade,
+           gradeId,
            stdid
        });
 

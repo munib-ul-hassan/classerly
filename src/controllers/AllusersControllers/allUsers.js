@@ -231,7 +231,6 @@ exports.userlogout=asyncHandler(async(req,res)=>{
     }
  })
  
- 
 exports.resetPassword=asyncHandler(async(req,res)=>{
     const {newpassword}=req.body;
     const emailaddress=req.cookies.forgetpasswordemailrole.emailaddress || req.body.emailaddress;

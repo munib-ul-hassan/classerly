@@ -39,6 +39,12 @@ role:{
     type:String,
     default: 'teacher'
  },
+ subject:{
+    type:[String]
+ },
+ feedback:{
+    type:[String]
+ },
 refreshToken:{
     type:String
 },
@@ -48,8 +54,6 @@ forgetPasswordOtp:{
 forgetPasswordOtpExpiry:{
     type:Number
 }
-
-
 },{
 timestamps:true
 })
@@ -58,7 +62,6 @@ teacherSchema.pre("save",async function (next){
        this.password=await bcrypt.hash(this.password,10);
        next();
    }
-  
 })
 teacherSchema.methods.isPasswordCorrect=async function
 (password){

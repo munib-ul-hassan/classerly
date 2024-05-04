@@ -25,7 +25,6 @@ const StudentSchema=new Schema({
     },
     stdid:{
         type:String,
-        
     },
     role:{
        type:String,
@@ -34,18 +33,15 @@ const StudentSchema=new Schema({
     emailaddress:{
          type:String,
          required:true,
-         unique:true
+         
     },
-    grade:{
-        type:String,
-        required:true
+    gradeId:{
+        type:Schema.Types.ObjectId,
+        ref : "Grade"
     },
     fulladdress:{
         type:String,
         required:true
-    },
-    refreshToken:{
-        type:String
     },
     forgetPasswordOtp:{
         type:Number
@@ -53,8 +49,6 @@ const StudentSchema=new Schema({
     forgetPasswordOtpExpiry:{
         type:Number
     }
-
-
 },{
     timestamps:true
 }
@@ -100,5 +94,5 @@ StudentSchema.methods.generateRefreshToken=function(){
 )
 }
 
-const StudentModel=mongoose.model('students',StudentSchema)
+const StudentModel=mongoose.model('Student',StudentSchema)
 module.exports=StudentModel;

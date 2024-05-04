@@ -5,12 +5,20 @@ const {Schema}=require("mongoose");
 // ######################## Topic Schema #####################
 const TopicSchema=new Schema({
      topicname:String,
-     grade:String,
-     subjectname:String,
-
+     lessons : [{
+          lessonName : {
+               type : String
+          },
+          lessonContent : {
+               type : String
+          },
+          lessonPic : {
+               type : String
+          }
+     }]
 },{
      timestamps:true,
 })
 
-const topicModel=mongoose.model("SubjectTopics",TopicSchema);
+const topicModel=mongoose.model("Topic",TopicSchema);
 module.exports=topicModel;
