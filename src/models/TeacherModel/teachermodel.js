@@ -3,6 +3,7 @@ const mongoose=require("mongoose");
 const {Schema}=require('mongoose');
  
 // ########################## Teacher Schema #################################
+
 const teacherSchema=new Schema({
     fullname:{
     type:String,
@@ -18,6 +19,12 @@ username:{
     index:true,
     unique:true
 },
+teachersSubjects : [{
+    subjectId : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "subject"
+    }
+}],
 password:{
       type:String,
       required:[true,'Password is required']

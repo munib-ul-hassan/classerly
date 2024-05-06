@@ -16,7 +16,7 @@ app.use(cors({
 
 //routes
 
-const studentRoutes=require("./routes/StudentRoutes/student.routes")
+const studentRoutes=require("./routes/Student.Routes/student.routes")
 const userRoutes =require("./routes/AllusersRoutes/users.routes")
 const curriculumRoutes=require("./routes/Curriculum.routes/curriculum.routes")
 const parentRoutes=require("./routes/ParentRoutes/parent.routes")

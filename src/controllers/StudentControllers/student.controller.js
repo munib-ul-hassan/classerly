@@ -4,6 +4,7 @@ const  asyncHandler = require ('../../utils/asyncHandler.js');
 const ApiResponse=require('../../utils/ApiResponse.js')
 const jwt=require('jsonwebtoken');
 const sendEmail = require('../../utils/sendemail.js');
+const gradeModel = require('../../models/Grade/grade.models.js');
 
 
 
@@ -32,59 +33,112 @@ const generateAccessAndRefreshToken=async(studentId)=>{
 }
 
 exports.registerStudent = asyncHandler(async (req, res) => {
-   try {
-       const { fullname, username, password, emailaddress, fulladdress, gradeId } = req.body;
+    try {
+        const { fullname, username, password, emailaddress, fulladdress } = req.body;
+        const gradeId = req.params.id;
+        if ([fullname, username, password, emailaddress, fulladdress, gradeId].some(field => !field || field.trim() === "")) {
+            throw new ApiError(400, 'All fields are required');
+        } else if (emailaddress && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailaddress)) {
+            throw new ApiError(400, 'Invalid email address');
+        }
+ 
+        const existUser = await StudentModel.findOne({ $or: [{ emailaddress }, { username: username.toLowerCase() }] });
+        if (existUser) {
+            throw new ApiError(409, 'User already exists');
+        }
+ 
+        const generateId = () => {
+            return Math.floor(1000000 + Math.random() * 9000000).toString();
+        };
+ 
+        const stdid = generateId();
+ 
+        const student = await StudentModel.create({
+            fullname,
+            username: username.toLowerCase(),
+            emailaddress,
+            fulladdress,
+            password,
+            gradeId,
+            stdid
+        });
+      await student.save();
+        const findGrade = await gradeModel.findById(gradeId).populate("gradeSubjects");
+        if (!findGrade) {
+            return res.status(500).json({
+                message: "Grade not found"
+            });
+        }
+        const subjectIds = findGrade.gradeSubjects.map(subject => subject._id);
+        student.studentSubjects.push(...subjectIds);
+       console.log(subjectIds);
 
-       if ([fullname, username, password, emailaddress, fulladdress, gradeId].some(field => !field || field.trim() === "")) {
-           throw new ApiError(400, 'All fields are required');
-       } else if (emailaddress && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailaddress)) {
-           throw new ApiError(400, 'Invalid email address');
-       }
+             await student.save();
 
-       const existUser = await StudentModel.findOne({ $or: [{ emailaddress }, { username: username.toLowerCase() }] });
-       if (existUser) {
-           throw new ApiError(409, 'User already exists');
-       }
+        findGrade.gradeStudents.push(student._id);
+        await findGrade.save();
+          
+        if (!student) {
+            throw new ApiError(500, 'Something went wrong in creating student');
+        }
+ 
+        const createdStudent = await StudentModel.findById(student._id).select("-refreshToken -password");
+ 
+        if (!createdStudent) {
+            throw new ApiError(500, 'Something went wrong in creating student');
+        }
+ 
+        // Send email after response is sent
+        const emailsubject = "Student Registration";
+        const email = emailaddress;
+        const message = `You are registered successfully. Your student ID is ${student.stdid}.`;
+        const requestType = "Your request for student registration is done";
+        await sendEmail(emailsubject, email, message, requestType);
+ 
+        // Send response to the client
+        res.status(201).json(new ApiResponse(200, createdStudent, "Student account created successfully"));
+    } catch (error) {
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
+    }
+ });
+ 
+ exports.deleteStudent = asyncHandler(async (req, res) => {
+    try {
+        const studentId = req.params.id;
+        console.log(studentId);
+        // Find the student to be deleted
+        const student = await StudentModel.findById(studentId);
+        console.log(student);
+        if (!student) {
+            throw new ApiError(404, 'Student not found');
+        }
 
-       const generateId = () => {
-        return Math.floor(1000000 + Math.random() * 9000000).toString();
-      };
+        // Find the grade where the student is registered
+        const grade = await gradeModel.findById(student.gradeId);
+        console.log("grade students",grade.gradeStudents);
+        if (!grade) {
+            throw new ApiError(500, 'Grade not found');
+        }
 
-      const stdid=generateId();
+        // Remove the student's ID from the gradeStudents array
+         console.log("gradestudents",grade.gradeStudents);
+         grade.gradeStudents = grade.gradeStudents.filter(student => student._id.toString() !== studentId);
+        
+        await grade.save();
+
+        // Delete the student
+        console.log("Removing student:", student);
+        await student.deleteOne();
+      res.status(200).json({
+        message:"Student Deleted",
+        student
+      })
        
-       const student = await StudentModel.create({
-           fullname,
-           username: username.toLowerCase(),
-           emailaddress,
-           fulladdress,
-           password,
-           gradeId,
-           stdid
-       });
-
-       if (!student) {
-           throw new ApiError(500, 'Something went wrong in creating student');
-       }
-
-       const createdStudent = await StudentModel.findById(student._id).select("-refreshToken -password");
-
-       if (!createdStudent) {
-           throw new ApiError(500, 'Something went wrong in creating student');
-       }
-
-       // Send email after response is sent
-       const emailsubject = "Student Registration";
-       const email = emailaddress;
-       const message = `You are registered successfully. Your student ID is ${student.stdid}.`
-       const requestType = "Your request for student registration is done"
-       await sendEmail(emailsubject, email, message, requestType);
-
-       // Send response to the client
-       res.status(201).json(new ApiResponse(200, createdStudent, "Student account created successfully"));
-   } catch (error) {
-       const errorMessage = error.message || "Something went wrong";
-       return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
-   }
+    } catch (error) {
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
+    }
 });
 
 

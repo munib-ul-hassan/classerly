@@ -29,7 +29,19 @@ const StudentSchema=new Schema({
     role:{
        type:String,
        default: 'student'
-    },
+    },    
+    studentSubjects : [{
+        subjectId : {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "subject"
+        }
+    }],
+    studentTeachers:[{
+        teacherId:[{
+            type: mongoose.Schema.Types.ObjectId,
+
+        }]
+    }],
     emailaddress:{
          type:String,
          required:true,

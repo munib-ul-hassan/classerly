@@ -93,5 +93,5 @@ parentSchema.methods.generateRefreshToken=function(){
 )
 }
 
-const ParentModel=mongoose.model('Psarent',parentSchema);
+const ParentModel=mongoose.model('Parent',parentSchema);
 module.exports=ParentModel;

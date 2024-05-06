@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 const gradeSchema = mongoose.Schema({
     gradeNumber : {
         type : String,
-        default : 3
+        unique: true
     },
     gradeStudents : [{
         studentId : {
@@ -20,7 +20,7 @@ const gradeSchema = mongoose.Schema({
     gradeSubjects : [{
         subjectId : {
             type : mongoose.Schema.Types.ObjectId,
-            ref : "Subject"
+            ref : "subject"
         }
     }]
 }, {timestamps : true})

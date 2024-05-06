@@ -6,12 +6,22 @@ const asyncHandler = require("../../utils/asyncHandler");
 exports.addGrade = asyncHandler(async (req, res) => {
     const { gradeNumber, gradeStudents, gradeTeachers, gradeSubjects } = req.body;
     try {
+
+        const findSamegrade=await gradeModel.findOne({gradeNumber});
+        if(findSamegrade){
+            return res.status(500).json(
+                {
+                    message:"grade already exist"
+                }
+            )
+        }
         const savegrade = new gradeModel({
             gradeNumber,
             gradeStudents,
             gradeSubjects,
             gradeTeachers
         });
+
         const uniqueSubjectIds = new Set();
         for (const subject of gradeSubjects) {
          
@@ -30,3 +40,15 @@ exports.addGrade = asyncHandler(async (req, res) => {
 });
 
 
+exports.getAllGrades=asyncHandler(async(req,res)=>{
+    try {
+        const allgrades=await gradeModel.find();
+        res.status(200).json({
+            message:"All grades",
+             allgrades
+        })
+    } catch (error) {
+        const errorMessage = error.message || "Something went wrong  in fetching grades";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
+    }
+})
