@@ -1,10 +1,11 @@
 const { Router } = require('express');
-const { registerStudent } = require('../../controllers/StudentControllers/student.controller');
+
+const { registerTeacher } = require('../../controllers/Teacher.Controller/TeacherContrroller');
 
 
 const router=Router();
 
 
-router.route("/register-teacher").post(registerStudent);
+router.route("/register-teacher").post(registerTeacher);
 
 module.exports=router;

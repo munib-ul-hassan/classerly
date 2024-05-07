@@ -54,6 +54,21 @@ exports.deleteSubject=asyncHandler(async(req,res)=>{
                 "Subject not found"
             )
           }
+          const findgrade=await gradeModel.findById(findsubject.gradeId);
+          if (!findgrade) {
+            throw new ApiError(500, 'Grade not found');
+        }
+        findgrade.gradeSubjects= findgrade.gradeSubjects.filter(subject=> subject._id.toString() ==! subjectId);
+         await findgrade.save();
+
+         await findsubject.deleteOne();
+         res.status(200).json(
+            new ApiResponse(
+                .200,
+                findsubject,
+                "subject deleted successfuly"
+            )
+         )
     } catch (error) {
         const errorMessage=error.message || "something went wrong";
         return res.status(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))

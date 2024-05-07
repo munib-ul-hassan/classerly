@@ -5,6 +5,7 @@ const ApiResponse=require('../../utils/ApiResponse.js')
 const jwt=require('jsonwebtoken');
 const sendEmail = require('../../utils/sendemail.js');
 const gradeModel = require('../../models/Grade/grade.models.js');
+const subjectModel = require('../../models/CurriculumModel/subject.js');
 
 
 
@@ -63,20 +64,7 @@ exports.registerStudent = asyncHandler(async (req, res) => {
             stdid
         });
       await student.save();
-        const findGrade = await gradeModel.findById(gradeId).populate("gradeSubjects");
-        if (!findGrade) {
-            return res.status(500).json({
-                message: "Grade not found"
-            });
-        }
-        const subjectIds = findGrade.gradeSubjects.map(subject => subject._id);
-        student.studentSubjects.push(...subjectIds);
-       console.log(subjectIds);
-
-             await student.save();
-
-        findGrade.gradeStudents.push(student._id);
-        await findGrade.save();
+    
           
         if (!student) {
             throw new ApiError(500, 'Something went wrong in creating student');
@@ -102,6 +90,44 @@ exports.registerStudent = asyncHandler(async (req, res) => {
         return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }
  });
+
+
+ exports.getAllmycourses=asyncHandler(async(req,res)=>{
+    const {studentId}=req.body;
+    const gradeId=req.params.id;
+    try {
+          const findstudent=await StudentModel.findById(studentId);
+          if(!findstudent){
+            return res.status(500).json({
+                message: "student not found"
+            });
+          }
+         const findmysubjects=await gradeModel.findById(gradeId).populate("gradeSubjects")
+         if(!findmysubjects){
+            return res.status(500).json({
+                message: "Grade not found"
+            });
+         }
+         const gradesubjects=findmysubjects.gradeSubjects;
+         const subjectIds = findmysubjects.gradeSubjects.map(subject => subject._id);
+             findstudent.studentSubjects.push(...subjectIds);
+             await findstudent.save();
+         const mySubjects = await Promise.all(gradesubjects.map(subject => {
+            return subjectModel.findById(subject._id); 
+        }));
+          res.status(200).json(
+            new ApiResponse(
+                .200,
+                mySubjects,
+                "subjects found succesfully"
+            )
+          )
+    } catch (error) {
+        const errorMessage=error.message || "something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
+
+    }
+ })
  
  exports.deleteStudent = asyncHandler(async (req, res) => {
     try {

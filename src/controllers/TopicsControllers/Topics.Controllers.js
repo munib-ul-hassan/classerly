@@ -1,6 +1,8 @@
 const subjectModel = require("../../models/CurriculumModel/subject");
 const topicModel = require("../../models/CurriculumModel/topic");
+const gradeModel = require("../../models/Grade/grade.models");
 const { find, findById } = require("../../models/StudentModel/student");
+const ApiResponse = require("../../utils/ApiResponse");
 const asyncHandler = require("../../utils/asyncHandler");
 
 
@@ -34,7 +36,8 @@ await Promise.all(topicNames.map(async (item) => {
         
         const Topics=await new topicModel({
             topicname,
-            lessons
+            lessons,
+            subjectId
         }).save();
 
         findSubject.subjectTopics.push(Topics._id);
@@ -54,4 +57,22 @@ await Promise.all(topicNames.map(async (item) => {
         })
     }
 
+})
+
+exports.deleteTopics=asyncHandler(async(req,res)=>{
+    const topicId=req.params.id;
+
+    try {
+         const findtopic=await topicModel.findById(topicId);
+         if(!findtopic){
+              throw new Error("Topic not exist with this name");
+         }
+
+         const findsubject=await subjectModel.findById(findtopic.subjectId);
+         console.log(findsubject);
+
+    } catch (error) {
+        const errorMessage=error.message || "something went wrong"
+       return res.status(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))
+    }
 })

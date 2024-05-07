@@ -5,6 +5,10 @@ const {Schema}=require("mongoose");
 // ######################## Topic Schema #####################
 const TopicSchema=new Schema({
      topicname:String,
+     subjectId:{
+         type:mongoose.Schema.Types.ObjectId,
+         ref:'subject'
+     },
      lessons : [{
           lessonName : {
                type : String

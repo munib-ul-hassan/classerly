@@ -1,4 +1,6 @@
 const gradeModel = require("../../models/Grade/grade.models");
+const { findById } = require("../../models/StudentModel/student");
+const ApiResponse = require("../../utils/ApiResponse");
 const asyncHandler = require("../../utils/asyncHandler");
 
 
@@ -51,4 +53,26 @@ exports.getAllGrades=asyncHandler(async(req,res)=>{
         const errorMessage = error.message || "Something went wrong  in fetching grades";
         return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }
+})
+
+exports.getAllSubjectsOfGrade=asyncHandler(async(req,res)=>{
+    const gradeId=req.params.id;
+    try {
+        const findgrade = await gradeModel.findById({ _id: gradeId }).populate("gradeSubjects");
+
+        if(!findgrade){
+            res.status(404).json(
+                "grade not found"
+            )
+        }
+        const subjects=findgrade.gradeSubjects;
+        console.log(subjects);
+        res.status(200).json(
+            new ApiResponse(200,subjects,"found sucsessfully")
+        )
+    } catch (error) {
+        const errorMessage=error.message || "somet thing went wrong";
+       return res.satus(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))
+    }
+
 })

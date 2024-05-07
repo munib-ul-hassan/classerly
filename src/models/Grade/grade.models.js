@@ -6,10 +6,10 @@ const gradeSchema = mongoose.Schema({
         unique: true
     },
     gradeStudents : [{
-        studentId : {
+        
             type : mongoose.Schema.Types.ObjectId,
             ref : "Student"
-        }
+        
     }],
     gradeTeachers : [{
         teacherId : {
@@ -18,10 +18,10 @@ const gradeSchema = mongoose.Schema({
         }
     }],
     gradeSubjects : [{
-        subjectId : {
+       
             type : mongoose.Schema.Types.ObjectId,
             ref : "subject"
-        }
+        
     }]
 }, {timestamps : true})
 

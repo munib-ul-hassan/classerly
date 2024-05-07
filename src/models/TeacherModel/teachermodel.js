@@ -1,5 +1,6 @@
 const mongoose=require("mongoose");
-
+const bcrypt=require("bcrypt");
+const jwt=require("jsonwebtoken");
 const {Schema}=require('mongoose');
  
 // ########################## Teacher Schema #################################
@@ -9,14 +10,13 @@ const teacherSchema=new Schema({
     type:String,
     required:true,
     trim:true,
-    index:true,
+  
     
 },
 username:{
     type:String,
     required:true,
     trim:true,
-    index:true,
     unique:true
 },
 teachersSubjects : [{
@@ -34,10 +34,6 @@ emailaddress:{
      required:true,
      unique:true
 },
-grade:{
-    type:String,
-    required:true
-},
 fulladdress:{
     type:String,
     required:true
@@ -45,9 +41,6 @@ fulladdress:{
 role:{
     type:String,
     default: 'teacher'
- },
- subject:{
-    type:[String]
  },
  feedback:{
     type:[String]

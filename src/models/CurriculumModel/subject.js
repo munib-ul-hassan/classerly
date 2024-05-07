@@ -12,6 +12,10 @@ const subjectSchema=new Schema({
             ref : "Topic"
         } 
     }] ,
+    subjectTeacher:{
+       type:Schema.Types.ObjectId,
+       ref:"Teacher"
+    },
     gradeId:{
         type:Schema.Types.ObjectId,
         ref: "Grade"
