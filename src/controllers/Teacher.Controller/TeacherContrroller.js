@@ -45,6 +45,7 @@ exports.teacherAddsubjects=asyncHandler(async(req,res)=>{
          )
 
     } catch (error) {
-        
+        const errorMessage=error.Message || "something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))
     }
 })
