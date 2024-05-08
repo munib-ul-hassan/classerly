@@ -31,10 +31,14 @@ const StudentSchema=new Schema({
        default: 'student'
     },    
     studentSubjects : [{
-        subjectId : {
+        
             type : mongoose.Schema.Types.ObjectId,
             ref : "subject"
-        }
+        
+    }],
+    studentTeachers:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Teacher"
     }],
     studentTeachers:[{
         teacherId:[{

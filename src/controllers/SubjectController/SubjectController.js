@@ -4,31 +4,31 @@ const { findOne } = require("../../models/StudentModel/student");
 const ApiResponse = require("../../utils/ApiResponse");
 const asyncHandler = require("../../utils/asyncHandler");
 
-
 exports.AddSubject = asyncHandler(async(req, res) => {
     const { subjectname } = req.body;
     const gradeId = req.params.id;
     try {
-        const grade = await gradeModel.findById(gradeId).populate('gradeSubjects' );
+        const grade = await gradeModel.findById(gradeId).populate('gradeSubjects');
 
         if (!grade) {
             throw new Error("Grade not found");
         }
-      const subjectIds = grade.gradeSubjects.map(subject => subject._id);
-const subjectData = [];
-for (const subjectId of subjectIds) {
-    const subject = await subjectModel.findById(subjectId);
-    if (subject) {
-        subjectData.push(subject);
-    }
-}
-const subjectNames = subjectData.map(subject => subject.subjectname);
-await Promise.all(subjectNames.map(async (item) => {
-    if (item === subjectname) {
-        throw new Error("Subject with this name already exists in this grade");
-    }
-}));
-        const newSubject = await new subjectModel({ subjectname, gradeId }).save();
+
+        const subjectIds = grade.gradeSubjects.map(subject => subject._id);
+        const subjectData = [];
+        for (const subjectId of subjectIds) {
+            const subject = await subjectModel.findById(subjectId);
+            if (subject) {
+                subjectData.push(subject);
+            }
+        }
+
+        const subjectNames = subjectData.map(subject => subject.subjectname.toLowerCase());
+        if (subjectNames.includes(subjectname.toLowerCase())) {
+            throw new Error("Subject with this name already exists in this grade");
+        }
+
+        const newSubject = await new subjectModel({ subjectname: subjectname.toLowerCase(), gradeId }).save();
         grade.gradeSubjects.push(newSubject);
         await grade.save();
         res.status(200).json({

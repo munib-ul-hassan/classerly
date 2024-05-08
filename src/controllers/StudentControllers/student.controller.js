@@ -6,6 +6,8 @@ const jwt=require('jsonwebtoken');
 const sendEmail = require('../../utils/sendemail.js');
 const gradeModel = require('../../models/Grade/grade.models.js');
 const subjectModel = require('../../models/CurriculumModel/subject.js');
+const TeacherModel = require('../../models/TeacherModel/teachermodel.js');
+const { default: mongoose } = require('mongoose');
 
 
 
@@ -92,42 +94,75 @@ exports.registerStudent = asyncHandler(async (req, res) => {
  });
 
 
- exports.getAllmycourses=asyncHandler(async(req,res)=>{
-    const {studentId}=req.body;
-    const gradeId=req.params.id;
+ exports.getAllmysubjects = asyncHandler(async (req, res) => {
+    const { studentId } = req.body;
+    const gradeId = req.params.id;
+
     try {
-          const findstudent=await StudentModel.findById(studentId);
-          if(!findstudent){
-            return res.status(500).json({
-                message: "student not found"
+        if (!mongoose.isValidObjectId(studentId)) {
+            return res.status(400).json({
+                message: "Invalid student ID"
             });
-          }
-         const findmysubjects=await gradeModel.findById(gradeId).populate("gradeSubjects")
-         if(!findmysubjects){
+        }
+        const findstudentSubjects = await StudentModel.findById(studentId).populate("studentSubjects");
+        if (!findstudentSubjects) {
+            return res.status(500).json({
+                message: "Student not found"
+            });
+        }
+
+        const gradeSubjects = await gradeModel.findById(gradeId).populate({
+            path: "gradeSubjects",
+            populate: {
+                path: "subjectTeacher"
+            }
+        });
+        if (!gradeSubjects) {
             return res.status(500).json({
                 message: "Grade not found"
             });
-         }
-         const gradesubjects=findmysubjects.gradeSubjects;
-         const subjectIds = findmysubjects.gradeSubjects.map(subject => subject._id);
-             findstudent.studentSubjects.push(...subjectIds);
-             await findstudent.save();
-         const mySubjects = await Promise.all(gradesubjects.map(subject => {
-            return subjectModel.findById(subject._id); 
-        }));
-          res.status(200).json(
-            new ApiResponse(
-                .200,
-                mySubjects,
-                "subjects found succesfully"
-            )
-          )
-    } catch (error) {
-        const errorMessage=error.message || "something went wrong";
-        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
+        }
+        
+        // Collect all teachers from gradeSubjects.gradeSubjects
+        // const allTeachers = [];
+        // for (const subject of gradeSubjects.gradeSubjects) {
+        //     console.log(`Teacher for ${subject.subjectname}:`, subject.subjectTeacher);
+        //     if (subject.subjectTeacher) {
+        //         allTeachers.push(subject.subjectTeacher);
+        //     }
+        // }
 
+        // Log all teachers for debugging
+        // console.log("All Teachers:", allTeachers);
+
+        // Add grade subjects to student subjects if not already present
+        for (const subject of gradeSubjects.gradeSubjects) {
+            const isPresent = findstudentSubjects.studentSubjects.some(studentSubject => studentSubject._id.equals(subject._id));
+            if (!isPresent) {
+                findstudentSubjects.studentSubjects.push(subject);
+            }
+        }
+
+        await findstudentSubjects.save();
+
+        res.status(200).json({
+            statusCode: 200,
+            gradeSubjects: gradeSubjects.gradeSubjects,
+            // teachers: allTeachers,
+            message: "Subjects found successfully"
+        });
+        
+    } catch (error) {
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json({
+            statusCode: error.status || 500,
+            message: errorMessage
+        });
     }
- })
+});
+
+
+
  
  exports.deleteStudent = asyncHandler(async (req, res) => {
     try {
@@ -162,6 +197,25 @@ exports.registerStudent = asyncHandler(async (req, res) => {
       })
        
     } catch (error) {
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
+    }
+});
+
+exports.getallmyTeachers = asyncHandler(async (req, res) => {
+    const studentId = req.params.id;
+    try {
+        const existSubjects = await StudentModel.findById({_id: studentId}).populate("studentSubjects");
+        if (!existSubjects) {
+            throw new Error("student subjects subjects not found");
+        }
+         const findteachers=await subjectModel.find().populate("teacherId");
+         console.log(findteachers);
+        console.log(existSubjects);
+
+        res.status(200).json(new ApiResponse(200, existSubjects, "Teachers found successfully"));
+    } catch (error) {
+        console.error("Error:", error); 
         const errorMessage = error.message || "Something went wrong";
         return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }

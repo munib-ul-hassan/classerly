@@ -31,21 +31,39 @@ exports.registerTeacher= asyncHandler(async(req,res)=>{
     }
 })
 
-exports.teacherAddsubjects=asyncHandler(async(req,res)=>{
-    const teacherId=req.body;
-    const subjectId=req.params.id;
+exports.teacherAddsubjects = asyncHandler(async (req, res) => {
+    const { teacherId } = req.body;
+    const subjectId = req.params.id;
     try {
-         const findsubject=await subjectModel.findOne({_id:subjectId});
-         if(!findsubject){
-            throw new Error("subject not found")
-         }
-         findsubject.teacherId=subjectTeacher;
-         res.status(201).json(
-            new ApiResponse(200,{},"subject added Successfully")
-         )
-
+      const findSubject = await subjectModel.findOne({ _id: subjectId });
+      if (!findSubject) {
+        throw new Error("Subject not found");
+      }
+  
+      if (findSubject.subjectTeacher) {
+        throw new Error("Subject already has a teacher assigned");
+      }
+  
+      const existTeacher = await TeacherModel.findOne({ _id: teacherId });
+      if (!existTeacher) {
+        throw new Error("Teacher not found");
+      }
+  
+      existTeacher.teachersSubjects.push(subjectId);
+      findSubject.subjectTeacher = teacherId;
+  
+      await existTeacher.save();
+      await findSubject.save();
+  
+      res.status(201).json(
+        new ApiResponse(200, findSubject, "Subject added successfully")
+      );
     } catch (error) {
-        const errorMessage=error.Message || "something went wrong";
-        return res.status(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))
+      console.error("Error:", error); // Log the error message
+      const errorMessage = error.message || "Something went wrong";
+      return res
+        .status(error.status || 500)
+        .json(new ApiResponse(error.status || 500, errorMessage));
     }
-})
+  });
+  

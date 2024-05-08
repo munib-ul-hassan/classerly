@@ -7,57 +7,43 @@ const asyncHandler = require("../../utils/asyncHandler");
 
 
 
-exports.AddTopics=asyncHandler(async(req,res)=>{
-    const {topicname,lessons}=req.body;
-    const subjectId=req.params.id;
+exports.AddTopics = asyncHandler(async(req, res) => {
+    const { topicname, lessons } = req.body;
+    const subjectId = req.params.id;
     try {
-         
-      
-        const findSubject=await subjectModel.findById(subjectId).populate('subjectTopics');
-        if(!findSubject){
-            throw new Error("subject not found");
+        const findSubject = await subjectModel.findById(subjectId).populate('subjectTopics');
+        if (!findSubject) {
+            throw new Error("Subject not found");
         }
-        const topicIds= findSubject.subjectTopics;
+        
+        const topicIds = findSubject.subjectTopics;
         const topicData = [];
-        for(const topicId of topicIds){
-          
-            const topic=await topicModel.findById(topicId);
+        for (const topicId of topicIds) {
+            const topic = await topicModel.findById(topicId);
             if (topic) {
                 topicData.push(topic);
             }
-           
         }
-        const topicNames = topicData.map(topic => topic.topicname);
-await Promise.all(topicNames.map(async (item) => {
-    if (item === topicname) {
-        throw new Error("Topic with this name already exists in this subject");
-    }
-}));
+
+        const topicNames = topicData.map(topic => topic.topicname.toLowerCase());
+        if (topicNames.includes(topicname.toLowerCase())) {
+            throw new Error("Topic with this name already exists in this subject");
+        }
         
-        const Topics=await new topicModel({
-            topicname,
+        const newTopic = await new topicModel({
+            topicname: topicname.toLowerCase(), // Save topic name in lowercase
             lessons,
             subjectId
         }).save();
 
-        findSubject.subjectTopics.push(Topics._id);
+        findSubject.subjectTopics.push(newTopic._id);
         await findSubject.save();
-        
 
-        res.status(200).json(
-            {
-                Topics
-            }
-        )
-        
-        
+        res.status(200).json({ Topics: newTopic });
     } catch (error) {
-        res.status(500).json({
-            message:error.message,
-        })
+        res.status(500).json({ message: error.message });
     }
-
-})
+});
 
 exports.deleteTopics=asyncHandler(async(req,res)=>{
     const topicId=req.params.id;
