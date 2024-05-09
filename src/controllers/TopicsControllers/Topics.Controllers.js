@@ -8,7 +8,7 @@ const asyncHandler = require("../../utils/asyncHandler");
 
 
 exports.AddTopics = asyncHandler(async(req, res) => {
-    const { topicname, lessons } = req.body;
+    const { topicname} = req.body;
     const subjectId = req.params.id;
     try {
         const findSubject = await subjectModel.findById(subjectId).populate('subjectTopics');
@@ -31,8 +31,7 @@ exports.AddTopics = asyncHandler(async(req, res) => {
         }
         
         const newTopic = await new topicModel({
-            topicname: topicname.toLowerCase(), // Save topic name in lowercase
-            lessons,
+            topicname: topicname.toLowerCase(), 
             subjectId
         }).save();
 

@@ -9,17 +9,12 @@ const TopicSchema=new Schema({
          type:mongoose.Schema.Types.ObjectId,
          ref:'subject'
      },
-     lessons : [{
-          lessonName : {
-               type : String
-          },
-          lessonContent : {
-               type : String
-          },
-          lessonPic : {
-               type : String
-          }
-     }]
+     topicLessons: [
+          {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Lessons"
+           }
+]
 },{
      timestamps:true,
 })

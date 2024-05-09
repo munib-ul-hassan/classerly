@@ -14,7 +14,7 @@ router.route("/resfreshAcessToken").post(refreshAccessToken);
 
 // get requests
 router.route("/getall-mycourses/:id").get(getAllmysubjects);
-router.route("/getall-myteachers/:id").get(getallmyTeachers);
+
 
 //secured routes
 

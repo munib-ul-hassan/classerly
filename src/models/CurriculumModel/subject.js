@@ -19,7 +19,8 @@ const subjectSchema=new Schema({
     gradeId:{
         type:Schema.Types.ObjectId,
         ref: "Grade"
-    }
+    },
+   
 },{
     timestamps:true
     })

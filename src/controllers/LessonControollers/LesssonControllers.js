@@ -1,0 +1,64 @@
+const subjectModel = require("../../models/CurriculumModel/subject");
+const topicModel = require("../../models/CurriculumModel/topic");
+const LessonsModel = require("../../models/LessonsModel/LessonsModel");
+
+
+const ApiResponse = require("../../utils/ApiResponse");
+const asyncHandler = require("../../utils/asyncHandler");
+
+
+exports.AddLessons = asyncHandler(async(req, res) => {
+    const topicId = req.params.id;
+    const { lessonName, lessonContent } = req.body;
+    if (!req.body || !req.body.lessonName || !req.body.lessonContent) {
+        return res.status(400).json({ message: "Missing required fields in the request body" });
+    }
+    
+    console.log(req.body);
+    try {
+        const ExistTopic = await topicModel.findById({ _id: topicId });
+        if (!ExistTopic) {
+            return res.status(404).json({ message: "Topic not found" });
+        }
+  
+
+        const lessonIds=ExistTopic.topicLessons;
+       
+        let lessonsData=[];
+        for(const lessonId of lessonIds){
+            const lesson=await LessonsModel.findById(lessonId)
+            if(lesson){
+                    lessonsData.push(lesson);
+            }
+        }
+       const lessonNames=lessonsData.map(lesson=>lesson.lessonName.toLowerCase())
+       if(lessonNames.includes(lessonName.toLowerCase())){
+        throw new Error("Lesson with this name already exists in this Topic");
+       }
+
+         
+      
+      
+       
+        const newLesson = new LessonsModel({
+            lessonName: lessonName.toLowerCase(),
+            lessonContent,
+            topicLessons: topicId,
+        });
+
+        // Save the new lesson
+        await newLesson.save();
+
+        // Update the topicLessons array in the ExistTopic object
+        ExistTopic.topicLessons.push(newLesson);
+
+        // Save the updated ExistTopic object
+        await ExistTopic.save();
+
+        res.status(201).json(
+            new ApiResponse(200, newLesson, "Lesson created successfully")
+        );
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
