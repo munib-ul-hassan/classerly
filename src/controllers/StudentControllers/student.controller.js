@@ -203,7 +203,24 @@ exports.registerStudent = asyncHandler(async (req, res) => {
     }
 });
 
+exports.getallmyTeachers = asyncHandler(async (req, res) => {
+    const studentId = req.params.id;
+    try {
+        const existSubjects = await StudentModel.findById({_id: studentId}).populate("studentSubjects");
+        if (!existSubjects) {
+            throw new Error("student subjects subjects not found");
+        }
+         const findteachers=await subjectModel.find().populate("teacherId");
+         console.log(findteachers);
+        console.log(existSubjects);
 
+        res.status(200).json(new ApiResponse(200, existSubjects, "Teachers found successfully"));
+    } catch (error) {
+        console.error("Error:", error); 
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
+    }
+});
 
 
 

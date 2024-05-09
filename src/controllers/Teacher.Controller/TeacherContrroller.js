@@ -1,4 +1,5 @@
 const subjectModel = require("../../models/CurriculumModel/subject");
+const StudentModel = require("../../models/StudentModel/student");
 const TeacherModel = require("../../models/TeacherModel/teachermodel");
 const ApiResponse = require("../../utils/ApiResponse");
 const asyncHandler = require("../../utils/asyncHandler");
@@ -10,7 +11,7 @@ exports.registerTeacher= asyncHandler(async(req,res)=>{
          const {fullname,username,emailaddress,password,fulladdress}=req.body;
          const existUser = await TeacherModel.findOne({ $or: [{ emailaddress }, { username: username.toLowerCase() }] });
          if (existUser) {
-             res.status(409).json({
+            return res.status(409).json({
                 mesage:"teacher already exist with this username or email"
              })
          }
@@ -41,7 +42,7 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
       }
   
       if (findSubject.subjectTeacher) {
-        throw new Error("Subject already has a teacher assigned");
+        throw new Error("Subject already has a taken by teacher");
       }
   
       const existTeacher = await TeacherModel.findOne({ _id: teacherId });
@@ -67,3 +68,49 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
     }
   });
   
+
+  exports.allSubjectsOfteacher = asyncHandler(async (req, res) => {
+    const teacherId = req.params.id;
+    try {
+        const findTeacher = await TeacherModel.findById(teacherId).populate("teachersSubjects");
+    
+        // const teacherSubjects=findTeacher.teachersSubjects;
+      const findStudent=await StudentModel.find()
+      // .populate("studentSubjects");
+    // const subject=findStudent.studentSubjects;
+    const teacherSubjects = findTeacher.teachersSubjects;
+
+    // Initialize an empty object to store students for each subject
+    const subjectsStudentsMap = {};
+
+    // Iterate over each subject taught by the teacher
+    for (const subject of teacherSubjects) {
+        // Initialize an array to store students for the current subject
+        const studentsForSubject = [];
+
+        // Iterate over all students
+        const allStudents = await StudentModel.find();
+
+        for (const student of allStudents) {
+            // Check if the student is studying the current subject
+            if (student.studentSubjects.includes(subject._id)) {
+                // If the student is studying the subject, add them to the array
+                studentsForSubject.push(student);
+            }
+        }
+
+        // Store the array of students for the current subject in the map
+        subjectsStudentsMap[subject._id] = studentsForSubject;
+      }
+console.log(subjectsStudentsMap)
+      console.log(findStudent.studentSubjects);
+        res.status(200).json({
+            statusCode: 200,
+            data: teacherSubjects,
+            message: "Teacher found successfully",
+            success: true
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message, success: false });
+    }
+});

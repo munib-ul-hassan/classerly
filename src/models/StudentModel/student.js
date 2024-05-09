@@ -40,12 +40,6 @@ const StudentSchema=new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Teacher"
     }],
-    studentTeachers:[{
-        teacherId:[{
-            type: mongoose.Schema.Types.ObjectId,
-
-        }]
-    }],
     emailaddress:{
          type:String,
          required:true,

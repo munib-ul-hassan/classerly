@@ -19,12 +19,12 @@ username:{
     trim:true,
     unique:true
 },
-teachersSubjects : [{
-    subjectId : {
+teachersSubjects : [
+ {
         type : mongoose.Schema.Types.ObjectId,
         ref : "subject"
     }
-}],
+],
 password:{
       type:String,
       required:[true,'Password is required']
