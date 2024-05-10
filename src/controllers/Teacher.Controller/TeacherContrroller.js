@@ -73,44 +73,34 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
     const teacherId = req.params.id;
     try {
         const findTeacher = await TeacherModel.findById(teacherId).populate("teachersSubjects");
-    
-        // const teacherSubjects=findTeacher.teachersSubjects;
-      const findStudent=await StudentModel.find()
-      // .populate("studentSubjects");
-    // const subject=findStudent.studentSubjects;
-    const teacherSubjects = findTeacher.teachersSubjects;
+        const teacherSubjects = findTeacher.teachersSubjects;
 
-    // Initialize an empty object to store students for each subject
-    const subjectsStudentsMap = {};
+        // Initialize an empty array to store subjects and students
+        const subjectsWithStudents = [];
 
-    // Iterate over each subject taught by the teacher
-    for (const subject of teacherSubjects) {
-        // Initialize an array to store students for the current subject
-        const studentsForSubject = [];
+        // Iterate over each subject taught by the teacher
+        for (const subject of teacherSubjects) {
+            // Find students studying the current subject
+            const students = await StudentModel.find({ studentSubjects: subject._id });
 
-        // Iterate over all students
-        const allStudents = await StudentModel.find();
-
-        for (const student of allStudents) {
-            // Check if the student is studying the current subject
-            if (student.studentSubjects.includes(subject._id)) {
-                // If the student is studying the subject, add them to the array
-                studentsForSubject.push(student);
-            }
+            // Push subject and corresponding students to the array
+            subjectsWithStudents.push({
+                subject: subject,
+                students: students
+            });
         }
 
-        // Store the array of students for the current subject in the map
-        subjectsStudentsMap[subject._id] = studentsForSubject;
-      }
-console.log(subjectsStudentsMap)
-      console.log(findStudent.studentSubjects);
         res.status(200).json({
             statusCode: 200,
-            data: teacherSubjects,
-            message: "Teacher found successfully",
+            data: subjectsWithStudents,
+            message: "Subjects and students of teacher found successfully",
             success: true
         });
     } catch (error) {
         res.status(500).json({ message: error.message, success: false });
     }
 });
+
+
+
+
