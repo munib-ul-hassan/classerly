@@ -104,5 +104,5 @@ StudentSchema.methods.generateRefreshToken=function(){
 )
 }
 
-const StudentModel=mongoose.model('Student',StudentSchema)
+const StudentModel=mongoose.model('student',StudentSchema)
 module.exports=StudentModel;

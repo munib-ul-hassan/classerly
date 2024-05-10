@@ -43,6 +43,22 @@ exports.AddSubject = asyncHandler(async(req, res) => {
 });
 
 
+exports.getAlltopicsofsubject=asyncHandler(async(req,res)=>{
+    const subjectId=req.params.id;
+    try {
+         const topicsOfSubject=await subjectModel.findById({_id:subjectId}).populate("subjectTopics");
+          if(!topicsOfSubject){
+            throw new Error("Subject not found");
+          }
+          const subjectTopics=topicsOfSubject.subjectTopics;
+         res.status(201).json(
+            new ApiResponse(200,subjectTopics,"Topics Found Succesfuly")
+         )
+    } catch (error) {
+         res.status(500).json({message:error.message})
+    }
+})
+
 exports.deleteSubject=asyncHandler(async(req,res)=>{
     const subjectId=req.params.id;
     try {

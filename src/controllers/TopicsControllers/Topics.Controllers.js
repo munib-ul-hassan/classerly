@@ -44,6 +44,21 @@ exports.AddTopics = asyncHandler(async(req, res) => {
     }
 });
 
+exports.getAllLessonsOfTopics=asyncHandler(async(req,res)=>{
+    const topicId=req.params.id;
+    try {
+        const findTopicLesson=await topicModel.findById({_id:topicId}).populate("topicLessons");
+        if(!findTopicLesson){
+            throw new Error("Topic not found")
+        }
+        const Lessons=findTopicLesson.topicLessons;
+        res.status(200).json(
+            new ApiResponse(200,Lessons,"lesson found sucessfully")
+        )
+    } catch (error) {
+        res.status(500).json({mesage:"error.message" || "somthing went wrong"})
+    }
+})
 exports.deleteTopics=asyncHandler(async(req,res)=>{
     const topicId=req.params.id;
 

@@ -81,7 +81,7 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
         // Iterate over each subject taught by the teacher
         for (const subject of teacherSubjects) {
             // Find students studying the current subject
-            const students = await StudentModel.find({ studentSubjects: subject._id });
+            const students = await StudentModel.find({ studentSubjects: subject._id }).select("-password");
 
             // Push subject and corresponding students to the array
             subjectsWithStudents.push({
@@ -102,5 +102,52 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
 });
 
 
+
+
+exports.feedBacktoTeacher = asyncHandler(async (req, res) => {
+       const teacherId=req.params.id;
+    const { feedbackFrom, feedbackText,feedbackBy} = req.body; 
+    console.log(feedbackFrom);
+    try {
+        const newFeedback = {
+            feedbackFrom: feedbackFrom,
+            feedbackText: feedbackText,
+            feedbackBy: feedbackBy
+        };
+        const teacher = await TeacherModel.findById({_id:teacherId});
+        console.log(teacher);
+
+        if (!teacher) {
+            return res.status(404).json({ message: "Teacher not found" });
+        }
+        teacher.feedback.push(newFeedback);
+        await teacher.save();
+
+        res.status(201).json({ message: "Feedback added successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+
+
+exports.myFeedBacks = asyncHandler(async (req, res) => {
+  const teacherId = req.params.id;
+  try {
+    const findTeacher = await TeacherModel.findById({ _id: teacherId })
+      .populate({
+        path: "feedback.feedbackBy",
+        select: "-password -stdid" // Exclude the 'password' field
+      })
+      .select("-password -stdid"); // Exclude the 'password' field from the main document as well
+
+    console.log("findTeacher:", findTeacher);
+    res.status(201).json(
+      new ApiResponse(200, findTeacher, "Teacher Found Successfully")
+    );
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Something went wrong" });
+  }
+});
 
 

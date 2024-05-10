@@ -46,13 +46,13 @@ exports.AddLessons = asyncHandler(async(req, res) => {
             topicLessons: topicId,
         });
 
-        // Save the new lesson
+        
         await newLesson.save();
 
-        // Update the topicLessons array in the ExistTopic object
+       
         ExistTopic.topicLessons.push(newLesson);
 
-        // Save the updated ExistTopic object
+        
         await ExistTopic.save();
 
         res.status(201).json(
