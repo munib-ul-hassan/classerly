@@ -210,7 +210,7 @@ exports.getallmyTeachers = asyncHandler(async (req, res) => {
         if (!existSubjects) {
             throw new Error("student subjects subjects not found");
         }
-         const findteachers=await subjectModel.find().populate("teacherId");
+         const findteachers=await subjectModel.find().populate("teacherId").select("-password");
          console.log(findteachers);
         console.log(existSubjects);
 

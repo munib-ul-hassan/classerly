@@ -2,13 +2,13 @@ const { Router } = require('express');
 
 // ############################ Student Routes ########################
 
-const  {registerStudent,refreshAccessToken, deleteStudent,getallmyTeachers, getAllmysubjects}  = require("../../controllers/StudentControllers/student.controller.js");
+const  {registerStudent,refreshAccessToken, getAllmysubjects}  = require("../../controllers/StudentControllers/student.controller.js");
 
 const router=Router();
 
 
 router.route("/registerStudent/:id").post(registerStudent)
-router.route("/delete-student/:id").delete(deleteStudent)
+
 router.route("/resfreshAcessToken").post(refreshAccessToken);
 
 

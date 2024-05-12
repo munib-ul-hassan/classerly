@@ -2,6 +2,7 @@ const subjectModel = require("../../models/CurriculumModel/subject");
 const gradeModel = require("../../models/Grade/grade.models");
 const { findOne } = require("../../models/StudentModel/student");
 const ApiResponse = require("../../utils/ApiResponse");
+const ApiError = require("../../utils/Apierror");
 const asyncHandler = require("../../utils/asyncHandler");
 
 exports.AddSubject = asyncHandler(async(req, res) => {
@@ -61,19 +62,17 @@ exports.getAlltopicsofsubject=asyncHandler(async(req,res)=>{
 
 exports.deleteSubject=asyncHandler(async(req,res)=>{
     const subjectId=req.params.id;
+    console.log(subjectId);
     try {
-          const findsubject=await subjectModel.findById(subjectId);
+          const findsubject=await subjectModel.findById({_id:subjectId});
           if(!findsubject){
-            return new ApiResponse(
-                .200,
-                {},
-                "Subject not found"
-            )
+            throw new Error("subject not found");
           }
           const findgrade=await gradeModel.findById(findsubject.gradeId);
           if (!findgrade) {
-            throw new ApiError(500, 'Grade not found');
+            throw new Error(500, 'Grade not found');
         }
+        //  const findSubjectInteracher=await 
         findgrade.gradeSubjects= findgrade.gradeSubjects.filter(subject=> subject._id.toString() ==! subjectId);
          await findgrade.save();
 

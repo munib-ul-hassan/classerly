@@ -3,13 +3,15 @@ const StudentModel = require("../../models/StudentModel/student");
 const TeacherModel = require("../../models/TeacherModel/teachermodel");
 const ApiResponse = require("../../utils/ApiResponse");
 const asyncHandler = require("../../utils/asyncHandler");
+const sendEmail = require("../../utils/sendemail");
 
 
 
 exports.registerTeacher= asyncHandler(async(req,res)=>{
+  console.log(req.body);
     try {
          const {fullname,username,emailaddress,password,fulladdress}=req.body;
-         const existUser = await TeacherModel.findOne({ $or: [{ emailaddress }, { username: username.toLowerCase() }] });
+         const existUser = await TeacherModel.findOne({ $or: [{ emailaddress }, { username }] });
          if (existUser) {
             return res.status(409).json({
                 mesage:"teacher already exist with this username or email"
@@ -17,12 +19,17 @@ exports.registerTeacher= asyncHandler(async(req,res)=>{
          }
           const teacher=new TeacherModel({
                 fullname,
-                username,
+                username:username.toLowerCase(),
                 emailaddress,
                 fulladdress,
                 password,
           })
           await teacher.save();
+          const emailsubject = "Teacher Registration";
+          const email = emailaddress;
+          const message = `You are registered successfully as Teacher`;
+          const requestType = "Your request for Teacher registration is done";
+          await sendEmail(emailsubject, email, message, requestType);
           res.status(201).json(
            new ApiResponse(200,teacher,"teacher created succesfully")
           )

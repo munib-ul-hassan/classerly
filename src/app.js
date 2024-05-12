@@ -22,6 +22,7 @@ const curriculumRoutes=require("./routes/Curriculum.routes/curriculum.routes")
 const parentRoutes=require("./routes/ParentRoutes/parent.routes")
 const teacherRoutes= require('./routes/TeacherRoutes/teacher.routes')
 const gradeRoutes=require('./routes/GradeRoutes/grade.routes')
+const adminRoutes=require('./routes/AdminRoutes/adminroutes')
 //declare
 app.use('/api/v1/student',studentRoutes)
 app.use('/api/v1/user',userRoutes)
@@ -29,5 +30,5 @@ app.use('/api/v1/curriculum',curriculumRoutes);
 app.use('/api/v1/parent',parentRoutes);
 app.use('/api/v1/teacher',teacherRoutes)
 app.use('/api/v1/grade',gradeRoutes)
-
+app.use('/api/v1/admin',adminRoutes)
 module.exports=app;

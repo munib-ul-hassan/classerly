@@ -39,7 +39,7 @@ fulladdress:{
 },
 childIds: [{
     type: Schema.Types.ObjectId,
-    ref: 'students' 
+    ref: 'student' 
 }],
 refreshToken:{
     type:String
