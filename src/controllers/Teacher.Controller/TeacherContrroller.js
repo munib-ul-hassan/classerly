@@ -2,6 +2,7 @@ const subjectModel = require("../../models/CurriculumModel/subject");
 const StudentModel = require("../../models/StudentModel/student");
 const TeacherModel = require("../../models/TeacherModel/teachermodel");
 const ApiResponse = require("../../utils/ApiResponse");
+const ApiError = require("../../utils/Apierror");
 const asyncHandler = require("../../utils/asyncHandler");
 const sendEmail = require("../../utils/sendemail");
 
@@ -13,10 +14,8 @@ exports.registerTeacher= asyncHandler(async(req,res)=>{
          const {fullname,username,emailaddress,password,fulladdress}=req.body;
          const existUser = await TeacherModel.findOne({ $or: [{ emailaddress }, { username }] });
          if (existUser) {
-            return res.status(409).json({
-                mesage:"teacher already exist with this username or email"
-             })
-         }
+          throw new ApiError(409, 'User already exists');
+      }
           const teacher=new TeacherModel({
                 fullname,
                 username:username.toLowerCase(),
@@ -34,8 +33,8 @@ exports.registerTeacher= asyncHandler(async(req,res)=>{
            new ApiResponse(200,teacher,"teacher created succesfully")
           )
     } catch (error) {
-        const errorMessage=error.Message || "something went wrong";
-        return res.status(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))
+      const errorMessage = error.message || "Something went wrong";
+      res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }
 })
 
@@ -67,11 +66,8 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
         new ApiResponse(200, findSubject, "Subject added successfully")
       );
     } catch (error) {
-      console.error("Error:", error); // Log the error message
       const errorMessage = error.message || "Something went wrong";
-      return res
-        .status(error.status || 500)
-        .json(new ApiResponse(error.status || 500, errorMessage));
+      return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }
   });
   

@@ -13,7 +13,7 @@ router.route("/resfreshAcessToken").post(refreshAccessToken);
 
 
 // get requests
-router.route("/getall-mycourses/:id").get(getAllmysubjects);
+router.route("/getall-mycourses/:id").post(getAllmysubjects);
 
 
 //secured routes

@@ -97,13 +97,13 @@ exports.registerStudent = asyncHandler(async (req, res) => {
  exports.getAllmysubjects = asyncHandler(async (req, res) => {
     const { studentId } = req.body;
     const gradeId = req.params.id;
-
+   
     try {
-        if (!mongoose.isValidObjectId(studentId)) {
-            return res.status(400).json({
-                message: "Invalid student ID"
-            });
-        }
+        // if (!mongoose.isValidObjectId(studentId)) {
+        //     return res.status(400).json({
+        //         message: "Invalid student ID"
+        //     });
+        // }
         const findstudentSubjects = await StudentModel.findById(studentId).populate("studentSubjects");
         if (!findstudentSubjects) {
             return res.status(500).json({

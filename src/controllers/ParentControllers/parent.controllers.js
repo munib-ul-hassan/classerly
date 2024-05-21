@@ -6,17 +6,24 @@ const ApiResponse = require('../../utils/ApiResponse');
 const asyncHandler = require('../../utils/asyncHandler');
 const sendEmail = require('../../utils/sendemail');
 const { isValidObjectId } = require('mongoose');
+const ApiError = require('../../utils/Apierror');
 
 
 exports.registerparent = asyncHandler(async (req, res) => {
+    console.log(req.body);
     try {
-        const { fullname, username, password, emailaddress, fulladdress, stdid } = req.body;
+        const { fullname, username, password, emailaddress, fulladdress, childrollno } = req.body;
+        const stdid=childrollno;
+        console.log(stdid);
         if (!fullname || !username || !password || !emailaddress || !fulladdress || !stdid) {
             return res.status(400).json({ error: 'All fields are required' });
           }
-      
+          const existUser = await ParentModel.findOne({ $or: [{ emailaddress }, { username }] });
+          if (existUser) {
+           throw new ApiError(409, 'User already exists');
+       }
         const child = await StudentModel.findOne({stdid});
-        console.log(child);
+        console.log("child",child);
         if (!child) {
             return res.status(400).json({ error: "Invalid child ID" });
         }
@@ -42,8 +49,8 @@ exports.registerparent = asyncHandler(async (req, res) => {
 
         res.status(201).json( new ApiResponse(200,newParent,"Parent sigup successfully"));
     } catch (error) {
-        console.error("Error in sign-up:", error);
-        res.status(500).json({ error: "Internal server error" });
+        const errorMessage = error.message || "Something went wrong";
+        res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }
 });
 

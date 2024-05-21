@@ -191,14 +191,16 @@ exports.userlogout=asyncHandler(async(req,res)=>{
              new ApiResponse (200,{},"OTP sended Successffully")
           ) 
       } catch (error) {
-       throw new ApiError(500,"something went wrong");
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
       }
  })
 
  exports.verifyOtp=asyncHandler(async(req,res)=>{
     const {otp}=req.body;
-    const emailaddress=req.cookies.forgetpasswordemailrole.emailaddress || req.body.emailaddress;
-    const role=req.cookies.forgetpasswordemailrole.role || req.body.role;
+   console.log(req.body)
+    const emailaddress= req.body.emailaddress;
+    const role= req.body.role;
 
     try {
         let UserModel;
@@ -227,14 +229,15 @@ exports.userlogout=asyncHandler(async(req,res)=>{
        }
        return res.status(200).json(new ApiResponse(200, "OTP verification successful"));
     } catch (error) {
-       throw new ApiError(500,error?.message || "something went wrong")
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }
  })
  
 exports.resetPassword=asyncHandler(async(req,res)=>{
     const {newpassword}=req.body;
-    const emailaddress=req.cookies.forgetpasswordemailrole.emailaddress || req.body.emailaddress;
-    const role=req.cookies.forgetpasswordemailrole.role || req.body.role;
+    const emailaddress=req.body.emailaddress;
+    const role= req.body.role;
     try {
         let UserModel;
         switch(role){
@@ -272,7 +275,8 @@ exports.resetPassword=asyncHandler(async(req,res)=>{
         )
  
     } catch (error) {
-       throw new ApiError(500,error?.message,"something went wrong")
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage));
     }
  })
 

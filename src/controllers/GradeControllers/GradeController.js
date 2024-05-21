@@ -72,7 +72,7 @@ exports.getAllSubjectsOfGrade=asyncHandler(async(req,res)=>{
         )
     } catch (error) {
         const errorMessage=error.message || "somet thing went wrong";
-       return res.satus(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))
+       return res.status(error.status || 500).json(new ApiResponse(error.status || 500,errorMessage))
     }
 
 })
