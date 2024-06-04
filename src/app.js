@@ -23,7 +23,10 @@ const parentRoutes=require("./routes/ParentRoutes/parent.routes")
 const teacherRoutes= require('./routes/TeacherRoutes/teacher.routes')
 const gradeRoutes=require('./routes/GradeRoutes/grade.routes')
 const adminRoutes=require('./routes/AdminRoutes/adminroutes')
+const authRoutes = require("./routes/auth.routes")
 //declare
+app.use('/api/v1/auth',authRoutes)
+
 app.use('/api/v1/student',studentRoutes)
 app.use('/api/v1/user',userRoutes)
 app.use('/api/v1/curriculum',curriculumRoutes);

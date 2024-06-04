@@ -55,7 +55,10 @@ exports.registerStudent = asyncHandler(async (req, res) => {
         };
  
         const stdid = generateId();
- 
+       const grade=await gradeModel.findById({_id:gradeId});
+       
+       const gradeName=grade.gradeNumber;
+       console.log(gradeName);
         const student = await StudentModel.create({
             fullname,
             username: username.toLowerCase(),
@@ -63,7 +66,8 @@ exports.registerStudent = asyncHandler(async (req, res) => {
             fulladdress,
             password,
             gradeId,
-            stdid
+            stdid,
+            gradeName
         });
       await student.save();
     
@@ -222,6 +226,30 @@ exports.getallmyTeachers = asyncHandler(async (req, res) => {
     }
 });
 
+exports.getstudentdata=asyncHandler(async(req,res)=>{
+    const studentId=req.params.id;
+    
+    try {
+        const findstudent = await StudentModel.findById({_id:studentId});
+        if (!findstudent) {
+            return res.status(500).json({
+                message: "Student not found"
+            });
+        }
+        const password=await 
+        res.status(200).json({
+            statusCode: 200,
+             findstudent,
+            message: "Subjects found successfully"
+        });
+    } catch (error) {
+        const errorMessage = error.message || "Something went wrong";
+        return res.status(error.status || 500).json({
+            statusCode: error.status || 500,
+            message: errorMessage
+        });
+    }
+})
 
 
 

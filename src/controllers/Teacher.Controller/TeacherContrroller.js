@@ -74,6 +74,7 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
 
   exports.allSubjectsOfteacher = asyncHandler(async (req, res) => {
     const teacherId = req.params.id;
+    console.log(teacherId);
     try {
         const findTeacher = await TeacherModel.findById(teacherId).populate("teachersSubjects");
         const teacherSubjects = findTeacher.teachersSubjects;

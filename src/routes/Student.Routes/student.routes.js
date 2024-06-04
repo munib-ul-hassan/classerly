@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 // ############################ Student Routes ########################
 
-const  {registerStudent,refreshAccessToken, getAllmysubjects}  = require("../../controllers/StudentControllers/student.controller.js");
+const  {registerStudent,refreshAccessToken, getAllmysubjects, getstudentdata}  = require("../../controllers/StudentControllers/student.controller.js");
 
 const router=Router();
 
@@ -14,6 +14,7 @@ router.route("/resfreshAcessToken").post(refreshAccessToken);
 
 // get requests
 router.route("/getall-mycourses/:id").post(getAllmysubjects);
+router.route("/get-student-data/:id").get(getstudentdata);
 
 
 //secured routes

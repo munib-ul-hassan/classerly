@@ -245,7 +245,7 @@ exports.resetPassword=asyncHandler(async(req,res)=>{
                 UserModel=StudentModel;
                 break;
                 case "parent":
-                    UserModel=parentModel;
+                    UserModel=ParentModel;
                     break;
                     case "teacher":
                     UserModel=TeacherModel;
@@ -284,3 +284,26 @@ exports.resetPassword=asyncHandler(async(req,res)=>{
     
  })
  
+ exports.updateuser=asyncHandler(async(req,res)=>{
+    try {
+        const role=req.userFound.role;
+    let UserModel;
+    switch(role){
+        case "student":
+        UserModel = StudentModel;
+        break;
+        case "parent":
+        UserModel=ParentModel;
+        break;
+        case "teacher":
+            UserModel=TeacherModel;
+            break;
+            default:
+            throw new ApiError(500,"user role not recognized")
+
+    }
+        
+    } catch (error) {
+        
+    }
+ })
