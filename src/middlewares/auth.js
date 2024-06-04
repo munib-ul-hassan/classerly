@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const tokengenerate = (user ) => {
   
-  return (token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET,));
+  return (token = jwt.sign({ user }, process.env.ACCESS_TOKEN_SECRET));
 };
 
 const verifytoken = (req, res, next) => {
@@ -14,15 +14,16 @@ const verifytoken = (req, res, next) => {
       return res.status(403).send("A token is required for authentication");
     }
     try {
+      
       token = token.split(" ")[1];
       
-    const decoded = jwt.verify(token, process.env.SECRET);
-    
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    console.log(decoded.user)
 
     req.user = decoded.user;
   } catch (err) {
     
-    return res.status(200).send({message:"Login first"});
+    return res.status(200).send({message:err.message});
   }
 
   return next();

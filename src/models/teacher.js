@@ -29,15 +29,15 @@ const teacherSchema = new Schema(
         },
       },
     ],
-    subjects: {
+    subjects: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "subject",
-    },
+    }],
   },
   {
     timestamps: true,
   }
 );
 
-const teacherModel = mongoose.model("teacher", teacherSchema);
+const teacherModel = mongoose.model("Teacher", teacherSchema);
 module.exports = teacherModel;

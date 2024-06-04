@@ -12,7 +12,7 @@ const studentSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref:"grade"
   },
-  stdId:{
+  code:{
     type:String,unique:true
   },
     parent: { type: mongoose.Schema.Types.ObjectId, ref: "parent" },
@@ -39,5 +39,5 @@ const studentSchema = new Schema(
   }
 );
 
-const studentModel = mongoose.model("student", studentSchema);
+const studentModel = mongoose.model("Student", studentSchema);
 module.exports = studentModel;

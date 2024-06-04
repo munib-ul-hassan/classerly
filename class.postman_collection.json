@@ -1,0 +1,1035 @@
+{
+	"info": {
+		"_postman_id": "600b3c51-298e-4cdc-9b09-03303a1777aa",
+		"name": "class",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27326114"
+	},
+	"item": [
+		{
+			"name": "grade",
+			"item": []
+		},
+		{
+			"name": "subjects",
+			"item": []
+		},
+		{
+			"name": "topics",
+			"item": []
+		},
+		{
+			"name": "lessons",
+			"item": []
+		},
+		{
+			"name": "register student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"fullName\":\"abc\",\r\n      \"userName\":\"test4\",\r\n      \"password\":\"123\",\r\n      \"email\":\"test4@yopmail.com\",\r\n      \"fullAddress\":\"abc\",\r\n      \"userType\":\"Student\"\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n    // parent _id of parent\r\n      \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/register",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "error",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"fullName\":\"abc\",\r\n      \"userName\":\"test2\",\r\n      \"password\":\"123\",\r\n      \"email\":\"test2@yopmail.com\",\r\n      \"fullAddress\":\"abc\",\r\n      \"userType\":\"Student\"\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n      \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/register",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"status": "Internal Server Error",
+					"code": 500,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "62"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3e-7yqeLtkJDE6VMqgt+Y0sVLuXFjE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 08:51:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": false,\n    \"message\": \"No duplicate username acceptable\"\n}"
+				},
+				{
+					"name": "success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"fullName\":\"abc\",\r\n      \"userName\":\"test4\",\r\n      \"password\":\"123\",\r\n      \"email\":\"test4@yopmail.com\",\r\n      \"fullAddress\":\"abc\",\r\n      \"userType\":\"Student\"\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n      \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/register",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "853"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"355-B0fnwq9sfxLA0V6LNgBo8Gn8xpc\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 08:55:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"fullName\": \"abc\",\n        \"userName\": \"test4\",\n        \"email\": \"test4@yopmail.com\",\n        \"password\": \"123\",\n        \"userType\": \"Student\",\n        \"fullAddress\": \"abc\",\n        \"_id\": \"665ed684bc42e71f4338f1ca\",\n        \"profile\": \"665ed684bc42e71f4338f1ca\",\n        \"createdAt\": \"2024-06-04T08:55:34.886Z\",\n        \"updatedAt\": \"2024-06-04T08:55:34.886Z\",\n        \"__v\": 0,\n        \"auth\": \"665ed684bc42e71f4338f1c9\",\n        \"stdId\": \"644729\"\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJ0ZXN0NCIsImVtYWlsIjoidGVzdDRAeW9wbWFpbC5jb20iLCJwYXNzd29yZCI6IjEyMyIsInVzZXJUeXBlIjoiU3R1ZGVudCIsImZ1bGxBZGRyZXNzIjoiYWJjIiwiX2lkIjoiNjY1ZWQ2ODRiYzQyZTcxZjQzMzhmMWM5IiwicHJvZmlsZSI6IjY2NWVkNjg0YmM0MmU3MWY0MzM4ZjFjYSIsImNyZWF0ZWRBdCI6IjIwMjQtMDYtMDRUMDg6NTU6MzQuODM0WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDYtMDRUMDg6NTU6MzQuODM0WiIsIl9fdiI6MH0sImlhdCI6MTcxNzQ5MTMzNH0.yVhfErWVkEBwXnNGc40e_cjLhoQt_86zwHCQCLbwqSE\"\n}"
+				}
+			]
+		},
+		{
+			"name": "register teacher",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"fullName\":\"abc\",\r\n      \"userName\":\"def\",\r\n      \"password\":\"123\",\r\n      \"email\":\"321@yopmail.com\",\r\n      \"fullAddress\":\"abc\",\r\n      \"userType\":\"Teacher\"\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n      \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/register",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "register teacher",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"fullName\":\"abc\",\r\n      \"userName\":\"def\",\r\n      \"password\":\"123\",\r\n      \"email\":\"321@yopmail.com\",\r\n      \"fullAddress\":\"abc\",\r\n      \"userType\":\"Teacher\"\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n      \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/register",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "841"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"349-SlJ4qhrGZOQQtlWGHqUQDabVeiw\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 08:53:22 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"fullName\": \"abc\",\n        \"userName\": \"def\",\n        \"email\": \"321@yopmail.com\",\n        \"password\": \"123\",\n        \"userType\": \"Teacher\",\n        \"fullAddress\": \"abc\",\n        \"_id\": \"665ed602bc42e71f4338f1bc\",\n        \"profile\": \"665ed602bc42e71f4338f1bc\",\n        \"createdAt\": \"2024-06-04T08:53:22.520Z\",\n        \"updatedAt\": \"2024-06-04T08:53:22.520Z\",\n        \"__v\": 0,\n        \"auth\": \"665ed602bc42e71f4338f1bb\",\n        \"feedback\": []\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJkZWYiLCJlbWFpbCI6IjMyMUB5b3BtYWlsLmNvbSIsInBhc3N3b3JkIjoiMTIzIiwidXNlclR5cGUiOiJUZWFjaGVyIiwiZnVsbEFkZHJlc3MiOiJhYmMiLCJfaWQiOiI2NjVlZDYwMmJjNDJlNzFmNDMzOGYxYmIiLCJwcm9maWxlIjoiNjY1ZWQ2MDJiYzQyZTcxZjQzMzhmMWJjIiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwODo1MzoyMi40NTdaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQwODo1MzoyMi40NTdaIiwiX192IjowfSwiaWF0IjoxNzE3NDkxMjAyfQ.pmOALlCqzIoVhkYOmkmub64uEnz6VLbsze3wMHtdyxM\"\n}"
+				}
+			]
+		},
+		{
+			"name": "register parent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"fullName\":\"abc\",\r\n      \"userName\":\"testing\",\r\n      \"password\":\"321321\",\r\n      \"email\":\"testing@yopmail.com\",\r\n      \"fullAddress\":\"abc\",\r\n      \"userType\":\"Parent\",\r\n      \"childIds\":[\"511593\"]\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n    //childIds stdId in array\r\n      \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/register",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "register parent",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n      \"fullName\":\"abc\",\r\n      \"userName\":\"testing\",\r\n      \"password\":\"321321\",\r\n      \"email\":\"testing@yopmail.com\",\r\n      \"fullAddress\":\"abc\",\r\n      \"userType\":\"Parent\",\r\n      \"childIds\":[\"511593\"]\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n    //childIds stdId in array\r\n      \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/register",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1033"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"409-Cok/+FtT1KaNobmQNNE5+IeXUX8\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 09:20:53 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"fullName\": \"abc\",\n        \"userName\": \"testing\",\n        \"email\": \"testing@yopmail.com\",\n        \"password\": \"$2b$10$rPMv3Fb4uvpP2MEJMcCG2OfJ4lnHUDLEDwW7Rlf81mG/HlCc6VVq6\",\n        \"userType\": \"Parent\",\n        \"fullAddress\": \"abc\",\n        \"_id\": \"665edc746c0cac0bc47c5c56\",\n        \"profile\": \"665edc746c0cac0bc47c5c56\",\n        \"createdAt\": \"2024-06-04T09:20:53.195Z\",\n        \"updatedAt\": \"2024-06-04T09:20:53.195Z\",\n        \"__v\": 0,\n        \"auth\": \"665edc746c0cac0bc47c5c54\",\n        \"childIds\": [\n            \"665e3899b82643a6cb4eed4c\"\n        ],\n        \"prtId\": \"940407\"\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJ0ZXN0aW5nIiwiZW1haWwiOiJ0ZXN0aW5nQHlvcG1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkclBNdjNGYjR1dnBQMk1FSk1jQ0cyT2ZKNGxuSFVETEVEd1c3UmxmODFtRy9IbENjNlZWcTYiLCJ1c2VyVHlwZSI6IlBhcmVudCIsImZ1bGxBZGRyZXNzIjoiYWJjIiwiX2lkIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwicHJvZmlsZSI6IjY2NWVkYzc0NmMwY2FjMGJjNDdjNWM1NiIsImNyZWF0ZWRBdCI6IjIwMjQtMDYtMDRUMDk6MjA6NTMuMDUxWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDYtMDRUMDk6MjA6NTMuMDUxWiIsIl9fdiI6MH0sImlhdCI6MTcxNzQ5Mjg1M30.nyxLU3Jd7t08b0T5I7SFLyExTBUvO4UJypZnkm2MBEc\"\n}"
+				}
+			]
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.json().data.token)\r",
+							"pm.environment.set(\"token\", \"Bearer \"+pm.response.json().data.token); \r",
+							"console.log(pm.environment.get(\"token\"))\r",
+							"pm.environment.set(\"abc\", \"Bearer \"+pm.response.json().data.token); \r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n     \"userName\":\"testing\",\r\n      \"password\":\"abcabc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/login",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "login",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"userName\":\"testing\",\r\n      \"password\":\"321321\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/login",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "1374"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"55e-mdrOsT/4fpQnH0KWuj3JfwFhJ3k\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 11:18:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"665edc746c0cac0bc47c5c54\",\n        \"fullName\": \"abc\",\n        \"userName\": \"testing\",\n        \"email\": \"testing@yopmail.com\",\n        \"password\": \"$2b$10$rPMv3Fb4uvpP2MEJMcCG2OfJ4lnHUDLEDwW7Rlf81mG/HlCc6VVq6\",\n        \"userType\": \"parent\",\n        \"fullAddress\": \"abc\",\n        \"profile\": {\n            \"_id\": \"665edc746c0cac0bc47c5c56\",\n            \"auth\": \"665edc746c0cac0bc47c5c54\",\n            \"childIds\": [\n                \"665e3899b82643a6cb4eed4c\"\n            ],\n            \"prtId\": \"940407\",\n            \"createdAt\": \"2024-06-04T09:20:53.195Z\",\n            \"updatedAt\": \"2024-06-04T09:20:53.195Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2024-06-04T09:20:53.051Z\",\n        \"updatedAt\": \"2024-06-04T09:20:53.051Z\",\n        \"__v\": 0,\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2NWVkYzc0NmMwY2FjMGJjNDdjNWM1NCIsImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJ0ZXN0aW5nIiwiZW1haWwiOiJ0ZXN0aW5nQHlvcG1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkclBNdjNGYjR1dnBQMk1FSk1jQ0cyT2ZKNGxuSFVETEVEd1c3UmxmODFtRy9IbENjNlZWcTYiLCJ1c2VyVHlwZSI6InBhcmVudCIsImZ1bGxBZGRyZXNzIjoiYWJjIiwicHJvZmlsZSI6eyJfaWQiOiI2NjVlZGM3NDZjMGNhYzBiYzQ3YzVjNTYiLCJhdXRoIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiY2hpbGRJZHMiOlsiNjY1ZTM4OTliODI2NDNhNmNiNGVlZDRjIl0sInBydElkIjoiOTQwNDA3IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4xOTVaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4xOTVaIiwiX192IjowfSwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwiX192IjowfSwiaWF0IjoxNzE3NDk5OTIzfQ.5QDBnTmgow4O6oxKe7oHrlKx7mnNqg4OW5x-9GWA8G8\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "forgot password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token\", pm.response.json().token); \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\":\"testing\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/forgotpassword",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"forgotpassword"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "forgot password",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\":\"testing\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/forgotpassword",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"forgotpassword"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "701"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2bd-38aecRTU6JgqWzU5N8pc1TfXxzE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 11:32:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Kindly check your email for password verification\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImF1dGgiOnsiX2lkIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiZnVsbE5hbWUiOiJhYmMiLCJ1c2VyTmFtZSI6InRlc3RpbmciLCJlbWFpbCI6InRlc3RpbmdAeW9wbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRyUE12M0ZiNHV2cFAyTUVKTWNDRzJPZko0bG5IVURMRUR3VzdSbGY4MW1HL0hsQ2M2VlZxNiIsInVzZXJUeXBlIjoicGFyZW50IiwiZnVsbEFkZHJlc3MiOiJhYmMiLCJwcm9maWxlIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU2IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwiX192IjowfSwidHlwZSI6ImZvcmdvdFBhc3N3b3JkIn0sImlhdCI6MTcxNzUwMDc2Nn0.GwDsTiO0sNICoFmper6x1gf8x083oY25AlCMJIMRPLo\"\n}"
+				}
+			]
+		},
+		{
+			"name": "verify user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token\", pm.response.json().token); \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"otp\":\"442447\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/verify",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"verify"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "verify user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"otp\":\"751337\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/verify",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"verify"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "692"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2b4-xPQya4kz6d2TA+pVHGRlnroJO4c\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 12:13:27 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"User Verify successfully\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImF1dGgiOnsiX2lkIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiZnVsbE5hbWUiOiJhYmMiLCJ1c2VyTmFtZSI6InRlc3RpbmciLCJlbWFpbCI6InRlc3RpbmdAeW9wbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRyUE12M0ZiNHV2cFAyTUVKTWNDRzJPZko0bG5IVURMRUR3VzdSbGY4MW1HL0hsQ2M2VlZxNiIsInVzZXJUeXBlIjoicGFyZW50IiwiZnVsbEFkZHJlc3MiOiJhYmMiLCJwcm9maWxlIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU2IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMjowOToxNC44MjNaIiwiX192IjowLCJvdHAiOiI3NTEzMzcifSwidHlwZSI6InZlcmlmeSB1c2VyIn0sImlhdCI6MTcxNzUwMzIwN30.H0VMhG_uJEom8YA5PrbRJB539qvjerswIky8VzR97UA\"\n}"
+				}
+			]
+		},
+		{
+			"name": "reset password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token\", \"Bearer \"+pm.response.json().token); \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImF1dGgiOnsiX2lkIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiZnVsbE5hbWUiOiJhYmMiLCJ1c2VyTmFtZSI6InRlc3RpbmciLCJlbWFpbCI6InRlc3RpbmdAeW9wbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRyUE12M0ZiNHV2cFAyTUVKTWNDRzJPZko0bG5IVURMRUR3VzdSbGY4MW1HL0hsQ2M2VlZxNiIsInVzZXJUeXBlIjoicGFyZW50IiwiZnVsbEFkZHJlc3MiOiJhYmMiLCJwcm9maWxlIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU2IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMjowOToxNC44MjNaIiwiX192IjowLCJvdHAiOiI3NTEzMzcifSwidHlwZSI6InZlcmlmeSB1c2VyIn0sImlhdCI6MTcxNzUwMzIwN30.H0VMhG_uJEom8YA5PrbRJB539qvjerswIky8VzR97UA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImF1dGgiOnsiX2lkIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiZnVsbE5hbWUiOiJhYmMiLCJ1c2VyTmFtZSI6InRlc3RpbmciLCJlbWFpbCI6InRlc3RpbmdAeW9wbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRyUE12M0ZiNHV2cFAyTUVKTWNDRzJPZko0bG5IVURMRUR3VzdSbGY4MW1HL0hsQ2M2VlZxNiIsInVzZXJUeXBlIjoicGFyZW50IiwiZnVsbEFkZHJlc3MiOiJhYmMiLCJwcm9maWxlIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU2IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMjowOToxNC44MjNaIiwiX192IjowLCJvdHAiOiI3NTEzMzcifSwidHlwZSI6InZlcmlmeSB1c2VyIn0sImlhdCI6MTcxNzUwMzIwN30.H0VMhG_uJEom8YA5PrbRJB539qvjerswIky8VzR97UA"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"password\":\"abcabc\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/restepassword",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"restepassword"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "reset",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImF1dGgiOnsiX2lkIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiZnVsbE5hbWUiOiJhYmMiLCJ1c2VyTmFtZSI6InRlc3RpbmciLCJlbWFpbCI6InRlc3RpbmdAeW9wbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRyUE12M0ZiNHV2cFAyTUVKTWNDRzJPZko0bG5IVURMRUR3VzdSbGY4MW1HL0hsQ2M2VlZxNiIsInVzZXJUeXBlIjoicGFyZW50IiwiZnVsbEFkZHJlc3MiOiJhYmMiLCJwcm9maWxlIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU2IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMjowOToxNC44MjNaIiwiX192IjowLCJvdHAiOiI3NTEzMzcifSwidHlwZSI6InZlcmlmeSB1c2VyIn0sImlhdCI6MTcxNzUwMzIwN30.H0VMhG_uJEom8YA5PrbRJB539qvjerswIky8VzR97UA"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\":\"123123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/auth/restepassword",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"restepassword"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "56"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"38-2Gib5CWmd6iCx7e709n4PLv/myk\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 12:16:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"message\": \"Password reset successfully\"\n}"
+				}
+			]
+		},
+		{
+			"name": "get profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"token\", \"Bearer \"+pm.response.json().token); \r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "B eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2NWVkYzc0NmMwY2FjMGJjNDdjNWM1NCIsImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJ0ZXN0aW5nIiwiZW1haWwiOiJ0ZXN0aW5nQHlvcG1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkcHVpdHlrTUR4UjBxT2MuVDV5NkFsT1J2Y3VzQ3dPZzhGYVg1ZjFaY3RFRUo0RGpFeTlFdDIiLCJ1c2VyVHlwZSI6IlBhcmVudCIsImZ1bGxBZGRyZXNzIjoiYWJjIiwicHJvZmlsZSI6eyJfaWQiOiI2NjVlZGM3NDZjMGNhYzBiYzQ3YzVjNTYiLCJhdXRoIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiY2hpbGRJZHMiOlsiNjY1ZTM4OTliODI2NDNhNmNiNGVlZDRjIl0sInBydElkIjoiOTQwNDA3IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4xOTVaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4xOTVaIiwiX192IjowfSwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMjoxOTozNC42NDBaIiwiX192IjowLCJvdHAiOm51bGx9LCJpYXQiOjE3MTc1MDQ3NDV9.Qhu79VQ-PEs_4qz20asn-SkA2VJhdMUw8LWO9tQnvfo"
+					}
+				],
+				"url": {
+					"raw": "{{1}}/auth/profile",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"profile"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "get profile",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "B eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2NWVkYzc0NmMwY2FjMGJjNDdjNWM1NCIsImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJ0ZXN0aW5nIiwiZW1haWwiOiJ0ZXN0aW5nQHlvcG1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkcHVpdHlrTUR4UjBxT2MuVDV5NkFsT1J2Y3VzQ3dPZzhGYVg1ZjFaY3RFRUo0RGpFeTlFdDIiLCJ1c2VyVHlwZSI6IlBhcmVudCIsImZ1bGxBZGRyZXNzIjoiYWJjIiwicHJvZmlsZSI6eyJfaWQiOiI2NjVlZGM3NDZjMGNhYzBiYzQ3YzVjNTYiLCJhdXRoIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiY2hpbGRJZHMiOlsiNjY1ZTM4OTliODI2NDNhNmNiNGVlZDRjIl0sInBydElkIjoiOTQwNDA3IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4xOTVaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4xOTVaIiwiX192IjowfSwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMjoxOTozNC42NDBaIiwiX192IjowLCJvdHAiOm51bGx9LCJpYXQiOjE3MTc1MDQ3NDV9.Qhu79VQ-PEs_4qz20asn-SkA2VJhdMUw8LWO9tQnvfo"
+							}
+						],
+						"url": {
+							"raw": "{{1}}/auth/profile",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"auth",
+								"profile"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Credentials",
+							"value": "true"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "485"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1e5-0JBuCAuqRQgqftm1z4xqgEJJiFI\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 04 Jun 2024 12:44:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"665edc746c0cac0bc47c5c54\",\n        \"fullName\": \"abc\",\n        \"userName\": \"testing\",\n        \"email\": \"testing@yopmail.com\",\n        \"userType\": \"Parent\",\n        \"fullAddress\": \"abc\",\n        \"profile\": {\n            \"_id\": \"665edc746c0cac0bc47c5c56\",\n            \"auth\": \"665edc746c0cac0bc47c5c54\",\n            \"childIds\": [\n                \"665e3899b82643a6cb4eed4c\"\n            ],\n            \"prtId\": \"940407\",\n            \"createdAt\": \"2024-06-04T09:20:53.195Z\",\n            \"updatedAt\": \"2024-06-04T09:20:53.195Z\",\n            \"__v\": 0\n        },\n        \"createdAt\": \"2024-06-04T09:20:53.051Z\",\n        \"updatedAt\": \"2024-06-04T12:19:34.640Z\",\n        \"__v\": 0,\n        \"otp\": null\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "update user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{1}}/auth/updateuser",
+					"host": [
+						"{{1}}"
+					],
+					"path": [
+						"auth",
+						"updateuser"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "1",
+			"value": "localhost:8080/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImF1dGgiOnsiX2lkIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU0IiwiZnVsbE5hbWUiOiJhYmMiLCJ1c2VyTmFtZSI6InRlc3RpbmciLCJlbWFpbCI6InRlc3RpbmdAeW9wbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRyUE12M0ZiNHV2cFAyTUVKTWNDRzJPZko0bG5IVURMRUR3VzdSbGY4MW1HL0hsQ2M2VlZxNiIsInVzZXJUeXBlIjoicGFyZW50IiwiZnVsbEFkZHJlc3MiOiJhYmMiLCJwcm9maWxlIjoiNjY1ZWRjNzQ2YzBjYWMwYmM0N2M1YzU2IiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0wNFQwOToyMDo1My4wNTFaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0wNFQxMTozMjo0Ni4zMDlaIiwiX192IjowLCJvdHAiOiI5MTkzNjkifSwidHlwZSI6ImZvcmdvdFBhc3N3b3JkIn0sImlhdCI6MTcxNzUwMjk1NH0.7aVGILG880NwabEUP5NIsbK3yF5NaB2JxlJCAf-01yQ",
+			"type": "string"
+		}
+	]
+}

@@ -10,17 +10,14 @@ const parentSchema = new Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref:"auth"
     },
-    grade:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref:"grade"
-  },
+   
     childIds:[
         {
             type: mongoose.Schema.Types.ObjectId,
         ref:"student"
         }
     ],
-    prtId:String
+    code:String
 
   },
   {
@@ -28,5 +25,5 @@ const parentSchema = new Schema(
   }
 );
 
-const parentModel = mongoose.model("parent", parentSchema);
+const parentModel = mongoose.model("Parent", parentSchema);
 module.exports = parentModel;
