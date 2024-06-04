@@ -1,4 +1,4 @@
-const EventModel = require("../../models/UpcommingEvents/Events");
+const EventModel = require("../../models/Events");
 const ApiResponse = require("../../utils/ApiResponse");
 const asyncHandler = require("../../utils/asyncHandler");
 

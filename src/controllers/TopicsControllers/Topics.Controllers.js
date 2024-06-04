@@ -1,10 +1,11 @@
-const subjectModel = require("../../models/CurriculumModel/subject");
-const topicModel = require("../../models/CurriculumModel/topic");
+
+const topicModel = require("../../models/topic");
 const gradeModel = require("../../models/Grade/grade.models");
 const LessonsModel = require("../../models/LessonsModel/LessonsModel");
-const { find, findById } = require("../../models/StudentModel/student");
+const { find, findById } = require("../../models/student");
 const ApiResponse = require("../../utils/ApiResponse");
 const asyncHandler = require("../../utils/asyncHandler");
+const subjectModel = require("../../models/subject");
 
 
 

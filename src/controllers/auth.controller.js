@@ -8,6 +8,8 @@ const sendEmail = require("../utils/sendemail");
 const { tokengenerate } = require("../middlewares/auth");
 const { default: mongoose } = require("mongoose");
 const bcrypt = require("bcrypt");
+const adminModel = require("../models/admin");
+const gradeModel = require("../models/grade.models");
 
 exports.register = asyncHandler(async (req, res) => {
   const session = await mongoose.startSession();
@@ -24,7 +26,6 @@ exports.register = asyncHandler(async (req, res) => {
       parent,
       childIds
     } = req.body;
-
     if (
       [fullName, userName, password, email, fullAddress, userType].some(
         (field) => !field || field.trim() === ""
@@ -42,7 +43,13 @@ exports.register = asyncHandler(async (req, res) => {
       fullAddress,
       userType
     });
-
+    let gradeData;
+    if (grade) {
+      gradeData = await gradeModel.findOne({ _id: grade });
+      if (!gradeData) {
+        throw Error("Invalid grade selected");
+      }
+    }
     let profile;
     if (userType == "Student") {
       if (parent) {
@@ -59,37 +66,45 @@ exports.register = asyncHandler(async (req, res) => {
         });
         prt.childIds.push(profile._id);
         await prt.save();
+        if (gradeData) {
+          gradeData.students.push(profile._id);
+          await gradeData.save();
+        }
       } else {
         profile = new StudentModel({
           auth: auth._id,
           code: generateSixDigitCode(),
           grade
         });
+        if (gradeData) {
+          gradeData.students.push(profile._id);
+          await gradeData.save();
+        }
       }
       const emailsubject = "Student Registration";
 
       const message = `You are registered successfully. Your student ID is ${profile.code}.`;
       const requestType = "Your request for student registration is done";
-      console.log(message);
+
       await sendEmail(emailsubject, email, message, requestType);
     } else if (userType == "Teacher") {
       profile = new TeacherModel({ auth: auth._id, grade });
+      if (gradeData) {
+        gradeData.teachers.push(profile._id);
+        await gradeData.save();
+      }
     } else if (userType == "Parent") {
       if (childIds) {
         const std =
           (await StudentModel.find({ code: { $in: childIds } }, { _id: 1 })) ??
           [];
-        console.log(
-          std.map((i) => {
-            return i._id;
-          })
-        );
+
         if (std.length != childIds.length) {
           throw Error("Some or all of Student Ids are invalid");
         }
         profile = new ParentModel({
           auth: auth._id,
-          
+
           childIds: std.map((i) => {
             return i._id;
           }),
@@ -102,11 +117,19 @@ exports.register = asyncHandler(async (req, res) => {
       } else {
         profile = new ParentModel({
           auth: auth._id,
-          
 
           code: generateSixDigitCode()
         });
       }
+    } else if (userType == "Admin") {
+      const admins = await adminModel.find({});
+      if (admins.length > 0) {
+        throw Error("Admin already registered");
+      }
+      profile = new adminModel({
+        auth: auth._id,
+        code: generateSixDigitCode()
+      });
     } else {
       throw Error("UserType must be Student, Teacher or Parent");
     }
@@ -129,6 +152,7 @@ exports.register = asyncHandler(async (req, res) => {
     await session.abortTransaction();
 
     if (e.code == 11000) {
+      console.log(e.message)
       return res
         .status(500)
         .json({ success: false, message: "No duplicate username acceptable" });
@@ -173,14 +197,14 @@ exports.forgotpassword = asyncHandler(async (req, res) => {
 
     const message = `Hi ${auth.userName} We received a request to reset your password for your account. Your authentication code is ${otp}.`;
     const requestType = "Your request for forgot password is done";
-    console.log(message);
+
     await sendEmail(emailsubject, auth.email, message, requestType);
     await authModel.findOneAndUpdate({ _id: auth._id }, { otp });
 
     return res.json({
       success: true,
       message: "Kindly check your email for password verification",
-      token: tokengenerate({ auth:auth, type: "forgotPassword" })
+      token: tokengenerate({ auth: auth, type: "forgotPassword" })
     });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
@@ -188,8 +212,6 @@ exports.forgotpassword = asyncHandler(async (req, res) => {
 });
 exports.verifyuser = asyncHandler(async (req, res) => {
   try {
-    console.log(req.user)
-
     if (req.user.type != "forgotPassword") {
       throw Error("invalid token");
     }
@@ -212,7 +234,6 @@ exports.verifyuser = asyncHandler(async (req, res) => {
 });
 exports.resetpassword = asyncHandler(async (req, res) => {
   try {
-    console.log(req.user)
     if (req.user.type != "verify user") {
       throw Error("invalid token");
     }
@@ -228,7 +249,7 @@ exports.resetpassword = asyncHandler(async (req, res) => {
     return res.json({
       success: true,
       message: "Password reset successfully",
-      // token: tokengenerate({ auth })
+      token: tokengenerate(auth)
     });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
@@ -236,7 +257,7 @@ exports.resetpassword = asyncHandler(async (req, res) => {
 });
 exports.updateuser = asyncHandler(async (req, res) => {
   try {
-    
+    const {} = req.body;
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
   }
@@ -244,23 +265,34 @@ exports.updateuser = asyncHandler(async (req, res) => {
 exports.getmyprofile = asyncHandler(async (req, res) => {
   try {
     let data;
-    console.log(req.user)
-    if(req.user.userType=="Student"){
-      data = await authModel.findOne({_id:req.user._id},{password:0}).populate(["profile","profile.parent","profile.grade"])
+
+    if (req.user.userType == "Student") {
+      data = await authModel
+        .findOne({ _id: req.user._id }, { password: 0 })
+        .populate(["profile", "profile.parent", "profile.grade"]);
       // return res.json(data)
-
     }
-    if(req.user.userType=="Teacher"){
-      data = await authModel.findOne({_id:req.user._id},{password:0}).populate(["profile","profile.grade","profile.subjects","profile.feedback"])
+    if (req.user.userType == "Teacher") {
+      data = await authModel
+        .findOne({ _id: req.user._id }, { password: 0 })
+        .populate([
+          "profile",
+          "profile.grade",
+          "profile.subjects",
+          "profile.feedback"
+        ]);
       // return res.json(data)
-
     }
-    if(req.user.userType=="Parent"){
-      data = await authModel.findOne({_id:req.user._id},{password:0}).populate(["profile","profile.childIds"])
+    if (req.user.userType == "Parent") {
+      data = await authModel
+        .findOne({ _id: req.user._id }, { password: 0 })
+        .populate(["profile", "profile.childIds"]);
     }
-    return res.json({success:true,data,token:tokengenerate(data)})
 
-
+    return res.json({
+      success: true,
+      data: { ...data._doc, token: tokengenerate(data) }
+    });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
   }

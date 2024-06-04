@@ -1,7 +1,7 @@
 
 const { json } = require('express');
-const ParentModel = require('../../models/Parentmodel/parentmodel');
-const StudentModel = require('../../models/StudentModel/student');
+const ParentModel = require('../../models/parent');
+const StudentModel = require('../../models/student');
 const ApiResponse = require('../../utils/ApiResponse');
 const asyncHandler = require('../../utils/asyncHandler');
 const sendEmail = require('../../utils/sendemail');

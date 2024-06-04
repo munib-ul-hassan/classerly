@@ -1,11 +1,11 @@
-const StudentModel = require('../models/StudentModel/student.js');
+const StudentModel = require('../models/student.js');
 const ApiError = require('../utils/Apierror');
  const jwt=require('jsonwebtoken');
 const asyncHandler=require('../utils/asyncHandler.js');
-// const ParentModel = require("../../models/ParentModel/parentmodel.js");
+// const ParentModel = require("../../models/parentmodel.js");
 
-const TeacherModel = require('../models/TeacherModel/teachermodel.js');
-const ParentModel = require('../models/Parentmodel/parentmodel.js');
+const TeacherModel = require('../models/teacher.js');
+const ParentModel = require('../models/parent.js');
 
 const verfiyJWT= asyncHandler(async(req,_,next)=>{
    try {

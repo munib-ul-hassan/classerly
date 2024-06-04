@@ -1,12 +1,12 @@
-const StudentModel = require('../../models/StudentModel/student.js');
+const StudentModel = require('../../models/student.js');
 const ApiError = require('../../utils/Apierror.js');
 const  asyncHandler = require ('../../utils/asyncHandler.js');
 const ApiResponse=require('../../utils/ApiResponse.js')
 const jwt=require('jsonwebtoken');
 const sendEmail = require('../../utils/sendemail.js');
-const gradeModel = require('../../models/Grade/grade.models.js');
-const subjectModel = require('../../models/CurriculumModel/subject.js');
-const TeacherModel = require('../../models/TeacherModel/teachermodel.js');
+const gradeModel = require('../../models/grade.models.js');
+const subjectModel = require('../../models/subject.js');
+
 const { default: mongoose } = require('mongoose');
 
 

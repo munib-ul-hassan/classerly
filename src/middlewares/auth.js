@@ -39,10 +39,10 @@ const verifyadmintoken = (req, res, next) => {
   }
   try {
     token = token.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.TOKEN_KEY);
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    if (decoded.user.usertype != 1) {
-      res.status(200).send({ message: "Only admin have credentials" });
+    if (decoded.user.userType != "Admin") {
+      return res.status(200).send({ message: "Only admin have credentials" });
     }
     req.user = decoded;
   } catch (err) {

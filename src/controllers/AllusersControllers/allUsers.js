@@ -1,8 +1,8 @@
 
-// const ParentModel = require("../../models/ParentModel/parentmodel");
-const ParentModel = require("../../models/Parentmodel/parentmodel");
-const StudentModel = require("../../models/StudentModel/student");
-const TeacherModel = require("../../models/TeacherModel/teachermodel");
+// const ParentModel = require("../../models/parentmodel");
+const ParentModel = require("../../models/parent");
+const StudentModel = require("../../models/student");
+const TeacherModel = require("../../models/teacher");
 const ApiResponse = require("../../utils/ApiResponse");
 const ApiError = require("../../utils/Apierror");
 const asyncHandler = require("../../utils/asyncHandler");

@@ -1,6 +1,6 @@
-const subjectModel = require("../../models/CurriculumModel/subject");
-const topicModel = require("../../models/CurriculumModel/topic");
-const LessonsModel = require("../../models/LessonsModel/LessonsModel");
+const subjectModel = require("../../models/subject");
+const topicModel = require("../../models/topic");
+const LessonsModel = require("../../models/LessonsModel");
 
 
 const ApiResponse = require("../../utils/ApiResponse");
