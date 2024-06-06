@@ -1,7 +1,7 @@
 
 const topicModel = require("../models/topic");
-const gradeModel = require("../models/Grade/grade.models");
-const LessonsModel = require("../models/LessonsModel/LessonsModel");
+const gradeModel = require("../models/grade.models");
+const LessonsModel = require("../models/LessonsModel");
 const { find, findById } = require("../models/student");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
@@ -9,7 +9,7 @@ const subjectModel = require("../models/subject");
 
 
 
-exports.AddTopics = asyncHandler(async (req, res) => {
+exports.AddTopic = asyncHandler(async (req, res) => {
     const { topicname, lessonHours, practiceHours, difficulty, quizzes, status } = req.body;
     const subjectId = req.params.id;
     try {
@@ -67,7 +67,30 @@ exports.getAllLessonsOfTopics = asyncHandler(async (req, res) => {
         res.status(500).json({ mesage: "error.message" || "somthing went wrong" })
     }
 })
-exports.deleteTopics = asyncHandler(async (req, res) => {
+exports.updatetopic= asyncHandler(async (req,res)=>{
+    try{
+
+    }catch (error) {
+        res.status(500).json({ mesage: "error.message" || "somthing went wrong" })
+    }
+})
+exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
+    const topicId = req.params.id;
+    try {
+        const findTopicLesson = await topicModel.findById({ _id: topicId }).populate("topicLessons");
+        if (!findTopicLesson) {
+            throw new Error("Topic not found")
+        }
+        const Lessons = findTopicLesson.topicLessons;
+        res.status(200).json(
+            new ApiResponse(200, Lessons, "lesson found sucessfully")
+        )
+    } catch (error) {
+        res.status(500).json({ mesage: "error.message" || "somthing went wrong" })
+    }
+})
+
+exports.deletetopic = asyncHandler(async (req, res) => {
     const topicId = req.params.id;
 
     try {

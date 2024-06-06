@@ -27,15 +27,19 @@ const adminRoutes=require('./routes/adminroutes')
 const gradeRoutes=require('./routes/grade.routes')
 const authRoutes = require("./routes/auth.routes")
 const uploadRoutes=require("./routes/upload.routes")
+const topicRoutes = require("./routes/topic.routes")
 //declare
 app.use('/api/v1/auth',authRoutes)
 app.use('/api/v1',uploadRoutes)
 app.use('/api/v1/grade',gradeRoutes)
 app.use('/api/v1/subject',subjectRoutes);
+app.use('/api/v1/topic',topicRoutes);
+
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     maxAge: 3600000 // Set cache expiry for 1 hour (optional)
   }));
+  
 app.use('/api/v1/student',studentRoutes)
 app.use('/api/v1/user',userRoutes)
 // app.use('/api/v1/curriculum',curriculumRoutes);

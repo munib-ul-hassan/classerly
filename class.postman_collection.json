@@ -519,7 +519,82 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "delete subject",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/subject/665f3da03f048fba879d1b14",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"subject",
+										"665f3da03f048fba879d1b14"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "56"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"38-9PKXceLmtM61McqOnnbhijMVckA\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 06 Jun 2024 21:40:45 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"subject delete successfully\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -530,7 +605,21 @@
 					"name": "add topic",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admintoken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"nature of life\",\r\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\r\n    \"difficulty\": \"medium\"\r\n    \r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{1}}/topic",
 							"host": [

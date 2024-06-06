@@ -10,6 +10,7 @@ const TopicSchema = new Schema(
       ref: "subject",
     },
     difficulty: {
+      enum:["easy","medium","hard"],
       type: String,
     },
     lessonHours: {
