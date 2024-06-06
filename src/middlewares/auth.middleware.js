@@ -2,7 +2,7 @@ const StudentModel = require('../models/student.js');
 const ApiError = require('../utils/Apierror');
  const jwt=require('jsonwebtoken');
 const asyncHandler=require('../utils/asyncHandler.js');
-// const ParentModel = require("../../models/parentmodel.js");
+// const ParentModel = require("../models/parentmodel.js");
 
 const TeacherModel = require('../models/teacher.js');
 const ParentModel = require('../models/parent.js');

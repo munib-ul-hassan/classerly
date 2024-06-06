@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "600b3c51-298e-4cdc-9b09-03303a1777aa",
+		"_postman_id": "8792d626-7891-43c9-84fc-c2f456ef8eac",
 		"name": "class",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "27326114"
+		"_exporter_id": "31967345"
 	},
 	"item": [
 		{
@@ -208,7 +208,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"grade\":\"665f35d154d51693a06b372f\",\r\n    \"name\":\"Biology\"\r\n}",
+							"raw": "{\r\n    \"grade\":\"665f35d154d51693a06b372f\",\r\n    \"name\":\"Math\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -381,16 +381,225 @@
 							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"_id\": \"665f3da03f048fba879d1b14\",\n            \"name\": \"biology\",\n            \"topics\": [],\n            \"grade\": {\n                \"_id\": \"665f35d154d51693a06b372f\",\n                \"grade\": \"1\",\n                \"students\": [\n                    \"665f3922868b44aa5f084609\"\n                ],\n                \"teachers\": [],\n                \"subjects\": [\n                    \"665f3da03f048fba879d1b14\"\n                ],\n                \"createdAt\": \"2024-06-04T15:42:09.021Z\",\n                \"updatedAt\": \"2024-06-04T16:15:28.925Z\",\n                \"__v\": 6\n            },\n            \"createdAt\": \"2024-06-04T16:15:28.867Z\",\n            \"updatedAt\": \"2024-06-04T16:15:28.867Z\",\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"All subjects of grade find successfully\"\n}"
 						}
 					]
+				},
+				{
+					"name": "update subject",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admintoken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Biology1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/subject/665f3da03f048fba879d1b14",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"subject",
+								"665f3da03f048fba879d1b14"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update subject",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Biology1\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/subject/665f3da03f048fba879d1b14",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"subject",
+										"665f3da03f048fba879d1b14"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "250"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fa-fMa1lIBOjbQkkTkbu4y7/shR5Gg\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 05 Jun 2024 20:05:08 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"665f3da03f048fba879d1b14\",\n        \"name\": \"biology1\",\n        \"topics\": [],\n        \"grade\": \"665f35d154d51693a06b372f\",\n        \"createdAt\": \"2024-06-04T16:15:28.867Z\",\n        \"updatedAt\": \"2024-06-04T16:15:28.867Z\",\n        \"__v\": 0\n    },\n    \"message\": \"subject updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "delete subject",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admintoken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/subject/665f3da03f048fba879d1b14",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"subject",
+								"665f3da03f048fba879d1b14"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
 			"name": "topics",
-			"item": []
+			"item": [
+				{
+					"name": "add topic",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{1}}/topic",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get topic",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{1}}/topic",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"topic"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "lessons",
-			"item": []
+			"item": [
+				{
+					"name": "add lessons",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{1}}/lesson",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"lesson"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get lessons",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{1}}/lesson",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"lesson"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "register student",

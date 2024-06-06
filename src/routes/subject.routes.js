@@ -1,10 +1,11 @@
 
 
 const { Router } = require('express');
-// const { addsubjects, addTopic, allsubjects, alltopicsofsubject, allLessonsoftopics} = require('../../controllers/CurriculumControllers/curriculum');
+// const { addsubjects, addTopic, allsubjects, alltopicsofsubject, allLessonsoftopics} = require('../controllers/CurriculumControllers/curriculum');
 // const { AddTopics, getAllLessonsOfTopics, getcontentOfLesson } = require('./TopicsControllers/Topics.Controllers');
-const { AddSubject, getAlltopicsofsubject ,getAllsubjectsbygrade} = require('../controllers/SubjectController/SubjectController');
-const { AddLessons } = require('../controllers/LessonControollers/LesssonControllers');
+const { AddSubject, getAlltopicsofsubject ,getAllsubjectsbygrade, deleteSubject,updateSubject} = require('../controllers/SubjectController');
+const { AddLessons } = require('../controllers/LesssonControllers');
+const { verifyadmintoken } = require('../middlewares/auth');
 
 
 
@@ -13,8 +14,12 @@ const router=Router();
 
 
 
-router.route('/').post(AddSubject);
+router.route('/').post(verifyadmintoken,AddSubject);
 router.route('/grade/:id').get(getAllsubjectsbygrade);
+
+router.route('/:id').delete(verifyadmintoken,deleteSubject);
+router.route('/:id').put(verifyadmintoken,updateSubject);
+
 
 
 

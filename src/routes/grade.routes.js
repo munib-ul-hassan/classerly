@@ -1,5 +1,5 @@
 const {Router}=require('express');
-const {addGrade,deleteGrade,updateGrade,getAllGrades,getAllSubjectsOfGrade } = require('../controllers/GradeControllers/GradeController');
+const {addGrade,deleteGrade,updateGrade,getAllGrades,getAllSubjectsOfGrade } = require('../controllers/GradeController');
 const { verifyadmintoken } = require('../middlewares/auth');
 
 const router=Router();

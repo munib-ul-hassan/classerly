@@ -17,12 +17,12 @@ app.use(cors({
 
 //routes
 
-const studentRoutes=require("./routes/Student.Routes/student.routes")
-const userRoutes =require("./routes/AllusersRoutes/users.routes")
+const studentRoutes=require("./routes/student.routes")
+const userRoutes =require("./routes/users.routes")
 const subjectRoutes=require("./routes/subject.routes")
-const parentRoutes=require("./routes/ParentRoutes/parent.routes")
-const teacherRoutes= require('./routes/TeacherRoutes/teacher.routes')
-const adminRoutes=require('./routes/AdminRoutes/adminroutes')
+const parentRoutes=require("./routes/parent.routes")
+const teacherRoutes= require('./routes/teacher.routes')
+const adminRoutes=require('./routes/adminroutes')
 
 const gradeRoutes=require('./routes/grade.routes')
 const authRoutes = require("./routes/auth.routes")
