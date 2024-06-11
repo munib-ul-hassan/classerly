@@ -1,4 +1,3 @@
-
 const topicModel = require("../models/topic");
 const gradeModel = require("../models/grade.models");
 const LessonsModel = require("../models/LessonsModel");
@@ -7,127 +6,228 @@ const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const subjectModel = require("../models/subject");
 
-
-
 exports.AddTopic = asyncHandler(async (req, res) => {
-    const { topicname, lessonHours, practiceHours, difficulty, quizzes, status } = req.body;
-    const subjectId = req.params.id;
-    try {
-        const findSubject = await subjectModel.findById(subjectId).populate('subjectTopics');
-        if (!findSubject) {
-            throw new Error("Subject not found");
-        }
+  const { name, image, subject, difficulty } = req.body;
 
-        const topicIds = findSubject.subjectTopics;
-        const topicData = [];
-        for (const topicId of topicIds) {
-            const topic = await topicModel.findById(topicId);
-            if (topic) {
-                topicData.push(topic);
-            }
-        }
-
-        const topicNames = topicData.map(topic => topic.topicname.toLowerCase());
-        if (topicNames.includes(topicname.toLowerCase())) {
-            throw new Error("Topic with this name already exists in this subject");
-        }
-
-        const newTopic = await new topicModel({
-            topicname: topicname.toLowerCase(),
-            subjectId,
-            lessonHours,
-            quizzes,
-            status,
-            practiceHours,
-            difficulty,
-            subjectName:findSubject.subjectname
-        }).save();
-
-        findSubject.subjectTopics.push(newTopic._id);
-        await findSubject.save();
-
-        res.status(200).json({ Topics: newTopic });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
+  try {
+    const findSubject = await subjectModel.findById(subject).populate("topics");
+    if (!findSubject) {
+      throw new Error("Subject not found");
     }
+    const findTopic = await topicModel.findOne({ name, subject });
+    if (findTopic) {
+      throw new Error("Topic with this name already exists in this subject");
+    }
+    if (!["Beginner", "Medium", "Advanced"].includes(difficulty)) {
+      throw new Error(
+        "difficulty is not valid. it only be Beginner,Medium or Advanced "
+      );
+    }
+    const newTopic = await new topicModel({
+      name: name.toLowerCase(),
+      image,
+      subject,
+      difficulty,
+    }).save();
+
+    findSubject.topics.push(newTopic._id);
+    await findSubject.save();
+
+    res.status(200).json(newTopic);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+exports.updatetopic = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let data = await topicModel.findById(id);
+    if (!data) {
+      throw Error("invalid id");
+    } else {
+      if (
+        req.body.difficulty &&
+        !["Beginner", "Medium", "Advanced"].includes(req.body.difficulty)
+      ) {
+        throw new Error(
+          "difficulty is not valid. it only be Beginner,Medium or Advanced "
+        );
+      }
+      if (req.body.name) {
+        req.body.name = req.body.name.toLowerCase();
+        const findTopic = await topicModel.findOne({ name: req.body.name });
+        if (findTopic) {
+          throw new Error(
+            "Topic with this name already exists in this subject"
+          );
+        }
+      }
+      const { name, image, difficulty } = req.body;
+      req.body = { name, image, difficulty };
+      for (let prop in req.body) {
+        if (req.body[prop] === null || req.body[prop] === undefined) {
+          delete req.body[prop];
+        }
+      }
+      const updated = await topicModel.findOneAndUpdate({ _id: id }, req.body, {
+        new: true,
+      });
+
+      return res.json({
+        success: true,
+        data: updated,
+        message: "topic updated successfully",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ mesage: error.message });
+  }
+});
+
+exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
+  const { subject } = req.query;
+  try {
+    const findTopicLesson = await topicModel.find({ subject });
+
+    if (!findTopicLesson) {
+      throw new Error("Topics not found");
+    }
+
+    res
+      .status(200)
+      .json(new ApiResponse(200, findTopicLesson, "lesson found sucessfully"));
+  } catch (error) {
+    res.status(500).json({ mesage: "error.message" || "somthing went wrong" });
+  }
+});
+
+exports.deletetopic = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    let data = await topicModel.findById(id);
+    if (!data) {
+      throw Error("invalid id");
+    }
+
+    const findsubject = await subjectModel.findById(data.subject);
+    findsubject.topics.pop(id);
+    await findsubject.save();
+    await topicModel.findOneAndDelete({ _id: id });
+    return res.json({
+      success: true,
+      message: "topic deleted successfully",
+    });
+  } catch (error) {
+    const errorMessage = error.message || "something went wrong";
+    return res
+      .status(error.status || 500)
+      .json(new ApiResponse(error.status || 500, errorMessage));
+  }
+});
+
+exports.addlesson = asyncHandler(async (req, res) => {
+  try {
+    const { name, pages, content, image, lang, topic } = req.body;
+    let words = content.length;
+    const findtopic = await topicModel.findById(topic);
+    if (!findtopic) {
+      throw Error("Invalid topic Entered");
+    }
+    const data = await new LessonsModel({
+      name,
+      pages,
+      content,
+      image,
+      lang,
+      topic,
+      words,
+    }).save();
+    findtopic.lessons.push(data._id);
+    await findtopic.save();
+
+    return res.json({
+      success: true,
+      data,
+      message: "Lesson added successfully",
+    });
+  } catch (error) {
+    const errorMessage = error.message || "Something went wrong";
+    return res.status(500).json(new ApiResponse(500, errorMessage));
+  }
+});
+
+exports.updatelesson = asyncHandler(async (req, res) => {
+  try {
+    const findLesson = await LessonsModel.findById(req.params.id);
+    if (!findLesson) {
+      return res.status(404).json(new ApiResponse(404, "Lesson not found"));
+    }
+
+    const { name, pages, content, image, lang, topic } = req.body;
+
+    req.body = { name, pages, content, image, lang, topic };
+    for (let prop in req.body) {
+      if (req.body[prop] === null || req.body[prop] === undefined) {
+        delete req.body[prop];
+      }
+    }
+    if (req.body.content.length > 0) {
+      req.body.words = req.body.content.length;
+    }
+    const update = await LessonsModel.findOneAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      req.body,
+      { new: true }
+    );
+    return res.json({
+        success: true,
+        data: update,
+        message: "Lesson updated successfully",
+      });
+  } catch (error) {
+    const errorMessage = error.message || "Something went wrong";
+    return res.status(500).json(new ApiResponse(500, errorMessage));
+  }
+});
+exports.getcontentOfLesson = asyncHandler(async (req, res) => {
+  const LessonId = req.params.id;
+
+  try {
+    const findLesson = await LessonsModel.findById(LessonId);
+
+    if (!findLesson) {
+      return res.status(404).json(new ApiResponse(404, "Lesson not found"));
+    }
+
+    return res.status(200).json({
+      message: "Content Found",
+      data: findLesson,
+    });
+  } catch (error) {
+    const errorMessage = error.message || "Something went wrong";
+    return res.status(500).json(new ApiResponse(500, errorMessage));
+  }
 });
 
 exports.getAllLessonsOfTopics = asyncHandler(async (req, res) => {
-    const topicId = req.params.id;
-    try {
-        const findTopicLesson = await topicModel.findById({ _id: topicId }).populate("topicLessons");
-        if (!findTopicLesson) {
-            throw new Error("Topic not found")
-        }
-        const Lessons = findTopicLesson.topicLessons;
-        res.status(200).json(
-            new ApiResponse(200, Lessons, "lesson found sucessfully")
-        )
-    } catch (error) {
-        res.status(500).json({ mesage: "error.message" || "somthing went wrong" })
+  const topicId = req.params.id;
+  try {
+    const findTopicLesson = await topicModel
+      .findById(topicId)
+      .populate({ path: "lessons", select: "_id name image" });
+    if (!findTopicLesson) {
+      throw new Error("Topic not found");
     }
-})
-exports.updatetopic= asyncHandler(async (req,res)=>{
-    try{
-
-    }catch (error) {
-        res.status(500).json({ mesage: "error.message" || "somthing went wrong" })
-    }
-})
-exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
-    const topicId = req.params.id;
-    try {
-        const findTopicLesson = await topicModel.findById({ _id: topicId }).populate("topicLessons");
-        if (!findTopicLesson) {
-            throw new Error("Topic not found")
-        }
-        const Lessons = findTopicLesson.topicLessons;
-        res.status(200).json(
-            new ApiResponse(200, Lessons, "lesson found sucessfully")
-        )
-    } catch (error) {
-        res.status(500).json({ mesage: "error.message" || "somthing went wrong" })
-    }
-})
-
-exports.deletetopic = asyncHandler(async (req, res) => {
-    const topicId = req.params.id;
-
-    try {
-        const findtopic = await topicModel.findById(topicId);
-        if (!findtopic) {
-            throw new Error("Topic not exist with this name");
-        }
-
-        const findsubject = await subjectModel.findById(findtopic.subjectId);
-        console.log(findsubject);
-
-    } catch (error) {
-        const errorMessage = error.message || "something went wrong"
-        return res.status(error.status || 500).json(new ApiResponse(error.status || 500, errorMessage))
-    }
-})
-
-exports.getcontentOfLesson = asyncHandler(async (req, res) => {
-    const LessonId = req.params.id;
-    console.log('LessonId:', LessonId);
-
-
-    try {
-       
-        const findLesson = await LessonsModel.findById({_id:LessonId});
-        console.log('findLesson:', findLesson);
-
-        if (!findLesson) {
-            return res.status(404).json(new ApiResponse(404, 'Lesson not found'));
-        }
-
-        res.status(200).json({
-            message: 'Content Found',
-            data: findLesson.lessonContent
-        });
-    } catch (error) {
-        const errorMessage = error.message || 'Something went wrong';
-        return res.status(500).json(new ApiResponse(500, errorMessage));
-    }
+    const Lessons = findTopicLesson.lessons;
+    return res
+      .status(200)
+      .json(new ApiResponse(200, Lessons, "lesson found sucessfully"));
+  } catch (error) {
+    res.status(500).json({ mesage: "error.message" || "somthing went wrong" });
+  }
 });

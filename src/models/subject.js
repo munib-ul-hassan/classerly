@@ -4,7 +4,9 @@ const {Schema}=require('mongoose');
 
 // ######################## Subject Schema #####################
 const subjectSchema=new Schema({
-    name:String,
+    name:{type:String,unique:true},
+    image:String,
+
     topics : [
   
         {

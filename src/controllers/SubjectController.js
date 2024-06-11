@@ -4,9 +4,9 @@ const { findOne } = require("../models/student");
 const ApiResponse = require("../utils/ApiResponse");
 const ApiError = require("../utils/Apierror");
 const asyncHandler = require("../utils/asyncHandler");
-
+const fs = require("fs")
 exports.AddSubject = asyncHandler(async (req, res) => {
-  const { name, grade } = req.body;
+  const { name, grade,image } = req.body;
 
   try {
     const gradedata = await gradeModel.findById(grade);
@@ -14,14 +14,15 @@ exports.AddSubject = asyncHandler(async (req, res) => {
     if (!gradedata) {
       throw new Error("Grade not found");
     }
-
     const newSubject = await new subjectModel({
       name: name.toLowerCase(),
-      grade
+      grade,image
     }).save();
+    
     gradedata.subjects.push(newSubject._id);
     await gradedata.save();
-    res.status(200).json({
+    
+    return res.status(200).json({
       success: true,
       message: "Subject created",
       data: newSubject
@@ -53,11 +54,11 @@ exports.deleteSubject= async (req, res) => {
   try {
     
     const { id } = req.params;
-    console.log(id,"=======")
+    
     
     let data = await subjectModel.findById(id)
 
-    console.log(data)
+    
     if (!data) {
       return res.json({
         success: false,
@@ -69,12 +70,15 @@ exports.deleteSubject= async (req, res) => {
       grade.subjects.pop(id)
       await grade.save()
       await subjectModel.deleteOne({_id:id})
+      fs.unlink(`./src/uploads/${data.image}`,(e)=>{})
       return res.json({ success: true, message: "subject delete successfully" });
     }
   } catch (e) {
     console.log(e)
     return res.status(500).json({ success: false, message: e.message });
   }};
+  
+
 exports.updateSubject= asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;

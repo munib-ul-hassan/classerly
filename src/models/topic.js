@@ -4,13 +4,15 @@ const { Schema } = require("mongoose");
 // ######################## Topic Schema #####################
 const TopicSchema = new Schema(
   {
-    name: String,
+    name:{type:String,unique:true},
+    image:String,
+
     subject: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "subject",
     },
     difficulty: {
-      enum:["easy","medium","hard"],
+      enum:["Beginner","Medium","Advanced"],
       type: String,
     },
     lessonHours: {
@@ -19,19 +21,26 @@ const TopicSchema = new Schema(
     practiceHours: {
       type: String,
     },
-    quizzes: {
-      type: String,
-    },
-    status: {
-      type: String,
-    },
-    subjectName: {
-      type: String,
-    },
-    topicLessons: [
+    teacher:{
+      type:Schema.Types.ObjectId,
+      ref:"Teacher"
+   },
+    lessons: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Lessons",
+      },
+    ],
+    quizes: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Quiz",
+      },
+    ],
+    practices: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Practice",
       },
     ],
   },

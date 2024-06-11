@@ -613,7 +613,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"nature of life\",\r\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\r\n    \"difficulty\": \"medium\"\r\n    \r\n    \r\n}",
+							"raw": "{\r\n    \"name\": \"Transportation of life\",\r\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\r\n    \"difficulty\": \"Beginner\",\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\"\r\n    \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -630,24 +630,441 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "add topic",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Transportation of life\",\r\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\r\n    \"difficulty\": \"Beginner\"   \r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/topic",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "253"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"fd-xmCqOmDTkoSjx6RV/Wl0sMAci1M\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 17:20:30 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"transportation of life\",\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\n    \"difficulty\": \"Beginner\",\n    \"lessons\": [],\n    \"quizes\": [],\n    \"practices\": [],\n    \"_id\": \"6668875ebf018d40d84711f0\",\n    \"createdAt\": \"2024-06-11T17:20:30.212Z\",\n    \"updatedAt\": \"2024-06-11T17:20:30.212Z\",\n    \"__v\": 0\n}"
+						},
+						{
+							"name": "add topic with image",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Transportation of life\",\r\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\r\n    \"difficulty\": \"Beginner\",\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/topic",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "311"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"137-FluutDw2JGzpO81TaGFk4aF/J0E\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 17:21:04 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"name\": \"transportation of life\",\n    \"image\": \"1717512710189-worktJourneyReplay - Copy (6).png\",\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\n    \"difficulty\": \"Beginner\",\n    \"lessons\": [],\n    \"quizes\": [],\n    \"practices\": [],\n    \"_id\": \"6668877fbf018d40d84711f7\",\n    \"createdAt\": \"2024-06-11T17:21:03.923Z\",\n    \"updatedAt\": \"2024-06-11T17:21:03.923Z\",\n    \"__v\": 0\n}"
+						}
+					]
 				},
 				{
-					"name": "get topic",
+					"name": "get topics by subject id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{1}}/topic",
+							"raw": "{{1}}/topic?subject=6660c46dd765cd3ccd8e03bf",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
 								"topic"
+							],
+							"query": [
+								{
+									"key": "subject",
+									"value": "6660c46dd765cd3ccd8e03bf"
+								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get topics by subject id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{1}}/topic?subject=6660c46dd765cd3ccd8e03bf",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic"
+									],
+									"query": [
+										{
+											"key": "subject",
+											"value": "6660c46dd765cd3ccd8e03bf"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "645"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"285-oz5sZdWp1j6n7m/nW2S18Fq8RuM\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 17:24:40 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"6668875ebf018d40d84711f0\",\n            \"name\": \"transportation of life\",\n            \"subject\": \"6660c46dd765cd3ccd8e03bf\",\n            \"difficulty\": \"Beginner\",\n            \"lessons\": [],\n            \"quizes\": [],\n            \"practices\": [],\n            \"createdAt\": \"2024-06-11T17:20:30.212Z\",\n            \"updatedAt\": \"2024-06-11T17:20:30.212Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6668877fbf018d40d84711f7\",\n            \"name\": \"transportation of life\",\n            \"image\": \"1717512710189-worktJourneyReplay - Copy (6).png\",\n            \"subject\": \"6660c46dd765cd3ccd8e03bf\",\n            \"difficulty\": \"Beginner\",\n            \"lessons\": [],\n            \"quizes\": [],\n            \"practices\": [],\n            \"createdAt\": \"2024-06-11T17:21:03.923Z\",\n            \"updatedAt\": \"2024-06-11T17:21:03.923Z\",\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"lesson found sucessfully\",\n    \"success\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "update topic",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admintoken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"abc\",\r\n    \"difficulty\":\"Medium\"\r\n    \r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/topic/6668875ebf018d40d84711f0",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"topic",
+								"6668875ebf018d40d84711f0"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update topic",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"abc\",\r\n    \"difficulty\":\"Medium\"\r\n    \r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/topic/6668875ebf018d40d84711f0",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic",
+										"6668875ebf018d40d84711f0"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "295"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"127-xob+Gx0qFLti2aviYxi14v6J/6c\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 17:34:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"6668875ebf018d40d84711f0\",\n        \"name\": \"abc\",\n        \"subject\": \"6660c46dd765cd3ccd8e03bf\",\n        \"difficulty\": \"Medium\",\n        \"lessons\": [],\n        \"quizes\": [],\n        \"practices\": [],\n        \"createdAt\": \"2024-06-11T17:20:30.212Z\",\n        \"updatedAt\": \"2024-06-11T17:34:01.579Z\",\n        \"__v\": 0\n    },\n    \"message\": \"topic updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update topic Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admintoken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{1}}/topic/66689606a7bf1d871ea0d347",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"topic",
+								"66689606a7bf1d871ea0d347"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "topic delete",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/topic/66689606a7bf1d871ea0d347",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic",
+										"66689606a7bf1d871ea0d347"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "55"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"37-jXq6k7OzvUI5HLoVbCJ0B2nvGd4\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 18:27:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"topic deleted successfully\"\n}"
+						}
+					]
 				}
 			]
 		},
@@ -658,35 +1075,383 @@
 					"name": "add lessons",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admintoken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"topic\":\"6668877fbf018d40d84711f7\",\r\n    \"name\":\"Photosynthese\",\r\n    \"content\":\"PhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthese\",\r\n    \"pages\":2,\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\",\r\n    \"lang\":\"Eng\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{1}}/lesson",
+							"raw": "{{1}}/topic/lesson",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
+								"topic",
 								"lesson"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "add lessons",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"topic\":\"6668877fbf018d40d84711f7\",\r\n    \"name\":\"Photosynthese\",\r\n    \"content\":\"PhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthese\",\r\n    \"pages\":2,\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\",\r\n    \"lang\":\"Eng\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/topic/lesson",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic",
+										"lesson"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "515"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"203-Z0nXjkDnTX6EleMjcwzlAdbPAfU\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 20:02:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"name\": \"Photosynthese\",\n        \"image\": \"1717512710189-worktJourneyReplay - Copy (6).png\",\n        \"content\": \"PhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthese\",\n        \"words\": 169,\n        \"lang\": \"Eng\",\n        \"pages\": 2,\n        \"topic\": \"6668877fbf018d40d84711f7\",\n        \"_id\": \"6668ad41eeb9c569f2e0f307\",\n        \"createdAt\": \"2024-06-11T20:02:09.775Z\",\n        \"updatedAt\": \"2024-06-11T20:02:09.775Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Lesson added successfully\"\n}"
+						}
+					]
 				},
 				{
-					"name": "get lessons",
+					"name": "get lessons by topic id",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{1}}/lesson",
+							"raw": "{{1}}/topic/lesson/6668877fbf018d40d84711f7",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
-								"lesson"
+								"topic",
+								"lesson",
+								"6668877fbf018d40d84711f7"
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"name": "get lessons y topic id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{1}}/topic/lesson/6668877fbf018d40d84711f7",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic",
+										"lesson",
+										"6668877fbf018d40d84711f7"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "195"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c3-c8DimWEtOB2kYji++xQivYVHmos\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 20:07:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"6668ad41eeb9c569f2e0f307\",\n            \"name\": \"Photosynthese\",\n            \"image\": \"1717512710189-worktJourneyReplay - Copy (6).png\"\n        }\n    ],\n    \"message\": \"lesson found sucessfully\",\n    \"success\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "get lesson content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{1}}/topic/lesson/content/6668ad41eeb9c569f2e0f307",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"topic",
+								"lesson",
+								"content",
+								"6668ad41eeb9c569f2e0f307"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "get lesson content",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{1}}/topic/lesson/content/6668ad41eeb9c569f2e0f307",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic",
+										"lesson",
+										"content",
+										"6668ad41eeb9c569f2e0f307"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "488"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1e8-ULOAwUbCYuvfqcKlVIHthPexauw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 20:08:34 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Content Found\",\n    \"data\": {\n        \"_id\": \"6668ad41eeb9c569f2e0f307\",\n        \"name\": \"Photosynthese\",\n        \"image\": \"1717512710189-worktJourneyReplay - Copy (6).png\",\n        \"content\": \"PhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthesePhotosynthese\",\n        \"words\": 169,\n        \"lang\": \"Eng\",\n        \"pages\": 2,\n        \"topic\": \"6668877fbf018d40d84711f7\",\n        \"createdAt\": \"2024-06-11T20:02:09.775Z\",\n        \"updatedAt\": \"2024-06-11T20:02:09.775Z\",\n        \"__v\": 0\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "update lesson",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{admintoken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{ \"content\": \"test content test content test content test content test content \" }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/topic/lesson/6668ad41eeb9c569f2e0f307",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"topic",
+								"lesson",
+								"6668ad41eeb9c569f2e0f307"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update lesson",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{admintoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{ \"content\": \"test content test content test content test content test content \" }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/topic/lesson/6668ad41eeb9c569f2e0f307",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic",
+										"lesson",
+										"6668ad41eeb9c569f2e0f307"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "412"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"19c-y9oQULc9gF15o0wpl4S3v0zD+gw\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 11 Jun 2024 20:22:14 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"6668ad41eeb9c569f2e0f307\",\n        \"name\": \"Photosynthese\",\n        \"image\": \"1717512710189-worktJourneyReplay - Copy (6).png\",\n        \"content\": \"test content test content test content test content test content \",\n        \"words\": 65,\n        \"lang\": \"Eng\",\n        \"pages\": 2,\n        \"topic\": \"6668877fbf018d40d84711f7\",\n        \"createdAt\": \"2024-06-11T20:02:09.775Z\",\n        \"updatedAt\": \"2024-06-11T20:22:14.327Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Lesson updated successfully\"\n}"
+						}
+					]
 				}
 			]
 		},
