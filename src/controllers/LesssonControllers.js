@@ -14,7 +14,7 @@ exports.AddLessons = asyncHandler(async(req, res) => {
         return res.status(400).json({ message: "Missing required fields in the request body" });
     }
     
-    console.log(req.body);
+    
     try {
         const ExistTopic = await topicModel.findById({ _id: topicId });
         if (!ExistTopic) {

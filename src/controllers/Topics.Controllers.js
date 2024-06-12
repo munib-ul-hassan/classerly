@@ -7,14 +7,17 @@ const asyncHandler = require("../utils/asyncHandler");
 const subjectModel = require("../models/subject");
 
 exports.AddTopic = asyncHandler(async (req, res) => {
-  const { name, image, subject, difficulty } = req.body;
+  const { name, image, subject, difficulty, type } = req.body;
 
   try {
     const findSubject = await subjectModel.findById(subject).populate("topics");
     if (!findSubject) {
       throw new Error("Subject not found");
     }
-    const findTopic = await topicModel.findOne({ name, subject });
+    const findTopic = await topicModel.findOne({
+      name: name.toLowerCase(),
+      subject,
+    });
     if (findTopic) {
       throw new Error("Topic with this name already exists in this subject");
     }
@@ -28,6 +31,7 @@ exports.AddTopic = asyncHandler(async (req, res) => {
       image,
       subject,
       difficulty,
+      type:type?type:"Standard"
     }).save();
 
     findSubject.topics.push(newTopic._id);
@@ -136,8 +140,15 @@ exports.addlesson = asyncHandler(async (req, res) => {
     if (!findtopic) {
       throw Error("Invalid topic Entered");
     }
+    const alreadylesson = await LessonsModel.find({
+      name: name.toLowerCase(),
+      topic,
+    });
+    if(alreadylesson){
+        throw Error("This lesson already added")
+    }
     const data = await new LessonsModel({
-      name,
+      name: name.toLowerCase(),
       pages,
       content,
       image,
@@ -185,10 +196,10 @@ exports.updatelesson = asyncHandler(async (req, res) => {
       { new: true }
     );
     return res.json({
-        success: true,
-        data: update,
-        message: "Lesson updated successfully",
-      });
+      success: true,
+      data: update,
+      message: "Lesson updated successfully",
+    });
   } catch (error) {
     const errorMessage = error.message || "Something went wrong";
     return res.status(500).json(new ApiResponse(500, errorMessage));

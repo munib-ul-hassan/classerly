@@ -35,6 +35,7 @@ exports.register = asyncHandler(async (req, res) => {
     } else if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       throw Error("Invalid email address");
     }
+
     let auth = new authModel({
       fullName,
       userName,
@@ -152,7 +153,7 @@ exports.register = asyncHandler(async (req, res) => {
     await session.abortTransaction();
 
     if (e.code == 11000) {
-      console.log(e.message)
+      
       return res
         .status(500)
         .json({ success: false, message: "No duplicate username acceptable" });

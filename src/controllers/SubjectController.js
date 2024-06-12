@@ -14,6 +14,13 @@ exports.AddSubject = asyncHandler(async (req, res) => {
     if (!gradedata) {
       throw new Error("Grade not found");
     }
+    const alreadysubject = await subjectModel({
+      name: name.toLowerCase(),
+      grade
+    })
+    if(alreadysubject){
+      throw Error("No duplicate name of subject is acceptable")
+    }
     const newSubject = await new subjectModel({
       name: name.toLowerCase(),
       grade,image
@@ -28,6 +35,7 @@ exports.AddSubject = asyncHandler(async (req, res) => {
       data: newSubject
     });
   } catch (e) {
+    
     return res.status(500).json({ success: false, message: e.message });
   }
 });

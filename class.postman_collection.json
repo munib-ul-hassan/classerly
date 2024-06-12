@@ -613,7 +613,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Transportation of life\",\r\n    \"subject\": \"6660c46dd765cd3ccd8e03bf\",\r\n    \"difficulty\": \"Beginner\",\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\"\r\n    \r\n}",
+							"raw": "{\r\n    \"name\": \"Transportation of life\",\r\n    \"subject\": \"6669ec63745b6fe30fc8ca99\",\r\n    \"difficulty\": \"Beginner\",\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\",\r\n    \"type\":\"Premium\"\r\n    \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1078,8 +1078,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{admintoken}}",
-								"type": "text"
+								"value": "{{admintoken}}"
 							}
 						],
 						"body": {
@@ -1350,8 +1349,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{admintoken}}",
-								"type": "text"
+								"value": "{{admintoken}}"
 							}
 						],
 						"body": {
