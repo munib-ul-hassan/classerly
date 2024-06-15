@@ -14,7 +14,7 @@ const parentSchema = new Schema(
     childIds:[
         {
             type: mongoose.Schema.Types.ObjectId,
-        ref:"student"
+        ref:"Student"
         }
     ],
     code:String

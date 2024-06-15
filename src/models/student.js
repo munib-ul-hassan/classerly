@@ -10,7 +10,7 @@ const studentSchema = new Schema(
     },
     grade:{
       type: mongoose.Schema.Types.ObjectId,
-      ref:"grade"
+      ref:"Grade"
   },
   code:{
     type:String,unique:true

@@ -2,7 +2,7 @@ const mongoose=require("mongoose");
 const {Schema}=require('mongoose');
 
 const EventSchema=new Schema({
-    eventName:{
+    name:{
         type:String
     }
 })

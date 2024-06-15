@@ -1,4 +1,3 @@
-const { Schema } = require("mongoose");
 const mongoose = require("mongoose");
 const gradeSchema = mongoose.Schema(
   {
@@ -27,7 +26,5 @@ const gradeSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-
 const gradeModel = mongoose.model("Grade", gradeSchema);
-
 module.exports = gradeModel;

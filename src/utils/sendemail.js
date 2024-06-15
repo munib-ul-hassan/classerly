@@ -38,7 +38,8 @@ const sendEmail=(async(emailsubject,email,message,requestType)=>{
         }
         await transporter.sendMail(Mailoptions)
     } catch (error) {
-    throw new ApiError(500,"something went wrong in sending email")
+        console.log("something went wrong in sending email", error.message)
+    // throw new ApiError(500,"something went wrong in sending email")
     }
 
 

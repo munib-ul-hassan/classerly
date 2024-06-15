@@ -24,7 +24,7 @@ exports.register = asyncHandler(async (req, res) => {
       userType,
       grade,
       parent,
-      childIds
+      childIds,
     } = req.body;
     if (
       [fullName, userName, password, email, fullAddress, userType].some(
@@ -42,7 +42,7 @@ exports.register = asyncHandler(async (req, res) => {
       password,
       email,
       fullAddress,
-      userType
+      userType,
     });
     let gradeData;
     if (grade) {
@@ -56,14 +56,14 @@ exports.register = asyncHandler(async (req, res) => {
       if (parent) {
         const prt = await ParentModel.findOne({ code: parent });
         if (!prt) {
-          throw Error("Parent Id is invalid");
+          throw Error("Invalid parent code");
           // return res.json({ success: false, message: "Parent Id is invalid" });
         }
         profile = new StudentModel({
           auth: auth._id,
           code: generateSixDigitCode(),
           parent: prt._id,
-          grade
+          grade,
         });
         prt.childIds.push(profile._id);
         await prt.save();
@@ -75,7 +75,7 @@ exports.register = asyncHandler(async (req, res) => {
         profile = new StudentModel({
           auth: auth._id,
           code: generateSixDigitCode(),
-          grade
+          grade,
         });
         if (gradeData) {
           gradeData.students.push(profile._id);
@@ -109,7 +109,7 @@ exports.register = asyncHandler(async (req, res) => {
           childIds: std.map((i) => {
             return i._id;
           }),
-          code: generateSixDigitCode()
+          code: generateSixDigitCode(),
         });
         await StudentModel.updateMany(
           { code: { $in: childIds } },
@@ -119,7 +119,7 @@ exports.register = asyncHandler(async (req, res) => {
         profile = new ParentModel({
           auth: auth._id,
 
-          code: generateSixDigitCode()
+          code: generateSixDigitCode(),
         });
       }
     } else if (userType == "Admin") {
@@ -129,7 +129,7 @@ exports.register = asyncHandler(async (req, res) => {
       }
       profile = new adminModel({
         auth: auth._id,
-        code: generateSixDigitCode()
+        code: generateSixDigitCode(),
       });
     } else {
       throw Error("UserType must be Student, Teacher or Parent");
@@ -146,14 +146,13 @@ exports.register = asyncHandler(async (req, res) => {
         ...auth._doc,
         ...profile._doc,
 
-        token: tokengenerate(auth)
-      }
+        token: tokengenerate(auth),
+      },
     });
   } catch (e) {
     await session.abortTransaction();
 
     if (e.code == 11000) {
-      
       return res
         .status(500)
         .json({ success: false, message: "No duplicate username acceptable" });
@@ -174,8 +173,8 @@ exports.login = asyncHandler(async (req, res) => {
         data: {
           ...auth._doc,
 
-          token: tokengenerate(auth)
-        }
+          token: tokengenerate(auth),
+        },
       });
     } else {
       throw Error("Invalid credentials");
@@ -188,7 +187,7 @@ exports.forgotpassword = asyncHandler(async (req, res) => {
   try {
     const { userName } = req.body;
     const auth = await authModel.findOne({
-      $or: [{ userName }, { email: userName }]
+      $or: [{ userName }, { email: userName }],
     });
     if (!auth) {
       throw Error("Invalid email or username");
@@ -202,10 +201,12 @@ exports.forgotpassword = asyncHandler(async (req, res) => {
     await sendEmail(emailsubject, auth.email, message, requestType);
     await authModel.findOneAndUpdate({ _id: auth._id }, { otp });
 
+    let authdata = { ...auth._doc, type: "forgotPassword" };
+    
     return res.json({
       success: true,
       message: "Kindly check your email for password verification",
-      token: tokengenerate({ auth: auth, type: "forgotPassword" })
+      token: tokengenerate(authdata),
     });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
@@ -218,16 +219,18 @@ exports.verifyuser = asyncHandler(async (req, res) => {
     }
     let auth = await authModel.findOne({
       _id: req.user.auth._id,
-      otp: req.body.otp
+      otp: req.body.otp,
     });
     if (!auth) {
       throw Error("Invalid token or otp");
     }
     await authModel.findOneAndUpdate({ _id: req.user.auth._id }, { otp: null });
+    let authdata = { ...auth._doc, type: "verify user" };
+
     return res.json({
       success: true,
       message: "User Verify successfully",
-      token: tokengenerate({ auth, type: "verify user" })
+      token: tokengenerate(authdata),
     });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
@@ -244,13 +247,13 @@ exports.resetpassword = asyncHandler(async (req, res) => {
       throw Error("Invalid token");
     }
     await authModel.findOneAndUpdate(
-      { _id: req.user.auth._id },
+      { _id: req.user._id },
       { password: await bcrypt.hash(password, 10) }
     );
     return res.json({
       success: true,
       message: "Password reset successfully",
-      token: tokengenerate(auth)
+      token: tokengenerate(auth),
     });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });
@@ -280,7 +283,7 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
           "profile",
           "profile.grade",
           "profile.subjects",
-          "profile.feedback"
+          "profile.feedback",
         ]);
       // return res.json(data)
     }
@@ -292,7 +295,7 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
 
     return res.json({
       success: true,
-      data: { ...data._doc, token: tokengenerate(data) }
+      data: { ...data._doc, token: tokengenerate(data) },
     });
   } catch (e) {
     res.status(500).json({ success: false, message: e.message });

@@ -11,28 +11,24 @@ const teacherSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "grade",
     },
-    feedback: [
+    feedback: {
+      total: Number,
+      counts: {
+        1: Number,
+        2: Number,
+
+        3: Number,
+        4: Number,
+        5: Number,
+      },
+      average:Number
+    },
+    subjects: [
       {
-        feedbackFrom: {
-          type: String,
-          enum: ["parent", "student"],
-          required: true,
-        },
-        feedbackText: {
-          type: String,
-          required: true,
-        },
-        feedbackBy: {
-          type: mongoose.Schema.Types.ObjectId,
-          required: true,
-          refPath: "feedback.feedbackFrom",
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "subject",
       },
     ],
-    subjects: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "subject",
-    }],
   },
   {
     timestamps: true,
