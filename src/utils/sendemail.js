@@ -1,6 +1,6 @@
 
 const nodemailer=require('nodemailer');
-const ApiError = require('./Apierror');
+
 
 const sendEmail=(async(emailsubject,email,message,requestType)=>{
     console.log("email body",email);
