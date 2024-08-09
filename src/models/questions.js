@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 
-const questionsSchema = new Schema(
+const questionsSchema = new mongoose.Schema(
   {
     quiz: {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Quiz",
     },
-    questions: { type: String },
+    question: { type: String },
     options: [{ type: String }],
     answer: { type: String },
     time: Number,

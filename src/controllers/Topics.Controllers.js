@@ -5,6 +5,122 @@ const { find, findById } = require("../models/student");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const subjectModel = require("../models/subject");
+// const main = async ()=>{
+  
+//   let subject= await subjectModel.findOne({name:"Scienve"})
+  
+//   let arr = [
+//     {topic:"A1",lessons:[
+//       {l:"A1.1",p:6,w:1261},
+//     {l:"A1.2",p:8,w:2189},
+//     {l:"A1.3",p:4,w:1315},
+//     {l:"A1.4",p:8,w:1801},
+//     {l:"A1.5",p:8,w:2059},
+//     ]},
+//     {topic:"B1",lessons:[
+//       {l:"B1.1 Relating Science to Our Changing World",p:8,w:1606},
+//       {l:"B1.2 Relating Science to Our Changing World",p:7,w:1649},
+//       ]},
+//     {topic:"B2",lessons:[
+//       {l:"B2.1 Investigating and Understanding Concepts",p:7,w:1704},
+//       {l:"B2.2 Exploring Ecosystem Equilibrium",p:6,w:1502},
+//       {l:"B2.3 Photosynthesis and Cellular Respiration",p:8,w:1843},
+//       {l:"B2.4 Introduction to Ecosystem Sustainability",p:7,w:1590},
+//       {l:"B2.5 Understanding the Dynamic Equilibrium of Ecosystems",p:8,w:1749},
+
+
+//     ]},
+//     {topic:"C1",lessons:[
+//     {l:"C1.1",p:7,w:1676},
+      
+//     {l:"C1.2",p:8,w:1839},
+
+//       ]},
+//     {topic:"C2",lessons:[
+//     {l:"C2.1",p:9,w:7690},
+//     {l:"C2.2",p:7,w:1554},
+//     {l:"C2.3",p:7,w:1602},
+//     {l:"C2.4",p:6,w:1538},
+//     {l:"C2.5",p:6,w:1321},
+//     {l:"C2.6",p:7,w:1588},
+//     {l:"C2.7",p:7,w:1615},
+      
+//    ]},
+//     {topic:"D1",lessons:[
+//       {l:"D1.1",p:1,w:1646},
+//       {l:"D1.2",p:7,w:1860},
+//       {l:"D1.3",p:7,w:1530},
+//       {l:"D1.4",p:7,w:1499}
+//       ]},
+//     {topic:"D2",lessons:[
+//       {l:"D2.1",p:7,w:1871},
+//       {l:"D2.2",p:7,w:1651},
+//       {l:"D2.3",p:7,w:1554},
+//       {l:"D2.4",p:8,w:1667},
+//       {l:"D2.5",p:7,w:1441},
+//       {l:"D2.6",p:7,w:1655},
+//       {l:"D2.7",p:2,w:1562},
+//       {l:"D2.8",p:7,w:1416},
+        
+//       ]},
+//     {topic:"E1",lessons:[
+//       {l:"E1.1",p:7,w:1722},
+//       {l:"E1.2",p:7,w:1715},
+//       {l:"E1.3",p:7,w:1431},
+//     ]},
+//     {topic:"E2",lessons:[
+//       {l:"E2.1",p:2,w:555},
+//       {l:"E2.2",p:7,w:1477},
+//       {l:"E2.3",p:7,w:1893},
+//       {l:"E2.4",p:7,w:1802},
+//       {l:"E2.5",p:7,w:1725},
+//       {l:"E2.6",p:6,w:1263},
+//     ]},
+//     {topic:"Strand A",lessons:[
+//       {l:"A1. STEM Investigation Skills",p:16,w:4275},
+//       {l:"A2. Applications, Careers, and Connections",p:16,w:3809},
+//       ]},
+//     {topic:"Strand B",lessons:[
+//       {l:"B1. Relating Science to Our Changing World",p:15,w:3617},
+//       {l:"B2. Investigating and Understanding Concepts",p:15,w:4086},
+//       ]},
+//     {topic:"Strand C",lessons:[
+//       {l:"C1. Relating Science to Our Changing World",p:16,w:4262},
+//       {l:"C2. Investigating and Understanding Concepts",p:15,w:3949},
+//       ]},
+//     {topic:"Strand D",lessons:[
+//       {l:"D1. Relating Science to Our Changing World",p:18,w:4348},
+//       {l:"D2. Investigating and Understanding Concepts",p:20,w:4670},
+//       ]},
+//     {topic:"Strand E",lessons:[
+//       {l:"E1. Relating Science to Our Changing World",p:18,w:4414},
+//       {l:"E2. Investigating and Understanding Concepts_",p:15,w:4161},
+
+//       ]}]
+
+//       arr.forEach(async(i)=>{
+//         const newTopic =new topicModel({
+//           name: i.topic,
+//           image:i.topic.split(" ")[0]+".jpeg",
+//           subject:subject._id
+//         })
+
+//     i.lessons.map(async(j)=>{
+//       const data = await (new LessonsModel({
+//         name: j.l,
+//         pages:j.p,
+//         content:"Science/"+i.topic+"/"+j.l+".docx",
+//         image:j.l.split(" ")[0]+".jpeg",
+//         topic:newTopic._id,
+//         words:j.w,
+//       })).save();
+//       newTopic.lessons.push(data._id);
+//     })
+//     await newTopic.save();
+//   }) 
+// }
+// main()
+
 
 exports.AddTopic = asyncHandler(async (req, res) => {
   const { name, image, subject, difficulty, type } = req.body;
@@ -39,7 +155,7 @@ exports.AddTopic = asyncHandler(async (req, res) => {
 
     res.status(200).json(newTopic);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(200).json({ message: error.message });
   }
 });
 
@@ -79,14 +195,14 @@ exports.updatetopic = asyncHandler(async (req, res) => {
         new: true,
       });
 
-      return res.json({
+      return res.status(200).json({
         success: true,
         data: updated,
         message: "topic updated successfully",
       });
     }
   } catch (error) {
-    res.status(500).json({ mesage: error.message });
+    res.status(200).json({ mesage: error.message });
   }
 });
 
@@ -103,7 +219,8 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, findTopicLesson, "lesson found sucessfully"));
   } catch (error) {
-    res.status(500).json({ mesage: "error.message" || "somthing went wrong" });
+
+    res.status(200).json({ mesage: error.message || "somthing went wrong" });
   }
 });
 
@@ -120,7 +237,7 @@ exports.deletetopic = asyncHandler(async (req, res) => {
     findsubject.topics.pop(id);
     await findsubject.save();
     await topicModel.findOneAndDelete({ _id: id });
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "topic deleted successfully",
     });
@@ -159,14 +276,14 @@ exports.addlesson = asyncHandler(async (req, res) => {
     findtopic.lessons.push(data._id);
     await findtopic.save();
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       data,
       message: "Lesson added successfully",
     });
   } catch (error) {
     const errorMessage = error.message || "Something went wrong";
-    return res.status(500).json(new ApiResponse(500, errorMessage));
+    return res.status(200).json(new ApiResponse(500, errorMessage));
   }
 });
 
@@ -174,7 +291,7 @@ exports.updatelesson = asyncHandler(async (req, res) => {
   try {
     const findLesson = await LessonsModel.findById(req.params.id);
     if (!findLesson) {
-      return res.status(404).json(new ApiResponse(404, "Lesson not found"));
+      return res.status(200).json(new ApiResponse(404, "Lesson not found"));
     }
 
     const { name, pages, content, image, lang, topic } = req.body;
@@ -195,14 +312,14 @@ exports.updatelesson = asyncHandler(async (req, res) => {
       req.body,
       { new: true }
     );
-    return res.json({
+    return res.status(200).json({
       success: true,
       data: update,
       message: "Lesson updated successfully",
     });
   } catch (error) {
     const errorMessage = error.message || "Something went wrong";
-    return res.status(500).json(new ApiResponse(500, errorMessage));
+    return res.status(200).json(new ApiResponse(500, errorMessage));
   }
 });
 exports.getcontentOfLesson = asyncHandler(async (req, res) => {
@@ -212,7 +329,7 @@ exports.getcontentOfLesson = asyncHandler(async (req, res) => {
     const findLesson = await LessonsModel.findById(LessonId);
 
     if (!findLesson) {
-      return res.status(404).json(new ApiResponse(404, "Lesson not found"));
+      return res.status(200).json(new ApiResponse(404, "Lesson not found"));
     }
 
     return res.status(200).json({
@@ -221,24 +338,27 @@ exports.getcontentOfLesson = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     const errorMessage = error.message || "Something went wrong";
-    return res.status(500).json(new ApiResponse(500, errorMessage));
+    return res.status(200).json(new ApiResponse(500, errorMessage));
   }
 });
 
 exports.getAllLessonsOfTopics = asyncHandler(async (req, res) => {
   const topicId = req.params.id;
   try {
-    const findTopicLesson = await topicModel
-      .findById(topicId)
-      .populate({ path: "lessons", select: "_id name image" });
+    // const findTopicLesson = await topicModel
+    //   .findById(topicId)
+    //   .populate({ path: "lessons", select: "_id name image" });
+    const findTopicLesson = await LessonsModel.find({topic:topicId})
+    // .populate({ path: "lessons", select: "_id name image" });
+    
     if (!findTopicLesson) {
       throw new Error("Topic not found");
     }
     const Lessons = findTopicLesson.lessons;
     return res
       .status(200)
-      .json(new ApiResponse(200, Lessons, "lesson found sucessfully"));
+      .json(new ApiResponse(200, findTopicLesson, "lesson found sucessfully"));
   } catch (error) {
-    res.status(500).json({ mesage: "error.message" || "somthing went wrong" });
+    res.status(200).json({ mesage: "error.message" || "somthing went wrong" });
   }
 });

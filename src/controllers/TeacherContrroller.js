@@ -8,7 +8,7 @@ const sendEmail = require("../utils/sendemail");
 const FeedbackModel = require("../models/feedback");
 
 exports.registerTeacher = asyncHandler(async (req, res) => {
-  console.log(req.body);
+  
   try {
     const { fullname, username, emailaddress, password, fulladdress } =
       req.body;
@@ -79,7 +79,7 @@ exports.teacherAddsubjects = asyncHandler(async (req, res) => {
 
 exports.allSubjectsOfteacher = asyncHandler(async (req, res) => {
   const teacherId = req.params.id;
-  console.log(teacherId);
+  
   try {
     const findTeacher = await TeacherModel.findById(teacherId).populate(
       "teachersSubjects"
@@ -110,14 +110,14 @@ exports.allSubjectsOfteacher = asyncHandler(async (req, res) => {
       success: true,
     });
   } catch (error) {
-    res.status(500).json({ message: error.message, success: false });
+    res.status(200).json({ message: error.message, success: false });
   }
 });
 
 exports.feedBacktoTeacher = asyncHandler(async (req, res) => {
   const teacherId = req.params.id;
   const { feedbackFrom, feedbackText, feedbackBy } = req.body;
-  console.log(feedbackFrom);
+  
   try {
     const newFeedback = {
       feedbackFrom: feedbackFrom,
@@ -125,23 +125,23 @@ exports.feedBacktoTeacher = asyncHandler(async (req, res) => {
       feedbackBy: feedbackBy,
     };
     const teacher = await TeacherModel.findById({ _id: teacherId });
-    console.log(teacher);
+    
 
     if (!teacher) {
-      return res.status(404).json({ message: "Teacher not found" });
+      return res.status(200).json({ message: "Teacher not found" });
     }
     teacher.feedback.push(newFeedback);
     await teacher.save();
 
-    res.status(201).json({ message: "Feedback added successfully" });
+    res.status(200).json({ message: "Feedback added successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(200).json({ message: error.message });
   }
 });
 
 exports.myFeedBacks = asyncHandler(async (req, res) => {
   try {
-    console.log(req.user);
+    
     const findTeacher = await FeedbackModel.find({
       teacher: req.user.profile._id,
     }).populate({
@@ -157,6 +157,6 @@ exports.myFeedBacks = asyncHandler(async (req, res) => {
       .status(201)
       .json(new ApiResponse(200, findTeacher, "feedbacks Found Successfully"));
   } catch (error) {
-    res.status(500).json({ message: error.message || "Something went wrong" });
+    res.status(200).json({ message: error.message || "Something went wrong" });
   }
 });

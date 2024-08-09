@@ -1,25 +1,29 @@
 const mongoose=require('mongoose');
 
-const quizesSchema=new Schema({
+const quizesSchema=new mongoose.Schema({
     createdBy:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref : "Teacher"
     },
     questions:[{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref : "Questions"
     }],
     grade:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref : "Grade"
     },
     topic:{
-        type:Schema.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref : "Topic"
     },
+    lesson:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref : "Lessons"
+    },
     subject:{
-        type:Schema.Types.ObjectId,
-        ref : "Subject"
+        type:mongoose.Schema.Types.ObjectId,
+        ref : "subject"
     },
     startsAt:{
         type:Date
@@ -27,7 +31,11 @@ const quizesSchema=new Schema({
     endsAt:{
         type:Date
     },
-
+    status: {
+        type: String,
+        enum: ["pending", "start", "complete"],
+        default: "pending",
+      },
     score:Number
 },{
     timestamps:true

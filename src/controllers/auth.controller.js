@@ -27,7 +27,7 @@ exports.register = asyncHandler(async (req, res) => {
       childIds,
     } = req.body;
     if (
-      [fullName, userName, password, email, fullAddress, userType].some(
+      [fullName, userName, password, email, userType,grade].some(
         (field) => !field || field.trim() === ""
       )
     ) {
@@ -57,7 +57,7 @@ exports.register = asyncHandler(async (req, res) => {
         const prt = await ParentModel.findOne({ code: parent });
         if (!prt) {
           throw Error("Invalid parent code");
-          // return res.json({ success: false, message: "Parent Id is invalid" });
+          // return res.status(200).json({ success: false, message: "Parent Id is invalid" });
         }
         profile = new StudentModel({
           auth: auth._id,
@@ -140,7 +140,7 @@ exports.register = asyncHandler(async (req, res) => {
 
     await profile.save();
     await session.commitTransaction();
-    return res.json({
+    return res.status(200).json({
       success: true,
       data: {
         ...auth._doc,
@@ -157,7 +157,7 @@ exports.register = asyncHandler(async (req, res) => {
         .status(500)
         .json({ success: false, message: "No duplicate username acceptable" });
     }
-    return res.status(500).json({ success: false, message: e.message });
+    return res.status(200).json({ success: false, message: e.message });
   }
 });
 exports.login = asyncHandler(async (req, res) => {
@@ -166,10 +166,81 @@ exports.login = asyncHandler(async (req, res) => {
     if (!userName || !password) {
       throw Error("userName and password are required");
     }
-    const auth = await authModel.findOne({ userName }).populate("profile");
+    // const result = await authModel.aggregate([
+    //   // Match the document with the given userName
+    //   { $match: { userName: userName } },
+      
+    //   {
+    //     $addFields: {
+    //       profileTable: {
+    //         $switch: {
+    //           branches: [
+    //             { case: { $eq: ["$userType", "Student"] }, then: "students" },
+    //             { case: { $eq: ["$userType", "Parent"] }, then: "parents" },
+    //             { case: { $eq: ["$userType", "Teacher"] }, then: "teachers" }
+    //           ],
+    //           default: null
+    //         }
+    //       }
+    //     }
+    //   },
+    
+    //   // Lookup to join with the appropriate profile collection based on userType
+    //   {
+    //     $lookup: {
+    //       from: "$profileTable" ,
+    //       localField: "profile",
+    //       foreignField: "_id",
+    //       as: "profile"
+    //     }
+    //   },
+    
+    //   // Unwind the profile array (since profile should be a single object, not an array)
+    //   { $unwind: "$profile" },
+    
+    //   // Conditionally join the grade collection if userType is student
+    //   {
+    //     $lookup: {
+    //       from: "grades",
+    //       localField: "profile.grade",
+    //       foreignField: "_id",
+    //       as: "profile.grade",
+    //       pipeline: [
+    //         {
+    //           $match: {
+    //             $expr: {
+    //               $eq: ["$userType", "Student"]
+    //             }
+    //           }
+    //         }
+    //       ]
+    //     }
+    //   },
+    
+    //   // Unwind the grade array (since grade should be a single object, not an array)
+    //   { $unwind: { path: "$profile.grade", preserveNullAndEmptyArrays: true } }
+    // ]);
+    
+    // Assuming you're using async/await
+    
+    
+
+    const auth = await authModel.findOne({ userName }).populate({
+      path: 'profile',
+      populate: {
+        path: 'grade',
+      },
+    })
     if (auth && (await bcrypt.compare(password, auth.password))) {
-      return res.json({
+      
+      
+      auth._doc.profile.grade={
+        grade:auth._doc?.profile?.grade?.grade,
+        _id:auth._doc?.profile?.grade?._id
+      }
+      return res.status(200).json({
         success: true,
+        message:"loggedin successfully",
         data: {
           ...auth._doc,
 
@@ -180,7 +251,7 @@ exports.login = asyncHandler(async (req, res) => {
       throw Error("Invalid credentials");
     }
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(200).json({ success: false, message: e.message });
   }
 });
 exports.forgotpassword = asyncHandler(async (req, res) => {
@@ -203,13 +274,13 @@ exports.forgotpassword = asyncHandler(async (req, res) => {
 
     let authdata = { ...auth._doc, type: "forgotPassword" };
     
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "Kindly check your email for password verification",
       token: tokengenerate(authdata),
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(200).json({ success: false, message: e.message });
   }
 });
 exports.verifyuser = asyncHandler(async (req, res) => {
@@ -218,22 +289,23 @@ exports.verifyuser = asyncHandler(async (req, res) => {
       throw Error("invalid token");
     }
     let auth = await authModel.findOne({
-      _id: req.user.auth._id,
+      _id: req.user._id,
       otp: req.body.otp,
     });
     if (!auth) {
       throw Error("Invalid token or otp");
     }
-    await authModel.findOneAndUpdate({ _id: req.user.auth._id }, { otp: null });
+    await authModel.findOneAndUpdate({ _id: req.user._id }, { otp: null });
     let authdata = { ...auth._doc, type: "verify user" };
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "User Verify successfully",
       token: tokengenerate(authdata),
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    console.log(e)
+    res.status(200).json({ success: false, message: e.message });
   }
 });
 exports.resetpassword = asyncHandler(async (req, res) => {
@@ -242,7 +314,7 @@ exports.resetpassword = asyncHandler(async (req, res) => {
       throw Error("invalid token");
     }
     let { password } = req.body;
-    let auth = await authModel.findOne({ _id: req.user.auth._id });
+    let auth = await authModel.findOne({ _id: req.user._id });
     if (!auth) {
       throw Error("Invalid token");
     }
@@ -250,20 +322,20 @@ exports.resetpassword = asyncHandler(async (req, res) => {
       { _id: req.user._id },
       { password: await bcrypt.hash(password, 10) }
     );
-    return res.json({
+    return res.status(200).json({
       success: true,
       message: "Password reset successfully",
       token: tokengenerate(auth),
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(200).json({ success: false, message: e.message });
   }
 });
 exports.updateuser = asyncHandler(async (req, res) => {
   try {
-    const {} = req.body;
+    const {username,password} = req.body;
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(200).json({ success: false, message: e.message });
   }
 });
 exports.getmyprofile = asyncHandler(async (req, res) => {
@@ -274,7 +346,7 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
       data = await authModel
         .findOne({ _id: req.user._id }, { password: 0 })
         .populate(["profile", "profile.parent", "profile.grade"]);
-      // return res.json(data)
+      // return res.status(200).json(data)
     }
     if (req.user.userType == "Teacher") {
       data = await authModel
@@ -285,7 +357,7 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
           "profile.subjects",
           "profile.feedback",
         ]);
-      // return res.json(data)
+      // return res.status(200).json(data)
     }
     if (req.user.userType == "Parent") {
       data = await authModel
@@ -293,11 +365,11 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
         .populate(["profile", "profile.childIds"]);
     }
 
-    return res.json({
+    return res.status(200).json({
       success: true,
       data: { ...data._doc, token: tokengenerate(data) },
     });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(200).json({ success: false, message: e.message });
   }
 });

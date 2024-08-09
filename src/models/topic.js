@@ -14,6 +14,7 @@ const TopicSchema = new Schema(
     difficulty: {
       enum: ["Beginner", "Medium", "Advanced"],
       type: String,
+      default:"Beginner"
     },
     type: { type: String, enum: ["Standard", "Premium"], default: "Standard" },
     lessonHours: {

@@ -12,7 +12,8 @@ const lessonsSchema= mongoose.Schema({
     },
     words:Number,
     lang:{
-        type:String
+        type:String,
+        default:"Eng"
     },
     pages:Number,
     topic:{

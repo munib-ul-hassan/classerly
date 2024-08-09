@@ -12,7 +12,7 @@ const FeedbackModel = require("../models/feedback");
 exports.addNewChild = asyncHandler(async (req, res) => {
   const { stdid } = req.body;
   //   if (!isValidObjectId(parentId)) {
-  //     return res.status(400).json({ message: "Invalid parent ID format" });
+  //     return res.status(200).json({ message: "Invalid parent ID format" });
   //   }
   try {
     const findParent = await ParentModel.findById({
@@ -21,7 +21,7 @@ exports.addNewChild = asyncHandler(async (req, res) => {
     const child = await StudentModel.findOne({ code: stdid });
 
     if (!child) {
-      return res.status(400).json({ error: "Invalid child ID" });
+      return res.status(200).json({ error: "Invalid child ID" });
     }
 
     findParent.childIds.push(child._id);
@@ -33,7 +33,7 @@ exports.addNewChild = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error("Error in sign-up:");
 
-    res.status(500).json({ error: error.message });
+    res.status(200).json({ error: error.message });
   }
 });
 
@@ -49,13 +49,13 @@ exports.getMyChilds = asyncHandler(async (req, res) => {
         { path: "auth", select: "-password" },
       ],
     });
-    console.log();
+    
     const childs = findMychilds.childIds;
     res
       .status(200)
       .json(new ApiResponse(200, childs, "childs founded succesfully"));
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(200).json({ error: error.message });
   }
 });
 exports.addfeedback = asyncHandler(async (req, res) => {
@@ -77,7 +77,7 @@ exports.addfeedback = asyncHandler(async (req, res) => {
     if (star > 5) {
       throw new ApiError(409, "value of star must be equal to or less than 5");
     }
-    console.log(req.user)
+    
     const feedbackdata = await new FeedbackModel({
       parent: req.user.profile._id,
       grade,
@@ -91,7 +91,7 @@ exports.addfeedback = asyncHandler(async (req, res) => {
       message: "Feedback done successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(200).json({ error: error.message });
   }
 });
 exports.updatefeedback = asyncHandler(async (req, res) => {
@@ -127,7 +127,7 @@ exports.updatefeedback = asyncHandler(async (req, res) => {
       message: "Feedback update successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(200).json({ error: error.message });
   }
 });
 exports.myFeedBacks = asyncHandler(async (req, res) => {
@@ -144,10 +144,10 @@ exports.myFeedBacks = asyncHandler(async (req, res) => {
       
 
     
-    res.status(201).json(
+    res.status(200).json(
       new ApiResponse(200, findTeacher, "feedbacks Found Successfully")
     );
   } catch (error) {
-    res.status(500).json({ message: error.message || "Something went wrong" });
+    res.status(200).json({ message: error.message || "Something went wrong" });
   }
 });

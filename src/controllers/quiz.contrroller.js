@@ -1,51 +1,473 @@
+const LessonsModel = require("../models/LessonsModel");
+const gradeModel = require("../models/grade.models");
+const QuestionsModel = require("../models/questions");
+const QuizesModel = require("../models/quizes");
+const StudentquizesModel = require("../models/studentquizes");
+const subjectModel = require("../models/subject");
+const topicModel = require("../models/topic");
 const asyncHandler = require("../utils/asyncHandler");
-// setInterval(() => {
-//     console.log("0")
-//     console.clear()
-// }, (2000));
+
 exports.addquiz = asyncHandler(async (req, res) => {
   try {
-    
+    const {
+      grade,
+      topic,
+      subject,
+      startsAt,
+      endsAt,
+      score,
+      questions,
+      lesson,
+    } = req.body;
+    const gradedata = await gradeModel.findById(grade);
+
+    if (!gradedata) {
+      throw new Error("Grade not found");
+    }
+    const lessondata = await LessonsModel.findById(lesson);
+
+    if (!lessondata) {
+      throw new Error("Lesson not found");
+    }
+
+    const topicdata = await topicModel.findById(topic);
+
+    if (!topicdata) {
+      throw new Error("Topic not found");
+    }
+    const subjectdata = await subjectModel.findById(subject);
+
+    if (!subjectdata) {
+      throw new Error("Subject not found");
+    }
+    const data = new QuizesModel({
+      createdBy: req.user?.profile?._id,
+      grade,
+      topic,
+      subject,
+      lesson,
+      startsAt: new Date(startsAt),
+      endsAt: new Date(endsAt),
+      score,
+    });
+    let questionarr = [];
+    await Promise.all(
+      questions.map(async (item) => {
+        const { question, options, answer, time } = item;
+        let quiz = data._id;
+        let questiondata = await new QuestionsModel({
+          question,
+          options,
+          answer,
+          time,
+          quiz,
+        }).save();
+        questionarr.push(questiondata._id);
+      })
+    );
+    data.questions = questionarr;
+    await data.save();
+    return res.send({
+      success: true,
+      data,
+      message: "Quiz added successfully",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
+
+exports.updatequiz = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const quizdata = await QuizesModel.findById(id);
+    if (!quizdata) {
+      throw new Error("Invalid id");
+    }
+    const { grade, topic, subject, lesson, startsAt, endsAt, score } = req.body;
+    const gradedata = grade ?? (await gradeModel.findById(grade));
+
+    if (!gradedata) {
+      throw new Error("Grade not found");
+    }
+    const topicdata = await topicModel.findById(topic);
+
+    if (!topicdata) {
+      throw new Error("Topic not found");
+    }
+    const subjectdata = await subjectModel.findById(subject);
+
+    if (!subjectdata) {
+      throw new Error("Subject not found");
+    }
+    const lessondata = await gradeModel.findById(lesson);
+
+    if (!lessondata) {
+      throw new Error("Lesson not found");
+    }
+    const data = await QuizesModel.findByIdAndUpdate(id, req.body, {
+      new: true,
+    });
+
+    return res.send({
+      success: true,
+      data,
+      message: "Quize Update Successfully",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
+exports.deletequiz = asyncHandler(async (req, res) => {
+  try {
     return res.send({
       success: true,
       data: feedbackdata,
       message: "Feedback done successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
+exports.addquestion = asyncHandler(async (req, res) => {
+  try {
+    const { quiz, question, options, answer, time } = req.body;
+    const quizdata = await QuizesModel.findOne({
+      _id: quiz,
+      createdBy: req.user?.profile?._id,
+    });
+
+    if (!quizdata) {
+      throw new Error("Invalid Quiz Id");
+    }
+    let questiondata = await new QuestionsModel({
+      question,
+      options,
+      answer,
+      time,
+      quiz,
+    }).save();
+    quizdata.questions.push(questiondata._id);
+    await quizdata.save();
+
+    return res.send({
+      success: true,
+      data: quizdata,
+      message: "Question added successfully",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
+exports.updatequestion = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quiz } = req.body;
+    const questiondata = await QuestionsModel.findOne({
+      _id: id,
+      quiz,
+    });
+
+    if (!questiondata) {
+      throw new Error("Invalid Question Id");
+    }
+    let questionupdate = await QuestionsModel.findOneAndUpdate(
+      { _id: id, quiz },
+      req.body,
+      { new: true }
+    );
+
+    return res.send({
+      success: true,
+      data: questionupdate,
+      message: "Question updated successfully",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
+exports.deletequestions = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { quiz } = req.query;
+    const questiondata = await QuestionsModel.findOne({
+      _id: id,
+      quiz,
+    });
+
+    if (!questiondata) {
+      throw new Error("Invalid Question Id");
+    }
+    let questionupdate = await QuestionsModel.findOneAndDelete({
+      _id: id,
+      quiz,
+    });
+
+    return res.send({
+      success: true,
+      data: questionupdate,
+      message: "Question deleted successfully",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
   }
 });
 
 exports.updatestatusquiz = asyncHandler(async (req, res) => {
   try {
-    return res.send({
-      success: true,
-      data: feedbackdata,
-      message: "Feedback done successfully",
+    const { id } = req.params;
+    const { status } = req.query;
+    
+    const quizdata = await QuizesModel.findById(id).populate("questions");
+    if (!quizdata) {
+      throw new Error("Invalid id");
+    }
+    const studentdata = await StudentquizesModel.findOne({
+      quiz: id,
+      student: req.user?.profile?._id,
     });
+    if (status == "start") {
+      const quizsdata = await StudentquizesModel.findOneAndUpdate(
+        {
+          quiz: id,
+          student: req.user.profile._id,
+        },
+        {
+          questions: quizdata.questions,
+          score: quizdata.score,
+        },
+        { upsert: true }
+      );
+      // const quizsdata = await new StudentquizesModel({
+      //   quiz: id,
+      //   student: req.user.profile._id,
+      //   questions: quizdata.questions,
+      //   score: quizdata.score,
+      // }).save();
+      return res.send({
+        success: true,
+        data: quizsdata,
+        message: "Quiz started successfully",
+      });
+    } else if (status == "end") {
+      let marks = 0;
+      quizdata.questions.map(async (q, index) => {
+        if (q.answer == studentdata.answers[index]) {
+          marks++;
+        }
+        if (index == quizdata?.questions?.length - 1) {
+          const quizsdata = await StudentquizesModel.findOneAndUpdate(
+            {
+              quiz: id,
+              student: req.user.profile._id,
+            },
+            {
+              status: "complete",
+              marks,
+            },
+            { new: true }
+          );
+          return res.send({
+            success: true,
+            data: { ...quizsdata._doc, marks },
+            message: "Quiz Completed successfully",
+          });
+        }
+      });
+    } else {
+      
+      throw Error("Invalid reqt");
+    }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: false, error: error.message });
   }
 });
+
 exports.getquizes = asyncHandler(async (req, res) => {
   try {
-    return res.send({
-      success: true,
-      data: feedbackdata,
-      message: "Feedback done successfully",
-    });
+    let { limit, page } = req.query;
+    delete req.query.limit;
+    delete req.query.page;
+    page = page || 0;
+    limit = limit || 10;
+    const cleanObject = (obj) => {
+      return Object.fromEntries(
+        Object.entries(obj)
+          .filter(([key, value]) => value !== null &&value !== 'null' && value !== '')
+      );
+    };
+    
+    req.query = cleanObject(req.query)
+    
+
+    const Quizdata = await QuizesModel.find(req.query)
+      .skip(page * limit)
+      .limit(limit)
+      .populate({ path: "questions", select: "-answer" })
+      .populate({
+        path: "createdBy",
+        select: "auth",
+        populate: {
+          path: "auth",
+          select: ["userName", "fullName", "email", "userType"],
+        },
+      })
+      .populate({ path: "subject", select: ["_id", "image", "name"] })
+      .populate({
+        path: "topic",
+        select: ["_id", "image", "name", "difficulty", "type"],
+      })
+      .populate({ path: "lesson", select: ["_id", "image", "name"] });
+
+    if (Quizdata.length > 0) {
+      return res.send({
+        success: true,
+        data: Quizdata,
+        message: "Quizes get successfully",
+      });
+    } else {
+      return res.send({
+        success: false,
+        data: [],
+        message: "Quizes not found",
+      });
+    }
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: false, error: error.message });
   }
 });
 exports.addananswer = asyncHandler(async (req, res) => {
   try {
+    const { id } = req.params;
+    const { answer, index } = req.body;
+
+    const studentquizdata = await StudentquizesModel.findOne({
+      quiz: id,
+      student: req.user?.profile?._id,
+      // status: "start",
+    });
+    if (!studentquizdata) {
+      throw Error("Invalid quiz");
+    }
+    if (index > studentquizdata.questions.length) {
+      throw Error("Invalid index");
+    }
+    studentquizdata.answers[index - 1] = answer;
+    await studentquizdata.save();
     return res.send({
       success: true,
-      data: feedbackdata,
-      message: "Feedback done successfully",
+      data: studentquizdata,
+      message: "Answer done successfully",
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
+exports.getstudentquizesbyquizid = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const studentquizdata = (
+      await StudentquizesModel
+        // .aggregate([
+        //     {
+        //         $lookup:{
+        //             from: "students",
+        //             localField: "student",
+        //             foreignField: "_id",
+        //             as: "student"
+        //         }
+        //     },
+        //     {
+        //         $lookup:{
+        //             from: "quizes",
+        //             localField: "quiz",
+        //             foreignField: "_id",
+        //             as: "quiz_details"
+        //         }
+        //     },
+        //     {
+        //         $lookup:{
+        //             from: "questions",
+        //             localField: "questions",
+        //             foreignField: "_id",
+        //             as: "questions"
+        //         }
+        //     },
+        //     {
+        //         $unwind: "$quiz_details"
+        //       }, {
+        //         $match: {
+        //           "quiz_details.created_By": req.user?.profile?._id,
+        //           status:"complete",
+        //           quiz: id,
+        //           ...req.query
+
+        //         }
+        //       },
+        //       {$project:{
+        //         "quiz.answer":0
+        //       }}
+        // ])
+        .find({
+          quiz: id,
+          //   "quiz.createdBy": req.user?.profile?._id,
+          status: "complete",
+          ...req.query,
+        })
+        .populate({ path: "quiz", select: "-answer" })
+        .populate("student")
+        .populate("questions")
+    ).filter((i) => {
+      return i.quiz.createdBy == req.user?.profile?._id;
+    });
+    if (studentquizdata.length > 0) {
+      return res.send({
+        success: true,
+        data: studentquizdata,
+        message: "Student Quizes done successfully",
+      });
+    }
+    return res.send({
+      success: false,
+      data: [],
+      message: "Student Quizes not found",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
+  }
+});
+
+exports.updatestudentquize = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { score, result } = req.body;
+    const studentquizdata = await StudentquizesModel.findById(id).populate([
+      "questions",
+      "quiz",
+      "student",
+    ]);
+
+    if (
+      !studentquizdata &&
+      studentquizdata.quiz.createdBy != req.user?.profile?._id
+    ) {
+      throw Error("Student Quiz is invalid");
+    }
+    if (score > studentquizdata.quiz?.score) {
+      throw Error("Invalid score");
+    }
+    studentquizdata.score = score;
+    studentquizdata.result = result;
+    studentquizdata.status = "result";
+    await studentquizdata.save();
+
+    return res.send({
+      success: true,
+      data: studentquizdata,
+      message: "Student Quizes updated successfully",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, error: error.message });
   }
 });

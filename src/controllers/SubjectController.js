@@ -5,6 +5,50 @@ const ApiResponse = require("../utils/ApiResponse");
 const ApiError = require("../utils/Apierror");
 const asyncHandler = require("../utils/asyncHandler");
 const fs = require("fs")
+const main=async()=>{
+  // let grade= await gradeModel.findOne({grade:"Grade 9"})
+  
+
+//   [
+// "Dance - open",
+// "drama - open",
+// "integrated arts - open",
+// "Music - open",
+// "visual arts - open",
+// "Core French, Grade 9 Academic FSF1D",
+// "Core French, Grade 9 Open FSF1O",
+// "Extended French, Grade 9 Academic FEF1D",
+// "French Immersion, Grade 9 Academic FIF1D",
+// "MTH1WGrade 9 Issued: 2021 Mathematics",
+// "Introduction to business",
+// "information and communication technology in business",
+// "Issues in Canadian Geography, Grade 9 Academic CGC1D",
+// "ENL1WGrade 9 Issued: 2023 English",
+// "NAC1OGrade 9 Expressions of First Nations, Métis, and Inuit Cultures",
+// "Learning Strategies 1: (GLS1O/GLE1O/GLE2O) Skills for Success in Secondary School, Grade 9, Open",
+// "Learning Strategies 1: (GLS1O/GLE1O/GLE2O) Skills for Success in Secondary School, Grade 9, Open",
+// "Learning Strategies 1: (GLS1O/GLE1O/GLE2O) Skills for Success in Secondary School, Grade 9, Open ",
+// "Healthy Active Living Education, Grade 9 Open PPL1O",
+// "SNC1WGrade 9 Issued: 2022 science",
+// "Food and Nutrition, Grade 9 or 10 Open HFN1O/2O",
+// "Exploring Technologies, Grade 9 Open TIJ1O",
+// "Science"
+//   ].map(async(i)=>{
+    
+    // const newSubject = await new subjectModel({
+    //   name: i,
+    //   grade:grade._id
+    //   ,image:i.split(" ")[0]+".jpeg"
+    // }).save();
+    
+    // grade.subjects.push(newSubject._id);
+    
+  // })
+  
+  // await grade.save();
+
+}
+// main()
 exports.AddSubject = asyncHandler(async (req, res) => {
   const { name, grade,image } = req.body;
 
@@ -36,7 +80,7 @@ exports.AddSubject = asyncHandler(async (req, res) => {
     });
   } catch (e) {
     
-    return res.status(500).json({ success: false, message: e.message });
+    return res.status(200).json({ success: false, message: e.message });
   }
 });
 exports.getAllsubjectsbygrade = asyncHandler(async (req, res) => {
@@ -45,16 +89,16 @@ exports.getAllsubjectsbygrade = asyncHandler(async (req, res) => {
     
     let data = await subjectModel.find({ grade: id }).populate(["grade","topics","teacher"]);
     if (data.length > 0) {
-      return res.json({
+      return res.status(200).json({
         success: true,
         data,
         message: "All subjects of grade find successfully"
       });
     } else {
-      return res.json({ success: false, data: [], message: "no data found" });
+      return res.status(200).json({ success: false, data: [], message: "no data found" });
     }
   } catch (e) {
-    return res.status(500).json({ success: false, message: e.message });
+    return res.status(200).json({ success: false, message: e.message });
   }
 });
 
@@ -68,7 +112,7 @@ exports.deleteSubject= async (req, res) => {
 
     
     if (!data) {
-      return res.json({
+      return res.status(200).json({
         success: false,
         
         message: "invalid id"
@@ -79,11 +123,11 @@ exports.deleteSubject= async (req, res) => {
       await grade.save()
       await subjectModel.deleteOne({_id:id})
       fs.unlink(`./src/uploads/${data.image}`,(e)=>{})
-      return res.json({ success: true, message: "subject delete successfully" });
+      return res.status(200).json({ success: true, message: "subject delete successfully" });
     }
   } catch (e) {
-    console.log(e)
-    return res.status(500).json({ success: false, message: e.message });
+    
+    return res.status(200).json({ success: false, message: e.message });
   }};
   
 
@@ -93,7 +137,7 @@ exports.updateSubject= asyncHandler(async (req, res) => {
     
     let data = await subjectModel.findById(id)
     if (!data) {
-      return res.json({
+      return res.status(200).json({
         success: false,
         
         message: "invalid id"
@@ -102,10 +146,10 @@ exports.updateSubject= asyncHandler(async (req, res) => {
       
       await subjectModel.updateOne({_id:id},{name:req.body.name.toLowerCase()})
       data.name= req.body.name.toLowerCase()
-      return res.json({ success: true, data,message: "subject updated successfully" });
+      return res.status(200).json({ success: true, data,message: "subject updated successfully" });
     }
   } catch (e) {
-    return res.status(500).json({ success: false, message: e.message });
+    return res.status(200).json({ success: false, message: e.message });
   }
 });
 
@@ -123,13 +167,13 @@ exports.updateSubject= asyncHandler(async (req, res) => {
 //       .status(201)
 //       .json(new ApiResponse(200, subjectTopics, "Topics Found Succesfuly"));
 //   } catch (error) {
-//     res.status(500).json({ message: error.message });
+//     res.status(200).json({ message: error.message });
 //   }
 // });
 
 // exports.deleteSubjects = asyncHandler(async (req, res) => {
 //   const subjectId = req.params.id;
-//   console.log(subjectId);
+
 //   try {
 //     const findsubject = await subjectModel.findById({ _id: subjectId });
 //     if (!findsubject) {

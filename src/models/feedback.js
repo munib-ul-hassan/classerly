@@ -26,7 +26,7 @@ const FeedbackModel = mongoose.model("feedback", FeedbackSchema);
 const changeStream = FeedbackModel.watch();
 changeStream.on("change", async (change) => {
   let techerfeedback;
-  console.log(change);
+  
   if (change.operationType == "update" || change.operationType == "delete") {
     techerfeedback = await FeedbackModel.find({
       teacher: (

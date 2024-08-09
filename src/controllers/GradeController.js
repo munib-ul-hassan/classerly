@@ -1,19 +1,29 @@
 const gradeModel = require("../models/grade.models");
-const { findById } = require("../models/student");
-const ApiResponse = require("../utils/ApiResponse");
+
 const asyncHandler = require("../utils/asyncHandler");
+
+// const main=async()=>{
+  // ["3","4","5","6","7","8","9","10","11","12"].map(async(i)=>{
+  //   const savegrade = new gradeModel({
+  //     grade:"Grade "+i
+  //   });
+  //   await savegrade.save();
+  // })
+// }
+
+// main()
 
 // exports.deleteGrade = asyncHandler(async (req, res) => {
 //   try {
 //   } catch (e) {
-//     res.status(500).json({ success: false, message: e.message });
+//     res.status(200).json({ success: false, message: e.message });
 //   }
 // });
 
 // exports.updateGrade = asyncHandler(async (req, res) => {
 //   try {
 //   } catch (e) {
-//     res.status(500).json({ success: false, message: e.message });
+//     res.status(200).json({ success: false, message: e.message });
 //   }
 // });
 
@@ -32,7 +42,7 @@ exports.addGrade = asyncHandler(async (req, res) => {
     await savegrade.save();
     return res.status(200).json({ success: true, data: savegrade });
   } catch (e) {
-    return res.status(500).json({ success: false, message: e.message });
+    return res.status(200).json({ success: false, message: e.message });
   }
 });
 
@@ -47,7 +57,7 @@ exports.getAllGrades = asyncHandler(async (req, res) => {
       data: allgrades
     });
   } catch (e) {
-    return res.status(500).json({ success: false, message: e.message });
+    return res.status(200).json({ success: false, message: e.message });
   }
 });
 
@@ -59,12 +69,12 @@ exports.getAllGrades = asyncHandler(async (req, res) => {
 //       .populate("gradeSubjects");
 
 //     if (!findgrade) {
-//       res.status(404).json("grade not found");
+//       res.status(200).json("grade not found");
 //     }
 //     const subjects = findgrade.gradeSubjects;
 
 //     res.status(200).json(new ApiResponse(200, subjects, "found sucsessfully"));
 //   } catch (e) {
-//     res.status(500).json({ success: false, message: e.message });
+//     res.status(200).json({ success: false, message: e.message });
 //   }
 // });

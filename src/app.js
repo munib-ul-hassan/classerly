@@ -31,10 +31,10 @@ const uploadRoutes = require("./routes/upload.routes");
 const topicRoutes = require("./routes/topic.routes");
 
 const quizRoutes = require("./routes/quiz.routes")
-const adddata = require("./utils/adddummydata");
+// const adddata = require("./utils/adddummydata");
 
 //declare
-adddata();
+// adddata();
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", uploadRoutes);
