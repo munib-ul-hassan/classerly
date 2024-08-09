@@ -19,7 +19,9 @@ app.use(
 
 //routes
 
-
+app.get("",(req,res)=>{
+  res.send("Welcome to classerly")
+})
 const subjectRoutes = require("./routes/subject.routes");
 const parentRoutes = require("./routes/parent.routes");
 const teacherRoutes = require("./routes/teacher.routes");
