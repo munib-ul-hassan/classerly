@@ -2,7 +2,7 @@ const subjectModel = require("../models/subject");
 const StudentModel = require("../models/student");
 const TeacherModel = require("../models/teacher");
 const ApiResponse = require("../utils/ApiResponse");
-const ApiError = require("../utils/Apierror");
+// const ApiError = require("../utils/Apierror");
 const asyncHandler = require("../utils/asyncHandler");
 const sendEmail = require("../utils/sendemail");
 const FeedbackModel = require("../models/feedback");
@@ -16,7 +16,7 @@ exports.registerTeacher = asyncHandler(async (req, res) => {
       $or: [{ emailaddress }, { username }],
     });
     if (existUser) {
-      throw new ApiError(409, "User already exists");
+      throw new Error("User already exists");
     }
     const teacher = new TeacherModel({
       fullname,

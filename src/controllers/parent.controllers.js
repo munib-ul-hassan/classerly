@@ -5,7 +5,7 @@ const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const sendEmail = require("../utils/sendemail");
 const { isValidObjectId } = require("mongoose");
-const ApiError = require("../utils/Apierror");
+// const ApiError = require("../utils/Apierror");
 const teacherModel = require("../models/teacher");
 const FeedbackModel = require("../models/feedback");
 
@@ -69,13 +69,13 @@ exports.addfeedback = asyncHandler(async (req, res) => {
     });
 
     if (!existTeacher) {
-      throw new ApiError(409, "Invalid teacher id");
+      throw new Error( "Invalid teacher id");
     }
     if (existfeedback) {
-      throw new ApiError(409, "already added feedback");
+      throw new Error( "already added feedback");
     }
     if (star > 5) {
-      throw new ApiError(409, "value of star must be equal to or less than 5");
+      throw new Error( "value of star must be equal to or less than 5");
     }
     
     const feedbackdata = await new FeedbackModel({
@@ -91,7 +91,7 @@ exports.addfeedback = asyncHandler(async (req, res) => {
       message: "Feedback done successfully",
     });
   } catch (error) {
-    res.status(200).json({ error: error.message });
+    res.status(200).json({ success:false,error: error.message });
   }
 });
 exports.updatefeedback = asyncHandler(async (req, res) => {
@@ -105,10 +105,10 @@ exports.updatefeedback = asyncHandler(async (req, res) => {
     });
 
     if (!existfeedback) {
-      throw new ApiError(409, "Invalid id");
+      throw new Error( "Invalid id");
     }
     if (star && star > 5) {
-      throw new ApiError(409, "value of star must be equal to or less than 5");
+      throw new Error( "value of star must be equal to or less than 5");
     }
     const feedbackdata = await FeedbackModel.findOneAndUpdate(
       {
