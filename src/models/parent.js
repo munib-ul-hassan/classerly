@@ -17,6 +17,10 @@ const parentSchema = new Schema(
         ref:"Student"
         }
     ],
+    grade:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Grade"
+  },
     code:String
 
   },
