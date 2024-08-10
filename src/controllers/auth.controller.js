@@ -27,7 +27,7 @@ exports.register = asyncHandler(async (req, res) => {
       childIds,
     } = req.body;
     if (
-      [fullName, userName, password, email, userType,grade].some(
+      [fullName, userName, password, email, userType].some(
         (field) => !field || field.trim() === ""
       )
     ) {
