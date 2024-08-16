@@ -1,14 +1,11 @@
 const mongoose=require('mongoose');
 
-const quizesSchema=new mongoose.Schema({
+const gamesSchema=new mongoose.Schema({
     createdBy:{
         type:mongoose.Schema.Types.ObjectId,
         ref : "Teacher"
     },
-    questions:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref : "Questions"
-    }],
+  
     grade:{
         type:mongoose.Schema.Types.ObjectId,
         ref : "Grade"
@@ -17,22 +14,20 @@ const quizesSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref : "Topic"
     },
-    lesson:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref : "Lessons"
-    },
+    
     subject:{
         type:mongoose.Schema.Types.ObjectId,
         ref : "subject"
     },
  
-    startsAt:{
-        type:Date
-    },
-    endsAt:{
-        type:Date
-    },
+    // startsAt:{
+    //     type:Date
+    // },
+    // endsAt:{
+    //     type:Date
+    // },
     image:String,
+    title:String,
 
     status: {
         type: String,
@@ -44,5 +39,5 @@ const quizesSchema=new mongoose.Schema({
     timestamps:true
     })
 
-const QuizesModel=mongoose.model("Quizes",quizesSchema);
-module.exports=QuizesModel;
+const gamesModel=mongoose.model("games",gamesSchema);
+module.exports=gamesModel;

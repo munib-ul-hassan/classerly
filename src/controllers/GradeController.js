@@ -28,7 +28,7 @@ const asyncHandler = require("../utils/asyncHandler");
 // });
 
 exports.addGrade = asyncHandler(async (req, res) => {
-  const { grade } = req.body;
+  const { grade ,image} = req.body;
   try {
     const findSamegrade = await gradeModel.findOne({ grade });
 
@@ -36,7 +36,7 @@ exports.addGrade = asyncHandler(async (req, res) => {
       throw Error("grade already exist");
     }
     const savegrade = new gradeModel({
-      grade
+      grade,image
     });
 
     await savegrade.save();

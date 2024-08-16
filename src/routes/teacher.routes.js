@@ -1,7 +1,7 @@
 const { Router } = require('express');
 
-const { myFeedBacks } = require('../controllers/TeacherContrroller');
-const { verifytoken } = require('../middlewares/auth');
+const { myFeedBacks,mystudents,addstudent,mydashboard } = require('../controllers/TeacherContrroller');
+const { verifytoken, verifyteachertoken } = require('../middlewares/auth');
 
 
 const router=Router();
@@ -9,4 +9,10 @@ const router=Router();
 
 
 router.route("/feedback").get(verifytoken, myFeedBacks);
+router.route("/dashboard").get(verifytoken, mydashboard);
+
+router.route("/mystudents").get(verifyteachertoken, mystudents);
+router.route("/addstudent").post(verifyteachertoken, addstudent);
+
+
 module.exports=router;

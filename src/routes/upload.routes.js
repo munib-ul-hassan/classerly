@@ -10,9 +10,10 @@ const maxSize = 5 * 1024 * 1024;
 // Configure disk storage for uploaded files
 const storage = multer.diskStorage({
   destination: function (req, file, callback) {
-    callback(null, 'uploads/'); // Change 'uploads' to your desired directory
+    callback(null, 'src/uploads/'); // Change 'uploads' to your desired directory
   },
   filename: function (req, file, callback) {
+    
     callback(null, Date.now() + '-' + file.originalname);
   },
 });
@@ -23,6 +24,7 @@ const fileupload = multer({
   limits: { fileSize: maxSize },
   fileFilter: function(req, file, callback) {
     // Optional: You can define allowed file types here
+    
     if (!file.originalname.match(/\.(jpg|jpeg|png|pdf)$/)) {
       return callback(new Error('Only JPG, JPEG, PNG and PDF files are allowed!'), false);
     }
@@ -31,7 +33,7 @@ const fileupload = multer({
 });
 
 const router=Router();
-router.post("/upload",fileupload.single("file"),upload)
+router.post("/uploadimage",fileupload.single("file"),upload)
 
 
 module.exports=router;

@@ -5,6 +5,7 @@ const gradeSchema = mongoose.Schema(
       type: String,
       unique: true
     },
+    image:String,
     students: [
       {
         type: mongoose.Schema.Types.ObjectId,

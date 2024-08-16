@@ -33,10 +33,14 @@ const uploadRoutes = require("./routes/upload.routes");
 const topicRoutes = require("./routes/topic.routes");
 
 const quizRoutes = require("./routes/quiz.routes")
+// const studentRoutes = require("./utils/adddummydata");
+const  studentRoutes= require("./routes/student.routes") 
+const gameRoutes = require("./routes/game.routes")
 // const adddata = require("./utils/adddummydata");
 
 //declare
 // adddata();
+app.use("/api/v1/student", studentRoutes);
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1", uploadRoutes);
@@ -56,6 +60,8 @@ app.use(
 // app.use('/api/v1/curriculum',curriculumRoutes);
 app.use("/api/v1/teacher", teacherRoutes);
 app.use("/api/v1/quiz", quizRoutes);
+app.use("/api/v1/", gameRoutes);
+
 
 
 app.use("/api/v1/admin", adminRoutes);

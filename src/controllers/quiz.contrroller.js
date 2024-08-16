@@ -17,18 +17,19 @@ exports.addquiz = asyncHandler(async (req, res) => {
       endsAt,
       score,
       questions,
-      lesson,
+      // lesson,
+      image
     } = req.body;
     const gradedata = await gradeModel.findById(grade);
 
     if (!gradedata) {
       throw new Error("Grade not found");
     }
-    const lessondata = await LessonsModel.findById(lesson);
+    // const lessondata = await LessonsModel.findById(lesson);
 
-    if (!lessondata) {
-      throw new Error("Lesson not found");
-    }
+    // if (!lessondata) {
+    //   throw new Error("Lesson not found");
+    // }
 
     const topicdata = await topicModel.findById(topic);
 
@@ -45,21 +46,22 @@ exports.addquiz = asyncHandler(async (req, res) => {
       grade,
       topic,
       subject,
-      lesson,
+      // lesson,
       startsAt: new Date(startsAt),
       endsAt: new Date(endsAt),
       score,
+      image
     });
     let questionarr = [];
     await Promise.all(
       questions.map(async (item) => {
-        const { question, options, answer, time } = item;
+        const { question, options, answer, score } = item;
         let quiz = data._id;
         let questiondata = await new QuestionsModel({
           question,
           options,
           answer,
-          time,
+          score,
           quiz,
         }).save();
         questionarr.push(questiondata._id);
@@ -84,7 +86,7 @@ exports.updatequiz = asyncHandler(async (req, res) => {
     if (!quizdata) {
       throw new Error("Invalid id");
     }
-    const { grade, topic, subject, lesson, startsAt, endsAt, score } = req.body;
+    const { grade, topic, subject, startsAt, endsAt, score } = req.body;
     const gradedata = grade ?? (await gradeModel.findById(grade));
 
     if (!gradedata) {
@@ -100,11 +102,11 @@ exports.updatequiz = asyncHandler(async (req, res) => {
     if (!subjectdata) {
       throw new Error("Subject not found");
     }
-    const lessondata = await gradeModel.findById(lesson);
+    // const lessondata = await gradeModel.findById(lesson);
 
-    if (!lessondata) {
-      throw new Error("Lesson not found");
-    }
+    // if (!lessondata) {
+    //   throw new Error("Lesson not found");
+    // }
     const data = await QuizesModel.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -131,7 +133,7 @@ exports.deletequiz = asyncHandler(async (req, res) => {
 });
 exports.addquestion = asyncHandler(async (req, res) => {
   try {
-    const { quiz, question, options, answer, time } = req.body;
+    const { quiz, question, options, answer, score } = req.body;
     const quizdata = await QuizesModel.findOne({
       _id: quiz,
       createdBy: req.user?.profile?._id,
@@ -144,7 +146,7 @@ exports.addquestion = asyncHandler(async (req, res) => {
       question,
       options,
       answer,
-      time,
+      score,
       quiz,
     }).save();
     quizdata.questions.push(questiondata._id);
@@ -317,7 +319,7 @@ exports.getquizes = asyncHandler(async (req, res) => {
         path: "topic",
         select: ["_id", "image", "name", "difficulty", "type"],
       })
-      .populate({ path: "lesson", select: ["_id", "image", "name"] });
+      // .populate({ path: "lesson", select: ["_id", "image", "name"] });
 
     if (Quizdata.length > 0) {
       return res.send({

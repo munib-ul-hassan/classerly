@@ -5,10 +5,11 @@ const { find, findById } = require("../models/student");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const subjectModel = require("../models/subject");
+const { default: mongoose } = require("mongoose");
 // const main = async ()=>{
-  
+
 //   let subject= await subjectModel.findOne({name:"Scienve"})
-  
+
 //   let arr = [
 //     {topic:"A1",lessons:[
 //       {l:"A1.1",p:6,w:1261},
@@ -28,11 +29,10 @@ const subjectModel = require("../models/subject");
 //       {l:"B2.4 Introduction to Ecosystem Sustainability",p:7,w:1590},
 //       {l:"B2.5 Understanding the Dynamic Equilibrium of Ecosystems",p:8,w:1749},
 
-
 //     ]},
 //     {topic:"C1",lessons:[
 //     {l:"C1.1",p:7,w:1676},
-      
+
 //     {l:"C1.2",p:8,w:1839},
 
 //       ]},
@@ -44,7 +44,7 @@ const subjectModel = require("../models/subject");
 //     {l:"C2.5",p:6,w:1321},
 //     {l:"C2.6",p:7,w:1588},
 //     {l:"C2.7",p:7,w:1615},
-      
+
 //    ]},
 //     {topic:"D1",lessons:[
 //       {l:"D1.1",p:1,w:1646},
@@ -61,7 +61,7 @@ const subjectModel = require("../models/subject");
 //       {l:"D2.6",p:7,w:1655},
 //       {l:"D2.7",p:2,w:1562},
 //       {l:"D2.8",p:7,w:1416},
-        
+
 //       ]},
 //     {topic:"E1",lessons:[
 //       {l:"E1.1",p:7,w:1722},
@@ -117,10 +117,9 @@ const subjectModel = require("../models/subject");
 //       newTopic.lessons.push(data._id);
 //     })
 //     await newTopic.save();
-//   }) 
+//   })
 // }
 // main()
-
 
 exports.AddTopic = asyncHandler(async (req, res) => {
   const { name, image, subject, difficulty, type } = req.body;
@@ -147,7 +146,7 @@ exports.AddTopic = asyncHandler(async (req, res) => {
       image,
       subject,
       difficulty,
-      type:type?type:"Standard"
+      type: type ? type : "Standard",
     }).save();
 
     findSubject.topics.push(newTopic._id);
@@ -207,10 +206,35 @@ exports.updatetopic = asyncHandler(async (req, res) => {
 });
 
 exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
-  const { subject } = req.query;
+  // const { subject } = req.query;
+  let subject = "66b3d6bf935d0e0a6cf48f92"
   try {
-    const findTopicLesson = await topicModel.find({ subject });
-
+    const findTopicLesson = await topicModel.aggregate([
+      {
+        $match: {
+          
+          subject: new mongoose.Types.ObjectId(subject),
+        },
+      },
+      {
+        $lookup: {
+          from: "quizes",
+          let: { topicId: { $toString: "$_id" } }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: "$topic" }, "$$topicId"], // Convert topic field to string and compare
+                },
+              },
+            },
+          ],
+          as: "quizes",
+        },
+      },
+    ]);
+    // find({ subject });
+    
     if (!findTopicLesson) {
       throw new Error("Topics not found");
     }
@@ -219,7 +243,6 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, findTopicLesson, "lesson found sucessfully"));
   } catch (error) {
-
     res.status(200).json({ mesage: error.message || "somthing went wrong" });
   }
 });
@@ -261,8 +284,8 @@ exports.addlesson = asyncHandler(async (req, res) => {
       name: name.toLowerCase(),
       topic,
     });
-    if(alreadylesson){
-        throw Error("This lesson already added")
+    if (alreadylesson) {
+      throw Error("This lesson already added");
     }
     const data = await new LessonsModel({
       name: name.toLowerCase(),
@@ -348,9 +371,9 @@ exports.getAllLessonsOfTopics = asyncHandler(async (req, res) => {
     // const findTopicLesson = await topicModel
     //   .findById(topicId)
     //   .populate({ path: "lessons", select: "_id name image" });
-    const findTopicLesson = await LessonsModel.find({topic:topicId})
+    const findTopicLesson = await LessonsModel.find({ topic: topicId });
     // .populate({ path: "lessons", select: "_id name image" });
-    
+
     if (!findTopicLesson) {
       throw new Error("Topic not found");
     }

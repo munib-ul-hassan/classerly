@@ -10,6 +10,9 @@ const { default: mongoose } = require("mongoose");
 const bcrypt = require("bcrypt");
 const adminModel = require("../models/admin");
 const gradeModel = require("../models/grade.models");
+const studentModel = require("../models/student");
+const parentModel = require("../models/parent");
+const teacherModel = require("../models/teacher");
 
 exports.register = asyncHandler(async (req, res) => {
   const session = await mongoose.startSession();
@@ -169,7 +172,7 @@ exports.login = asyncHandler(async (req, res) => {
     // const result = await authModel.aggregate([
     //   // Match the document with the given userName
     //   { $match: { userName: userName } },
-      
+
     //   {
     //     $addFields: {
     //       profileTable: {
@@ -184,7 +187,7 @@ exports.login = asyncHandler(async (req, res) => {
     //       }
     //     }
     //   },
-    
+
     //   // Lookup to join with the appropriate profile collection based on userType
     //   {
     //     $lookup: {
@@ -194,10 +197,10 @@ exports.login = asyncHandler(async (req, res) => {
     //       as: "profile"
     //     }
     //   },
-    
+
     //   // Unwind the profile array (since profile should be a single object, not an array)
     //   { $unwind: "$profile" },
-    
+
     //   // Conditionally join the grade collection if userType is student
     //   {
     //     $lookup: {
@@ -216,31 +219,27 @@ exports.login = asyncHandler(async (req, res) => {
     //       ]
     //     }
     //   },
-    
+
     //   // Unwind the grade array (since grade should be a single object, not an array)
     //   { $unwind: { path: "$profile.grade", preserveNullAndEmptyArrays: true } }
     // ]);
-    
+
     // Assuming you're using async/await
-    
-    
 
     const auth = await authModel.findOne({ userName }).populate({
-      path: 'profile',
+      path: "profile",
       populate: {
-        path: 'grade',
+        path: "grade",
       },
-    })
+    });
     if (auth && (await bcrypt.compare(password, auth.password))) {
-      
-      
-      auth._doc.profile.grade={
-        grade:auth._doc?.profile?.grade?.grade,
-        _id:auth._doc?.profile?.grade?._id
-      }
+      auth._doc.profile.grade = {
+        grade: auth._doc?.profile?.grade?.grade,
+        _id: auth._doc?.profile?.grade?._id,
+      };
       return res.status(200).json({
         success: true,
-        message:"loggedin successfully",
+        message: "loggedin successfully",
         data: {
           ...auth._doc,
 
@@ -273,7 +272,7 @@ exports.forgotpassword = asyncHandler(async (req, res) => {
     await authModel.findOneAndUpdate({ _id: auth._id }, { otp });
 
     let authdata = { ...auth._doc, type: "forgotPassword" };
-    
+
     return res.status(200).json({
       success: true,
       message: "Kindly check your email for password verification",
@@ -304,7 +303,7 @@ exports.verifyuser = asyncHandler(async (req, res) => {
       token: tokengenerate(authdata),
     });
   } catch (e) {
-    console.log(e)
+    
     res.status(200).json({ success: false, message: e.message });
   }
 });
@@ -333,7 +332,98 @@ exports.resetpassword = asyncHandler(async (req, res) => {
 });
 exports.updateuser = asyncHandler(async (req, res) => {
   try {
-    const {username,password} = req.body;
+    const { userName, image, password, grade } = req.body;
+    const cleanObject = (obj) => {
+      return Object.fromEntries(
+        Object.entries(obj).filter(
+          ([key, value]) =>
+            value !== null &&
+            value !== "null" &&
+            value !== "" &&
+            value !== undefined &&
+            value !== "undefined"
+        )
+      );
+    };
+    if (userName || image) {
+      await authModel.findByIdAndUpdate(
+        { _id: req.user._id },
+        cleanObject({
+          userName,
+          image,
+        })
+      );
+    }
+    
+    if (grade) {
+      
+      switch (req.user.userType) {
+        case "Student": {
+          await studentModel.findOneAndUpdate(
+            {
+              auth: req.user._id,
+            },
+            {
+              grade,
+            },
+            { new: true }
+          );
+        }
+        case "Parent": {
+          await parentModel.findOneAndUpdate(
+            {
+              auth: req.user._id,
+            },
+            {
+              grade,
+            },
+            { new: true }
+          );
+        }
+        case "Teacher": {
+          await teacherModel.findOneAndUpdate(
+            {
+              auth: req.user._id,
+            },
+            {
+              grade,
+            },
+            { new: true }
+          );
+        }
+        default: {
+        }
+      }
+      // let d =[
+      //         req.user.userType == "Student"
+      //           ? studentModel
+      //           : req.user.userType == "Parent"
+      //           ? parentModel
+      //           : teacherModel
+      //       ].findOneAndUpdate(
+      //         {
+      //           auth: req.user._id,
+      //         },
+      //         {
+      //           grade
+      //         },{new:true}
+      //       );
+      
+    }
+    let data = await authModel.findOne({ _id: req.user._id }).populate({
+      path: "profile",
+      populate: {
+        path: "grade",
+      },
+    });
+    return res.status(200).json({
+      success: true,
+      data: {
+        data,
+
+        token: tokengenerate(data),
+      },
+    });
   } catch (e) {
     res.status(200).json({ success: false, message: e.message });
   }
@@ -373,3 +463,38 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
     res.status(200).json({ success: false, message: e.message });
   }
 });
+
+exports.changepassword = async (req, res) => {
+  try {
+    const { oldPassword, password, confirmPassword } = req.body;
+   
+
+    if (password != confirmPassword) {
+      return res
+        .status(200)
+        .json({
+          success: false,
+          message: "password and confirm password must be same",
+        });
+    } else if (!(await bcrypt.compare(oldPassword,req.user.password))) {
+      return res
+        .status(200)
+        .json({ success: false, message: "incorrect old password" });
+    } else {
+      let auth = await authModel.findOneAndUpdate(
+        { _id: req.user._id },
+        { password: await bcrypt.hash(password, 10) },
+        {
+          new: true,
+        }
+      );
+      return res.status(200).json({
+        success: true,
+        message: "Password updated successfully",
+        token: tokengenerate(auth),
+      });
+    }
+  } catch (e) {
+    res.status(200).json({ success: false, message: e.message });
+  }
+};
