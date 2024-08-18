@@ -49,7 +49,7 @@ exports.addgame = async (req, res) => {
       .status(200)
       .json({ success: true, messgae: "Game added successfully", data });
   } catch (err) {
-    return res.status(200).json({ success: false, error: err.message });
+    return res.status(200).json({ success: false, message: err.message });
   }
 };
 
@@ -79,7 +79,7 @@ exports.getgame = async (req, res) => {
       .status(200)
       .json({ success: true, messgae: "Games get successfully", data });
   } catch (err) {
-    return res.status(200).json({ success: false, error: err.message });
+    return res.status(200).json({ success: false, message: err.message });
   }
 };
 
@@ -105,6 +105,6 @@ exports.studentgame = async (req, res) => {
       .status(200)
       .json({ success: true, messgae: "Game complleted successfully", data });
   } catch (err) {
-    return res.status(200).json({ success: false, error: err.message });
+    return res.status(200).json({ success: false, message: err.message });
   }
 };

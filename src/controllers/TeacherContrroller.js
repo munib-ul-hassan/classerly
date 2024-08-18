@@ -173,7 +173,7 @@ exports.mystudents = async (req, res) => {
   
   }).populate({path:"students", select:"auth" ,
   
-  populate:{path:"grade",select:"grade"}
+  populate:{path:"grade",select:["grade","subjects"],populate:{path:"subjects",select:["image","name"]}}
 
 });
     

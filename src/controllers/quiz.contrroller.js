@@ -75,7 +75,7 @@ exports.addquiz = asyncHandler(async (req, res) => {
       message: "Quiz added successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 
@@ -117,7 +117,7 @@ exports.updatequiz = asyncHandler(async (req, res) => {
       message: "Quize Update Successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 exports.deletequiz = asyncHandler(async (req, res) => {
@@ -128,7 +128,7 @@ exports.deletequiz = asyncHandler(async (req, res) => {
       message: "Feedback done successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 exports.addquestion = asyncHandler(async (req, res) => {
@@ -158,7 +158,7 @@ exports.addquestion = asyncHandler(async (req, res) => {
       message: "Question added successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 exports.updatequestion = asyncHandler(async (req, res) => {
@@ -185,7 +185,7 @@ exports.updatequestion = asyncHandler(async (req, res) => {
       message: "Question updated successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 exports.deletequestions = asyncHandler(async (req, res) => {
@@ -211,7 +211,7 @@ exports.deletequestions = asyncHandler(async (req, res) => {
       message: "Question deleted successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 
@@ -237,6 +237,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
         {
           questions: quizdata.questions,
           score: quizdata.score,
+          marks:0
         },
         { upsert: true }
       );
@@ -252,11 +253,13 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
         message: "Quiz started successfully",
       });
     } else if (status == "end") {
-      let marks = 0;
+      let marks = 0,score=0;
       quizdata.questions.map(async (q, index) => {
         if (q.answer == studentdata.answers[index]) {
-          marks++;
+          marks+=q.score;
         }
+        score+=q.score;
+
         if (index == quizdata?.questions?.length - 1) {
           const quizsdata = await StudentquizesModel.findOneAndUpdate(
             {
@@ -265,6 +268,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
             },
             {
               status: "complete",
+              result:marks/score*100>45?"Pass":"Fail",
               marks,
             },
             { new: true }
@@ -281,7 +285,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
       throw Error("Invalid reqt");
     }
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 
@@ -335,7 +339,7 @@ exports.getquizes = asyncHandler(async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 exports.addananswer = asyncHandler(async (req, res) => {
@@ -362,7 +366,7 @@ exports.addananswer = asyncHandler(async (req, res) => {
       message: "Answer done successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 exports.getstudentquizesbyquizid = asyncHandler(async (req, res) => {
@@ -436,7 +440,7 @@ exports.getstudentquizesbyquizid = asyncHandler(async (req, res) => {
       message: "Student Quizes not found",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });
 
@@ -470,6 +474,6 @@ exports.updatestudentquize = asyncHandler(async (req, res) => {
       message: "Student Quizes updated successfully",
     });
   } catch (error) {
-    return res.status(200).json({ success: false, error: error.message });
+    return res.status(200).json({ success: false, message: error.message });
   }
 });

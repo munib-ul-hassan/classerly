@@ -5,8 +5,12 @@ const { findOne } = require("../models/student");
 const asyncHandler = require("../utils/asyncHandler");
 const fs = require("fs")
 const main=async()=>{
-  // let grade= await gradeModel.findOne({grade:"Grade 9"})
-  
+
+  let grades= await gradeModel.find({})
+  grades.map(async(i)=>{
+    let d = await subjectModel.find({grade:i._id})
+    console.log(i.grade,i._id,d.length)
+  })
 
 //   [
 // "Dance - open",

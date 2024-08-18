@@ -8,6 +8,7 @@ const { isValidObjectId } = require("mongoose");
 // const ApiError = require("../utils/Apierror");
 const teacherModel = require("../models/teacher");
 const FeedbackModel = require("../models/feedback");
+const StudentquizesModel = require("../models/studentquizes");
 
 exports.addNewChild = asyncHandler(async (req, res) => {
   const { stdid } = req.body;
@@ -21,7 +22,7 @@ exports.addNewChild = asyncHandler(async (req, res) => {
     const child = await StudentModel.findOne({ code: stdid });
 
     if (!child) {
-      return res.status(200).json({ error: "Invalid child ID" });
+      return res.status(200).json({ message: "Invalid child ID" });
     }
 
     findParent.childIds.push(child._id);
@@ -33,7 +34,7 @@ exports.addNewChild = asyncHandler(async (req, res) => {
   } catch (error) {
     console.error("Error in sign-up:");
 
-    res.status(200).json({ error: error.message });
+    res.status(200).json({ message: error.message });
   }
 });
 
@@ -45,109 +46,60 @@ exports.getMyChilds = asyncHandler(async (req, res) => {
       path: "childIds",
       select: "-password",
       populate: [
-        { path: "grade", select: "-students" },
+        {
+          path: "grade",
+          select: ["grade", "subjects"],
+          populate: { path: "subjects", select: ["image", "name"] },
+        },
         { path: "auth", select: "-password" },
       ],
     });
-    
+
     const childs = findMychilds.childIds;
     res
       .status(200)
       .json(new ApiResponse(200, childs, "childs founded succesfully"));
   } catch (error) {
-    res.status(200).json({ error: error.message });
+    res.status(200).json({ message: error.message });
   }
 });
-exports.addfeedback = asyncHandler(async (req, res) => {
+
+exports.myFeedBacks = asyncHandler(async (req, res) => {
   try {
-    const { teacher, feedback, star, grade } = req.body;
-    const existTeacher = await teacherModel.findOne({ _id: teacher });
-    const existfeedback = await FeedbackModel.findOne({
-      teacher,
-      parent: req.user.profile._id,
-      grade,
+    const {id}= req.params
+    const findTeacher = await FeedbackModel.find({
+      childern: id,
+    }).populate({
+      path: "teacher",
+      select: "-feedback",
+      populate: { path: "auth", select: ["fullName","image","profile"] }, // Exclude the 'password' field
     });
 
-    if (!existTeacher) {
-      throw new Error( "Invalid teacher id");
-    }
-    if (existfeedback) {
-      throw new Error( "already added feedback");
-    }
-    if (star > 5) {
-      throw new Error( "value of star must be equal to or less than 5");
-    }
-    
-    const feedbackdata = await new FeedbackModel({
-      parent: req.user.profile._id,
-      grade,
-      teacher,
-      feedback,
-      star: parseInt(star),
-    }).save();
-    return res.send({
-      success: true,
-      data: feedbackdata,
-      message: "Feedback done successfully",
-    });
+    res
+      .status(200)
+      .json(new ApiResponse(200, findTeacher, "feedbacks Found Successfully"));
   } catch (error) {
-    res.status(200).json({ success:false,error: error.message });
+    return res
+      .status(200)
+      .json({
+        success: false,
+        message: error.message || "Something went wrong",
+      });
   }
 });
-exports.updatefeedback = asyncHandler(async (req, res) => {
+exports.getQuizInfo = async (req, res) => {
   try {
     const { id } = req.params;
-    const { feedback, star } = req.body;
-
-    const existfeedback = await FeedbackModel.findOne({
-      _id: id,
-      parent: req.user.profile._id,
-    });
-
-    if (!existfeedback) {
-      throw new Error( "Invalid id");
-    }
-    if (star && star > 5) {
-      throw new Error( "value of star must be equal to or less than 5");
-    }
-    const feedbackdata = await FeedbackModel.findOneAndUpdate(
-      {
-        _id: id,
-        parent: req.user.profile._id,
-      },
-      {
-        feedback,
-        star: parseInt(star),
-      },
-      { new: true }
-    );
-    return res.send({
-      success: true,
-      data: feedbackdata,
-      message: "Feedback update successfully",
-    });
+    const data = await StudentquizesModel.find({ student: id ,status:"complete"}).populate({path:"quiz",populate:{path:"subject"}});
+    return res
+      .status(200)
+      .json({ success: true, data, message: "Quiz data found Successfully" });
   } catch (error) {
-    res.status(200).json({ error: error.message });
+    return res
+      .status(200)
+      .json({
+        success: false,
+        message: error.message || "Something went wrong",
+      });
   }
-});
-exports.myFeedBacks = asyncHandler(async (req, res) => {
-  
-  try {
-    const findTeacher = await FeedbackModel.find({ parent:req.user.profile._id })
-      .populate({
-        path: "teacher",
-        select: "-feedback",
-        populate:{path:"auth",
-        select: "-password"
-      } // Exclude the 'password' field
-      })
-      
-
-    
-    res.status(200).json(
-      new ApiResponse(200, findTeacher, "feedbacks Found Successfully")
-    );
-  } catch (error) {
-    res.status(200).json({ message: error.message || "Something went wrong" });
-  }
-});
+};

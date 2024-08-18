@@ -4,9 +4,9 @@ const { Schema } = require("mongoose");
 const teacherModel = require("./teacher");
 
 const FeedbackSchema = new Schema({
-  parent: {
+  childern: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Parent",
+    ref: "Student",
   },
   teacher: {
     type: mongoose.Schema.Types.ObjectId,
@@ -20,6 +20,8 @@ const FeedbackSchema = new Schema({
     type: String,
   },
   star: Number,
+},{
+  timestamps:true
 });
 
 const FeedbackModel = mongoose.model("feedback", FeedbackSchema);
