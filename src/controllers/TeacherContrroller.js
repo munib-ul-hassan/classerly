@@ -146,12 +146,12 @@ exports.myFeedBacks = asyncHandler(async (req, res) => {
     const findTeacher = await FeedbackModel.find({
       teacher: req.user.profile._id,
     }).populate({
-      path: "parent",
+      path: "childern",
       populate: {
         path: "auth",
         select: "-password", // Exclude the 'password' field
-      },
-      select: "-childIds",
+      }
+      
     });
 
     res

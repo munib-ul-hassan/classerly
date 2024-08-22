@@ -13,6 +13,7 @@ const gradeModel = require("../models/grade.models");
 const studentModel = require("../models/student");
 const parentModel = require("../models/parent");
 const teacherModel = require("../models/teacher");
+const subjectModel = require("../models/subject");
 
 exports.register = asyncHandler(async (req, res) => {
   const session = await mongoose.startSession();
@@ -28,6 +29,7 @@ exports.register = asyncHandler(async (req, res) => {
       grade,
       parent,
       childIds,
+      subject
     } = req.body;
     if (
       [fullName, userName, password, email, userType].some(
@@ -52,6 +54,13 @@ exports.register = asyncHandler(async (req, res) => {
       gradeData = await gradeModel.findOne({ _id: grade });
       if (!gradeData) {
         throw Error("Invalid grade selected");
+      }
+    }
+    let subjectData;
+    if (subject) {
+      subjectData = await subjectModel.findOne({ _id:subject });
+      if (!subjectData) {
+        throw Error("Invalid subject selected");
       }
     }
     let profile;
@@ -92,10 +101,14 @@ exports.register = asyncHandler(async (req, res) => {
 
       await sendEmail(emailsubject, email, message, requestType);
     } else if (userType == "Teacher") {
-      profile = new TeacherModel({ auth: auth._id, grade });
+      profile = new TeacherModel({ auth: auth._id, grade,subject });
       if (gradeData) {
         gradeData.teachers.push(profile._id);
         await gradeData.save();
+      }
+      if (subjectData) {
+        subjectData.teachers.push(profile._id);
+        await subjectData.save();
       }
     } else if (userType == "Parent") {
       if (childIds) {
@@ -332,7 +345,7 @@ exports.resetpassword = asyncHandler(async (req, res) => {
 });
 exports.updateuser = asyncHandler(async (req, res) => {
   try {
-    const { userName, image, password, grade } = req.body;
+    const { userName, image, password, grade ,subject } = req.body;
     const cleanObject = (obj) => {
       return Object.fromEntries(
         Object.entries(obj).filter(

@@ -29,11 +29,11 @@ const changeStream = FeedbackModel.watch();
 changeStream.on("change", async (change) => {
   let techerfeedback;
   
-  if (change.operationType == "update" || change.operationType == "delete") {
+  if (change?.operationType == "update" || change?.operationType == "delete") {
     techerfeedback = await FeedbackModel.find({
       teacher: (
         await FeedbackModel.findOne({ _id: change.documentKey._id })
-      ).teacher,
+      )?.teacher,
     });
   } else {
     techerfeedback = await FeedbackModel.find({
@@ -42,7 +42,7 @@ changeStream.on("change", async (change) => {
   }
   if (techerfeedback) {
     await teacherModel.findOneAndUpdate(
-      { _id: techerfeedback[0].teacher },
+      { _id: techerfeedback[0]?.teacher },
       {
         feedback: {
           total: techerfeedback.length,

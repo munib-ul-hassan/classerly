@@ -6,120 +6,202 @@ const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const subjectModel = require("../models/subject");
 const { default: mongoose } = require("mongoose");
-// const main = async ()=>{
+const fs = require("fs");
+const XLSX = require("xlsx");
 
-//   let subject= await subjectModel.findOne({name:"Scienve"})
+function uniquedata(data) {
+  const result = {};
+  // Iterate through each object in the array
+  for (var i = 0; i < data.length; i++) {
+    let val = Object.keys(data[i]);
+    let val2 = Object.values(data[i]);
+    for (var j = 0; j < val.length; j++) {
+      if (!result[val[j]]) {
+        result[val[j]] = [];
+      }
+      result[val[j]].push(
+        val2[j]
+          .replace(`\n`, " ")
+          .replace(`\r`, " ")
+          .replace(`/`, " ")
+          .replace("\n", " ")
+          .replace("\r", " ")
+      );
+    }
+  }
 
-//   let arr = [
-//     {topic:"A1",lessons:[
-//       {l:"A1.1",p:6,w:1261},
-//     {l:"A1.2",p:8,w:2189},
-//     {l:"A1.3",p:4,w:1315},
-//     {l:"A1.4",p:8,w:1801},
-//     {l:"A1.5",p:8,w:2059},
-//     ]},
-//     {topic:"B1",lessons:[
-//       {l:"B1.1 Relating Science to Our Changing World",p:8,w:1606},
-//       {l:"B1.2 Relating Science to Our Changing World",p:7,w:1649},
-//       ]},
-//     {topic:"B2",lessons:[
-//       {l:"B2.1 Investigating and Understanding Concepts",p:7,w:1704},
-//       {l:"B2.2 Exploring Ecosystem Equilibrium",p:6,w:1502},
-//       {l:"B2.3 Photosynthesis and Cellular Respiration",p:8,w:1843},
-//       {l:"B2.4 Introduction to Ecosystem Sustainability",p:7,w:1590},
-//       {l:"B2.5 Understanding the Dynamic Equilibrium of Ecosystems",p:8,w:1749},
+  return result;
+}
+const main = async () => {
+  //   const workbook = XLSX.readFile('./Ontario curriculum.xlsx'); // Replace with your Excel file path
+  // const sheetName = workbook.SheetNames[0]; // Read the first sheet (adjust if necessary)
+  // const sheet = workbook.Sheets[sheetName];
 
-//     ]},
-//     {topic:"C1",lessons:[
-//     {l:"C1.1",p:7,w:1676},
+  // // Convert to JSON
+  // const jsonData = XLSX.utils.sheet_to_json(sheet);
+  // let data = uniquedata(jsonData, null, 2);
+  // fs.writeFileSync('data3.json', JSON.stringify(data, null, 2));
 
-//     {l:"C1.2",p:8,w:1839},
+  fs.readFile(__dirname + "/data2.json", "utf8", async (e, d) => {
+    let keys = Object.keys(JSON.parse(d));
+    let values = Object.values(JSON.parse(d));
+    
+    keys.map(async (item, i) => {
+      let grade = await gradeModel.findOne({ grade: item });
+      if (grade) {
+        values[i].map(async (item2, j) => {
+          if ( !item2.includes("https")) {
+            try{
+            await subjectModel.findOneAndUpdate({
+              grade: grade._id,
+              name: item2.trim()
+                   },{$set:{grade: grade._id,
+                    name: item2.trim(),topics:[],image: values[i][j + 1]}},{upsert:true})}catch(err){
+                      console.log(err.message)
+                    }
+            // console.log({
+            //   grade: grade.grade,
+            //   name: item2.trim(),
+            //   topic: [],
+            //   image: values[i][j + 1],
+            // });
+          }
+        });
+      }
+    });
+    // for (let i = 0; i < 3; i++) {
+    //   console.log(i)
+    //   let grade = await gradeModel.findOne({ grade: keys[i] });
+    //   // console.log(i, keys[i]);
+    //   if (grade) {
+    //     console.log(values[i].length, grade.grade);
+    //     for (let j = 0; j < values[i].length; j+2) {
+    //       // console.log(j)
+    //       // console.log(
+    //       //     {
+    //       //   grade:grade.grade,name:values[i][j].trim(),topic:[],image:values[i][j+1]
+    //       // })
+    //     }
 
-//       ]},
-//     {topic:"C2",lessons:[
-//     {l:"C2.1",p:9,w:7690},
-//     {l:"C2.2",p:7,w:1554},
-//     {l:"C2.3",p:7,w:1602},
-//     {l:"C2.4",p:6,w:1538},
-//     {l:"C2.5",p:6,w:1321},
-//     {l:"C2.6",p:7,w:1588},
-//     {l:"C2.7",p:7,w:1615},
+    //     // await subjectModel.findOneAndUpdate({
+    //     //   grade:grade.grade,name:name.trim()
+    //     // },{$set:{grade:grade.grade,name:name.trim(),topics:[],imaage:}},{upsert:true})
+    //   }
+    // }
+  });
 
-//    ]},
-//     {topic:"D1",lessons:[
-//       {l:"D1.1",p:1,w:1646},
-//       {l:"D1.2",p:7,w:1860},
-//       {l:"D1.3",p:7,w:1530},
-//       {l:"D1.4",p:7,w:1499}
-//       ]},
-//     {topic:"D2",lessons:[
-//       {l:"D2.1",p:7,w:1871},
-//       {l:"D2.2",p:7,w:1651},
-//       {l:"D2.3",p:7,w:1554},
-//       {l:"D2.4",p:8,w:1667},
-//       {l:"D2.5",p:7,w:1441},
-//       {l:"D2.6",p:7,w:1655},
-//       {l:"D2.7",p:2,w:1562},
-//       {l:"D2.8",p:7,w:1416},
+  //   let subject= await subjectModel.findOne({name:"Scienve"})
 
-//       ]},
-//     {topic:"E1",lessons:[
-//       {l:"E1.1",p:7,w:1722},
-//       {l:"E1.2",p:7,w:1715},
-//       {l:"E1.3",p:7,w:1431},
-//     ]},
-//     {topic:"E2",lessons:[
-//       {l:"E2.1",p:2,w:555},
-//       {l:"E2.2",p:7,w:1477},
-//       {l:"E2.3",p:7,w:1893},
-//       {l:"E2.4",p:7,w:1802},
-//       {l:"E2.5",p:7,w:1725},
-//       {l:"E2.6",p:6,w:1263},
-//     ]},
-//     {topic:"Strand A",lessons:[
-//       {l:"A1. STEM Investigation Skills",p:16,w:4275},
-//       {l:"A2. Applications, Careers, and Connections",p:16,w:3809},
-//       ]},
-//     {topic:"Strand B",lessons:[
-//       {l:"B1. Relating Science to Our Changing World",p:15,w:3617},
-//       {l:"B2. Investigating and Understanding Concepts",p:15,w:4086},
-//       ]},
-//     {topic:"Strand C",lessons:[
-//       {l:"C1. Relating Science to Our Changing World",p:16,w:4262},
-//       {l:"C2. Investigating and Understanding Concepts",p:15,w:3949},
-//       ]},
-//     {topic:"Strand D",lessons:[
-//       {l:"D1. Relating Science to Our Changing World",p:18,w:4348},
-//       {l:"D2. Investigating and Understanding Concepts",p:20,w:4670},
-//       ]},
-//     {topic:"Strand E",lessons:[
-//       {l:"E1. Relating Science to Our Changing World",p:18,w:4414},
-//       {l:"E2. Investigating and Understanding Concepts_",p:15,w:4161},
+  //   let arr = [
+  //     {topic:"A1",lessons:[
+  //       {l:"A1.1",p:6,w:1261},
+  //     {l:"A1.2",p:8,w:2189},
+  //     {l:"A1.3",p:4,w:1315},
+  //     {l:"A1.4",p:8,w:1801},
+  //     {l:"A1.5",p:8,w:2059},
+  //     ]},
+  //     {topic:"B1",lessons:[
+  //       {l:"B1.1 Relating Science to Our Changing World",p:8,w:1606},
+  //       {l:"B1.2 Relating Science to Our Changing World",p:7,w:1649},
+  //       ]},
+  //     {topic:"B2",lessons:[
+  //       {l:"B2.1 Investigating and Understanding Concepts",p:7,w:1704},
+  //       {l:"B2.2 Exploring Ecosystem Equilibrium",p:6,w:1502},
+  //       {l:"B2.3 Photosynthesis and Cellular Respiration",p:8,w:1843},
+  //       {l:"B2.4 Introduction to Ecosystem Sustainability",p:7,w:1590},
+  //       {l:"B2.5 Understanding the Dynamic Equilibrium of Ecosystems",p:8,w:1749},
 
-//       ]}]
+  //     ]},
+  //     {topic:"C1",lessons:[
+  //     {l:"C1.1",p:7,w:1676},
 
-//       arr.forEach(async(i)=>{
-//         const newTopic =new topicModel({
-//           name: i.topic,
-//           image:i.topic.split(" ")[0]+".jpeg",
-//           subject:subject._id
-//         })
+  //     {l:"C1.2",p:8,w:1839},
 
-//     i.lessons.map(async(j)=>{
-//       const data = await (new LessonsModel({
-//         name: j.l,
-//         pages:j.p,
-//         content:"Science/"+i.topic+"/"+j.l+".docx",
-//         image:j.l.split(" ")[0]+".jpeg",
-//         topic:newTopic._id,
-//         words:j.w,
-//       })).save();
-//       newTopic.lessons.push(data._id);
-//     })
-//     await newTopic.save();
-//   })
-// }
-// main()
+  //       ]},
+  //     {topic:"C2",lessons:[
+  //     {l:"C2.1",p:9,w:7690},
+  //     {l:"C2.2",p:7,w:1554},
+  //     {l:"C2.3",p:7,w:1602},
+  //     {l:"C2.4",p:6,w:1538},
+  //     {l:"C2.5",p:6,w:1321},
+  //     {l:"C2.6",p:7,w:1588},
+  //     {l:"C2.7",p:7,w:1615},
+
+  //    ]},
+  //     {topic:"D1",lessons:[
+  //       {l:"D1.1",p:1,w:1646},
+  //       {l:"D1.2",p:7,w:1860},
+  //       {l:"D1.3",p:7,w:1530},
+  //       {l:"D1.4",p:7,w:1499}
+  //       ]},
+  //     {topic:"D2",lessons:[
+  //       {l:"D2.1",p:7,w:1871},
+  //       {l:"D2.2",p:7,w:1651},
+  //       {l:"D2.3",p:7,w:1554},
+  //       {l:"D2.4",p:8,w:1667},
+  //       {l:"D2.5",p:7,w:1441},
+  //       {l:"D2.6",p:7,w:1655},
+  //       {l:"D2.7",p:2,w:1562},
+  //       {l:"D2.8",p:7,w:1416},
+
+  //       ]},
+  //     {topic:"E1",lessons:[
+  //       {l:"E1.1",p:7,w:1722},
+  //       {l:"E1.2",p:7,w:1715},
+  //       {l:"E1.3",p:7,w:1431},
+  //     ]},
+  //     {topic:"E2",lessons:[
+  //       {l:"E2.1",p:2,w:555},
+  //       {l:"E2.2",p:7,w:1477},
+  //       {l:"E2.3",p:7,w:1893},
+  //       {l:"E2.4",p:7,w:1802},
+  //       {l:"E2.5",p:7,w:1725},
+  //       {l:"E2.6",p:6,w:1263},
+  //     ]},
+  //     {topic:"Strand A",lessons:[
+  //       {l:"A1. STEM Investigation Skills",p:16,w:4275},
+  //       {l:"A2. Applications, Careers, and Connections",p:16,w:3809},
+  //       ]},
+  //     {topic:"Strand B",lessons:[
+  //       {l:"B1. Relating Science to Our Changing World",p:15,w:3617},
+  //       {l:"B2. Investigating and Understanding Concepts",p:15,w:4086},
+  //       ]},
+  //     {topic:"Strand C",lessons:[
+  //       {l:"C1. Relating Science to Our Changing World",p:16,w:4262},
+  //       {l:"C2. Investigating and Understanding Concepts",p:15,w:3949},
+  //       ]},
+  //     {topic:"Strand D",lessons:[
+  //       {l:"D1. Relating Science to Our Changing World",p:18,w:4348},
+  //       {l:"D2. Investigating and Understanding Concepts",p:20,w:4670},
+  //       ]},
+  //     {topic:"Strand E",lessons:[
+  //       {l:"E1. Relating Science to Our Changing World",p:18,w:4414},
+  //       {l:"E2. Investigating and Understanding Concepts_",p:15,w:4161},
+
+  //       ]}]
+
+  //       arr.forEach(async(i)=>{
+  //         const newTopic =new topicModel({
+  //           name: i.topic,
+  //           image:i.topic.split(" ")[0]+".jpeg",
+  //           subject:subject._id
+  //         })
+
+  //     i.lessons.map(async(j)=>{
+  //       const data = await (new LessonsModel({
+  //         name: j.l,
+  //         pages:j.p,
+  //         content:"Science/"+i.topic+"/"+j.l+".docx",
+  //         image:j.l.split(" ")[0]+".jpeg",
+  //         topic:newTopic._id,
+  //         words:j.w,
+  //       })).save();
+  //       newTopic.lessons.push(data._id);
+  //     })
+  //     await newTopic.save();
+  //   })
+};
+// main();
 
 exports.AddTopic = asyncHandler(async (req, res) => {
   const { name, image, subject, difficulty, type } = req.body;
@@ -206,13 +288,12 @@ exports.updatetopic = asyncHandler(async (req, res) => {
 });
 
 exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
-  // const { subject } = req.query;
-  let subject = "66b3d6bf935d0e0a6cf48f92"
+  const { subject } = req.query;
+  
   try {
     const findTopicLesson = await topicModel.aggregate([
       {
         $match: {
-          
           subject: new mongoose.Types.ObjectId(subject),
         },
       },
@@ -234,7 +315,7 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
       },
     ]);
     // find({ subject });
-    
+
     if (!findTopicLesson) {
       throw new Error("Topics not found");
     }
