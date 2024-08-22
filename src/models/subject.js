@@ -1,31 +1,33 @@
-const mongoose=require("mongoose");
-const {Schema}=require('mongoose');
-
+const mongoose = require("mongoose");
+const { Schema } = require("mongoose");
 
 // ######################## Subject Schema #####################
-const subjectSchema=new Schema({
-    name:{type:String},
-    image:String,
+const subjectSchema = new Schema(
+  {
+    name: { type: String },
+    image: String,
 
-    topics : [
-  
-        {
-            type : Schema.Types.ObjectId,
-            ref : "Topic"
-        } 
-    ] ,
-    teachers:[{
-       type:Schema.Types.ObjectId,
-       ref:"Teacher"
-    }],
-    grade:{
-        type:Schema.Types.ObjectId,
-        ref: "Grade"
+    topics: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Topic",
+      },
+    ],
+    teachers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Teacher",
+      },
+    ],
+    grade: {
+      type: Schema.Types.ObjectId,
+      ref: "Grade",
     },
-   
-},{
-    timestamps:true
-    })
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const subjectModel=mongoose.model("subject",subjectSchema);
-module.exports=subjectModel;
+const subjectModel = mongoose.model("subject", subjectSchema);
+module.exports = subjectModel;

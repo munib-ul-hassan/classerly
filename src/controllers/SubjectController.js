@@ -90,7 +90,7 @@ exports.getAllsubjectsbygrade = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     
-    let data = await subjectModel.find({ grade: id }).populate(["grade","topics","teacher"]);
+    let data = await subjectModel.find({ grade: id }).populate(["grade","topics","teachers"]);
     if (data.length > 0) {
       return res.status(200).json({
         success: true,
