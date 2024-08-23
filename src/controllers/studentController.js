@@ -1,4 +1,6 @@
 const FeedbackModel = require("../models/feedback");
+const StudentgamesModel = require("../models/studentgames.model");
+const StudentquizesModel = require("../models/studentquizes");
 const teacherModel = require("../models/teacher");
 const teacherstudentrequestModel = require("../models/teacherstudentrequest");
 const asyncHandler = require("../utils/asyncHandler");
@@ -133,10 +135,30 @@ exports.getmyteacher= async (req,res)=>{
     return res.send({
       success: true,         
       data,       
-      message: "Teachere get successfully",
+      message: "Teachers get successfully",
     });
   }
   catch (error) {
+    res.status(200).json({ message: error.message });
+  }
+}
+exports.myresult=async (req,res)=>{
+  try{
+    let data =await StudentquizesModel.find({student:req.user?.profile?._id});
+    let data1 =await StudentgamesModel .find({student:req.user?.profile?._id});
+
+    return res.send({
+      success: true,         
+      data:{
+        totalquizes:data.length,
+        passquizes:data.filter((i)=>{return i.result=="pass"}).length,
+        totalgames:data1.length,
+        passgames:data1.filter((i)=>{return i.result=="pass"}).length,
+      },       
+      message: "Result get successfully",
+    });
+  }
+   catch (error) {
     res.status(200).json({ message: error.message });
   }
 }

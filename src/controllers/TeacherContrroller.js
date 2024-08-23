@@ -308,3 +308,26 @@ exports.addstudent = async (req, res) => {
         });
     }
   }
+  exports.mycourses = async (req,res)=>{
+    try{
+      const mycourses = await subjectModel.find({_id:{$in:req.user?.profile?.subjects}})
+      const newcourses = await subjectModel.find({_id:{$nin:req.user?.profile?.subjects}, grade:req.user?.profile?.grade?._id}).sort({_id:-1})
+      res
+      .status(200)
+      .json({
+        success:true,
+        message: "Data get successfully",
+        data:{
+          mycourses,newcourses
+
+        }
+      });
+    } catch (error) {
+      res
+        .status(200)
+        .json({
+          success: false,
+          message: error.message || "Something went wrong",
+        });
+    }
+  }
