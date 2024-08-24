@@ -268,7 +268,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
             },
             {
               status: "complete",
-              result:marks/score*100>45?"Pass":"Fail",
+              result:marks/score*100>45?"pass":"fail",
               marks,
             },
             { new: true }
@@ -366,6 +366,7 @@ exports.addananswer = asyncHandler(async (req, res) => {
       message: "Answer done successfully",
     });
   } catch (error) {
+    console.log(error)
     return res.status(200).json({ success: false, message: error.message });
   }
 });
