@@ -366,7 +366,7 @@ exports.addananswer = asyncHandler(async (req, res) => {
       message: "Answer done successfully",
     });
   } catch (error) {
-    console.log(error)
+    
     return res.status(200).json({ success: false, message: error.message });
   }
 });

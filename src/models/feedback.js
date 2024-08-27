@@ -72,7 +72,7 @@ changeStream.on("change", async (change) => {
       to: change?.fullDocument?.to
     });
   }
-console.log(techerfeedback,studentfeedback)
+
 
   if (techerfeedback.length>0) {
     await teacherModel.findOneAndUpdate(

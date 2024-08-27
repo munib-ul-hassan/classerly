@@ -57,37 +57,14 @@ const main = async () => {
               name: item2.trim()
                    },{$set:{grade: grade._id,
                     name: item2.trim(),topics:[],image: values[i][j + 1]}},{upsert:true})}catch(err){
-                      console.log(err.message)
+                      
                     }
-            // console.log({
-            //   grade: grade.grade,
-            //   name: item2.trim(),
-            //   topic: [],
-            //   image: values[i][j + 1],
-            // });
+            
           }
         });
       }
     });
-    // for (let i = 0; i < 3; i++) {
-    //   console.log(i)
-    //   let grade = await gradeModel.findOne({ grade: keys[i] });
-    //   // console.log(i, keys[i]);
-    //   if (grade) {
-    //     console.log(values[i].length, grade.grade);
-    //     for (let j = 0; j < values[i].length; j+2) {
-    //       // console.log(j)
-    //       // console.log(
-    //       //     {
-    //       //   grade:grade.grade,name:values[i][j].trim(),topic:[],image:values[i][j+1]
-    //       // })
-    //     }
-
-    //     // await subjectModel.findOneAndUpdate({
-    //     //   grade:grade.grade,name:name.trim()
-    //     // },{$set:{grade:grade.grade,name:name.trim(),topics:[],imaage:}},{upsert:true})
-    //   }
-    // }
+   
   });
 
   //   let subject= await subjectModel.findOne({name:"Scienve"})

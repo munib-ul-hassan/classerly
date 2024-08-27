@@ -9,7 +9,7 @@ const main=async()=>{
   let grades= await gradeModel.find({})
   grades.map(async(i)=>{
     let d = await subjectModel.find({grade:i._id})
-    console.log(i.grade,i._id,d.length)
+    
   })
 
 //   [

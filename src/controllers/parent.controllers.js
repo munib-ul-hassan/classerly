@@ -9,6 +9,7 @@ const { isValidObjectId } = require("mongoose");
 const teacherModel = require("../models/teacher");
 const FeedbackModel = require("../models/feedback");
 const StudentquizesModel = require("../models/studentquizes");
+const studentModel = require("../models/student");
 
 exports.addNewChild = asyncHandler(async (req, res) => {
   const { stdid } = req.body;
@@ -22,12 +23,16 @@ exports.addNewChild = asyncHandler(async (req, res) => {
     const child = await StudentModel.findOne({ code: stdid });
 
     if (!child) {
-      return res.status(200).json({ message: "Invalid child ID" });
+      return res.status(200).json({success:false, message: "Invalid child Code" });
+    }
+    if(findParent.childIds.includes(child._id)){
+      return res.status(200).json({success:false, message: "Child Already added" });
+
     }
 
     findParent.childIds.push(child._id);
     findParent.save();
-
+    await StudentModel.findOneAndUpdate({ code: stdid },{parent:findParent._id});
     res
       .status(200)
       .json(new ApiResponse(200, findParent, "child added successfully"));
@@ -64,6 +69,44 @@ exports.getMyChilds = asyncHandler(async (req, res) => {
   }
 });
 
+
+exports.getMyChildbyId= asyncHandler(async (req, res) => {
+  try {
+    const {id} = req.params
+
+    const findMychilds = await studentModel.findOne({
+      _id: id,
+    }).populate(
+     ["grade","auth"]
+      // {
+      //   path: "grade",
+      //   select: ["grade", "subjects"],
+      //   // populate: { path: "subjects", select: ["image", "name"] },
+      // },
+      // { path: "auth", select: "-password" }, 
+    )
+    // populate({
+    //   path: "childIds",
+    //   select: "-password",
+    //   populate: [
+    //     {
+    //       path: "grade",
+    //       select: ["grade", "subjects"],
+    //       populate: { path: "subjects", select: ["image", "name"] },
+    //     },
+    //     { path: "auth", select: "-password" },
+    //   ],
+    // });
+
+    // const childs = findMychilds.childIds;
+    return res
+      .status(200)
+      .json(new ApiResponse(200, findMychilds, "child founded succesfully"));
+  } catch (error) {
+    res.status(200).json({ message: error.message });
+  }
+});
+
 exports.myFeedBacks = asyncHandler(async (req, res) => {
   try {
     const {id}= req.params
@@ -72,7 +115,7 @@ exports.myFeedBacks = asyncHandler(async (req, res) => {
     }).populate({
       path: "from",
       select: "-feedback",
-      populate: { path: "auth", select: ["fullName","image","profile"] }, // Exclude the 'password' field
+      populate: { path: "auth", select: ["fullName","image","profile","userName"] }, // Exclude the 'password' field
     });
 
     res
