@@ -14,7 +14,41 @@ const studentModel = require("../models/student");
 const parentModel = require("../models/parent");
 const teacherModel = require("../models/teacher");
 const subjectModel = require("../models/subject");
-
+const validategradeandsubjectforStudent =async(grade,subject)=>{
+  let gradeData,subjectData
+  if (grade) {
+    gradeData = await gradeModel.findOne({ _id: grade });
+    if (!gradeData) {
+      throw Error("Invalid grade selected");
+    }
+  }
+  
+  if (subject) {
+    subjectData = await subjectModel.findOne({ _id:subject });
+    if (!subjectData) {
+      throw Error("Invalid subject selected");
+    }
+  }
+  return {gradeData,subjectData}
+}
+const validategradeandsubjectforTeacher =async(grade,subject)=>{
+  let gradeData,subjectData
+  if (grade.length>0) {
+    gradeData = await gradeModel.find({ _id: {$in:grade} });
+    if (gradeData.length!=grade.length) {
+      throw Error("Invalid grade selected");
+    }
+  }
+  
+  if (subject.length>0) {
+    subjectData = await subjectModel.find({ _id:{$in:subject} });
+    
+    if (subjectData.length!=subject.length) {
+      throw Error("Invalid subject selected");
+    }
+  }
+  return {gradeData,subjectData}
+}
 exports.register = asyncHandler(async (req, res) => {
   const session = await mongoose.startSession();
   try {
@@ -49,20 +83,36 @@ exports.register = asyncHandler(async (req, res) => {
       fullAddress,
       userType,
     });
-    let gradeData;
-    if (grade) {
-      gradeData = await gradeModel.findOne({ _id: grade });
-      if (!gradeData) {
-        throw Error("Invalid grade selected");
-      }
-    }
-    let subjectData;
-    if (subject) {
-      subjectData = await subjectModel.findOne({ _id:subject });
-      if (!subjectData) {
-        throw Error("Invalid subject selected");
-      }
-    }
+    // let gradeData;
+    // if (grade) {
+    //   gradeData = await gradeModel.findOne({ _id: grade });
+    //   if (!gradeData) {
+    //     throw Error("Invalid grade selected");
+    //   }
+    // }
+    // let subjectData;
+    // if (subject) {
+    //   subjectData = await subjectModel.findOne({ _id:subject });
+    //   if (!subjectData) {
+    //     throw Error("Invalid subject selected");
+    //   }
+    // }
+    let subjectData,gradeData 
+    if(userType!="Teacher"){
+     let result=await validategradeandsubjectforStudent(grade,subject)
+     gradeData=result.gradeData
+     subjectData=result.subjectData
+ 
+
+  }else{
+     let result1=await validategradeandsubjectforTeacher(grade,subject)
+    gradeData=result1.gradeData
+    subjectData=result1.subjectData
+
+    
+    } 
+    
+    
     let profile;
     if (userType == "Student") {
       if (parent) {
@@ -101,7 +151,7 @@ exports.register = asyncHandler(async (req, res) => {
 
       await sendEmail(emailsubject, email, message, requestType);
     } else if (userType == "Teacher") {
-      profile = new TeacherModel({ auth: auth._id, grade,subject });
+      profile = new TeacherModel({ auth: auth._id, grade,subjects:subject });
       if (gradeData) {
         gradeData.teachers.push(profile._id);
         await gradeData.save();
@@ -238,18 +288,25 @@ exports.login = asyncHandler(async (req, res) => {
     // ]);
 
     // Assuming you're using async/await
-
-    const auth = await authModel.findOne({ userName }).populate({
+let auth
+    
+auth = await authModel.findOne({ userName }).populate({
       path: "profile",
       populate: {
         path: "grade",
       },
-    });
+    })
+    // .populate({
+    //   path: "profile",
+    //   populate: {
+    //     path: "subjects",
+    //   },
+    // });
     if (auth && (await bcrypt.compare(password, auth.password))) {
-      auth._doc.profile.grade = {
-        grade: auth._doc?.profile?.grade?.grade,
-        _id: auth._doc?.profile?.grade?._id,
-      };
+      // auth._doc.profile.grade = {
+      //   grade: auth._doc?.profile?.grade?.grade,
+      //   _id: auth._doc?.profile?.grade?._id,
+      // };
       return res.status(200).json({
         success: true,
         message: "loggedin successfully",
@@ -345,7 +402,7 @@ exports.resetpassword = asyncHandler(async (req, res) => {
 });
 exports.updateuser = asyncHandler(async (req, res) => {
   try {
-    const { userName, image, password, grade ,subject } = req.body;
+    const { userName, image, password, grade ,subjects} = req.body;
     const cleanObject = (obj) => {
       return Object.fromEntries(
         Object.entries(obj).filter(
@@ -394,13 +451,14 @@ exports.updateuser = asyncHandler(async (req, res) => {
           );
         }
         case "Teacher": {
+          await validategradeandsubjectforTeacher(grade,subjects)
           await teacherModel.findOneAndUpdate(
             {
               auth: req.user._id,
             },
-            {
-              grade,
-            },
+            
+              { $addToSet: { grade: grade, subjects:subjects } }
+            ,
             { new: true }
           );
         }
@@ -428,7 +486,13 @@ exports.updateuser = asyncHandler(async (req, res) => {
       populate: {
         path: "grade",
       },
-    });
+    })
+    // .populate({
+    //   path: "profile",
+    //   populate: {
+    //     path: "subjects",
+    //   },
+    // });
     return res.status(200).json({
       success: true,
       data: {

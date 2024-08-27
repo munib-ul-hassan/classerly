@@ -7,10 +7,10 @@ const teacherSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "auth",
     },
-    grade: {
+    grade: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Grade",
-    },
+    }],
     feedback: {
       total: Number,
       counts: {

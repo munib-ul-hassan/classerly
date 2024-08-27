@@ -307,14 +307,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{1}}/subject/grade/665f35d154d51693a06b372f",
+							"raw": "{{1}}/subject/grade/66b3d6bf935d0e0a6cf48f92",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
 								"subject",
 								"grade",
-								"665f35d154d51693a06b372f"
+								"66b3d6bf935d0e0a6cf48f92"
 							]
 						}
 					},
@@ -613,7 +613,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Transportation of life\",\r\n    \"subject\": \"6669ec63745b6fe30fc8ca99\",\r\n    \"difficulty\": \"Beginner\",\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\",\r\n    \"type\":\"Premium\"\r\n    \r\n}",
+							"raw": "{\r\n    \"name\": \"Transportation of life\",\r\n    \"subject\": \"666b598cec5d3c31d5f96267\",\r\n    \"difficulty\": \"Beginner\",\r\n    \"image\":\"1717512710189-worktJourneyReplay - Copy (6).png\",\r\n    \"type\":\"Premium\"\r\n    \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -785,7 +785,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{1}}/topic?subject=6660c46dd765cd3ccd8e03bf",
+							"raw": "{{1}}/topic?subject=66b3d6bf935d0e0a6cf48f92",
 							"host": [
 								"{{1}}"
 							],
@@ -795,7 +795,7 @@
 							"query": [
 								{
 									"key": "subject",
-									"value": "6660c46dd765cd3ccd8e03bf"
+									"value": "66b3d6bf935d0e0a6cf48f92"
 								}
 							]
 						}
@@ -875,8 +875,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{admintoken}}",
-								"type": "text"
+								"value": "{{admintoken}}"
 							}
 						],
 						"body": {
@@ -983,8 +982,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{admintoken}}",
-								"type": "text"
+								"value": "{{admintoken}}"
 							}
 						],
 						"url": {
@@ -1184,14 +1182,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{1}}/topic/lesson/6668877fbf018d40d84711f7",
+							"raw": "{{1}}/topic/lesson/66b3dcff6d5a262329f94792",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
 								"topic",
 								"lesson",
-								"6668877fbf018d40d84711f7"
+								"66b3dcff6d5a262329f94792"
 							]
 						}
 					},
@@ -1639,6 +1637,111 @@
 							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"666d8a1e606bf9c50f5c146e\",\n            \"auth\": {\n                \"_id\": \"666d8a1e606bf9c50f5c146c\",\n                \"fullName\": \"abc\",\n                \"userName\": \"std5\",\n                \"email\": \"std5@yopmail.com\",\n                \"userType\": \"Student\",\n                \"fullAddress\": \"abc\",\n                \"profile\": \"666d8a1e606bf9c50f5c146e\",\n                \"createdAt\": \"2024-06-15T12:33:35.605Z\",\n                \"updatedAt\": \"2024-06-15T12:33:35.605Z\",\n                \"__v\": 0\n            },\n            \"grade\": {\n                \"_id\": \"666b510e00af65249616e251\",\n                \"grade\": \"12\",\n                \"teachers\": [],\n                \"subjects\": [],\n                \"createdAt\": \"2024-06-13T20:05:34.071Z\",\n                \"updatedAt\": \"2024-06-15T12:33:34.490Z\",\n                \"__v\": 4\n            },\n            \"code\": \"319575\",\n            \"createdAt\": \"2024-06-15T12:33:35.974Z\",\n            \"updatedAt\": \"2024-06-15T12:33:35.974Z\",\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"childs founded succesfully\",\n    \"success\": true\n}"
 						}
 					]
+				},
+				{
+					"name": "add my child",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stdid\":\"319575\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/addchild",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"addchild"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "add my child",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"stdid\":\"319575\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/addchild",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"addchild"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "288"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"120-s+Nwfs8aIQGLEoRasLm/R/fZWds\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 12:37:20 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": {\n        \"_id\": \"666d8a79606bf9c50f5c1473\",\n        \"auth\": \"666d8a79606bf9c50f5c1472\",\n        \"childIds\": [\n            \"666d8a1e606bf9c50f5c146e\"\n        ],\n        \"code\": \"764643\",\n        \"createdAt\": \"2024-06-15T12:35:06.294Z\",\n        \"updatedAt\": \"2024-06-15T12:35:06.294Z\",\n        \"__v\": 0\n    },\n    \"message\": \"child added successfully\",\n    \"success\": true\n}"
+						}
+					]
 				}
 			]
 		},
@@ -1653,7 +1756,7 @@
 							"script": {
 								"exec": [
 									"var d= pm.response.json().data\r",
-									"pm.collectionVariables.set(\"token\", \"Bearer \"+d.token); \r",
+									"pm.collectionVariables.set(\"studenttoken\", \"Bearer \"+d.token); \r",
 									"\r",
 									"\r",
 									"\r",
@@ -1680,7 +1783,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n        \"userName\":\"teacher\",\r\n      \"password\":\"teacher\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"std9\",\r\n    \"password\": \"321\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1688,11 +1791,16 @@
 							}
 						},
 						"url": {
-							"raw": "{{1}}/auth/login",
+							"raw": "https://classerly-c7ee10cd4558.herokuapp.com/api/v1/auth/login",
+							"protocol": "https",
 							"host": [
-								"{{1}}"
+								"classerly-c7ee10cd4558",
+								"herokuapp",
+								"com"
 							],
 							"path": [
+								"api",
+								"v1",
 								"auth",
 								"login"
 							]
@@ -1943,7 +2051,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n      \"fullName\":\"teacher\",\r\n      \"userName\":\"teacher\",\r\n      \"password\":\"teacher\",\r\n      \"email\":\"teacher@yopmail.com\",\r\n      \"fullAddress\":\"teacher\",\r\n      \"userType\":\"Teacher\"\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n      \r\n}",
+							"raw": "{\r\n      \"fullName\":\"teacher\",\r\n      \"userName\":\"teacher\",\r\n      \"password\":\"teacher\",\r\n      \"email\":\"teacher@yopmail.com\",\r\n      \"fullAddress\":\"teacher\",\r\n      \"userType\":\"Teacher\",\r\n      \"grade\":[\"666b510e00af65249616e24c\",\"666b510e00af65249616e24a\"],\r\n      \"subject\":[\"66c5f9faec4d76ca682f23ea\",\"66c5f9ffec4d76ca682f2d1c\"]\r\n\r\n    //   \"grade\":\"\", optional and is the _id of grade     \r\n      \r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2559,8 +2667,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
-								"type": "text"
+								"value": "{{token}}"
 							}
 						],
 						"body": {
@@ -2953,36 +3060,1025 @@
 			"name": "quizes",
 			"item": [
 				{
-					"name": "add quiz by teacher",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+					"name": "question",
+					"item": [
+						{
+							"name": "add question",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"question\": \"what is after B?\",\r\n    \"options\": [\r\n        \"A\",\r\n        \"D\",\r\n        \"C\",\r\n        \"F\"\r\n    ],\r\n    \"answer\": \"C\",\r\n    \"time\": 60,\r\n    \"quiz\": \"66748ac3daba098e691e133a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/quiz/teacher/q",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher",
+										"q"
+									]
 								}
-							}
+							},
+							"response": [
+								{
+									"name": "question added",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"question\": \"what is after B?\",\r\n    \"options\": [\r\n        \"A\",\r\n        \"D\",\r\n        \"C\",\r\n        \"F\"\r\n    ],\r\n    \"answer\": \"C\",\r\n    \"time\": 60,\r\n    \"quiz\": \"66748ac3daba098e691e133a\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{1}}/quiz/teacher/q",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"teacher",
+												"q"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "474"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"1da-SBbhXbJ19poVHqgbwpGIphdaoZs\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 23 Jun 2024 12:32:19 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"status\": \"pending\",\n        \"_id\": \"66748ac3daba098e691e133a\",\n        \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n        \"questions\": [\n            \"667815d352fc9de2be36991d\"\n        ],\n        \"grade\": \"666b510e00af65249616e24a\",\n        \"topic\": \"667488bc99eba246d7102b71\",\n        \"subject\": \"666b598cec5d3c31d5f96267\",\n        \"startsAt\": \"2024-06-21T03:00:00.000Z\",\n        \"endsAt\": \"2024-06-21T04:00:00.000Z\",\n        \"score\": 5,\n        \"createdAt\": \"2024-06-20T20:02:11.057Z\",\n        \"updatedAt\": \"2024-06-23T12:32:19.345Z\",\n        \"__v\": 1\n    },\n    \"message\": \"Question added successfully\"\n}"
+								}
+							]
 						},
-						"url": {
-							"raw": "{{1}}/quiz/teacher",
-							"host": [
-								"{{1}}"
-							],
-							"path": [
-								"quiz",
-								"teacher"
+						{
+							"name": "update question",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \r\n    \"time\": \"50\",\r\n    \r\n    \"quiz\": \"66748ac3daba098e691e133a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/quiz/teacher/q/667815d352fc9de2be36991d",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher",
+										"q",
+										"667815d352fc9de2be36991d"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "update question",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \r\n    \"time\": \"50\",\r\n    \r\n    \"quiz\": \"66748ac3daba098e691e133a\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{1}}/quiz/teacher/q/667815d352fc9de2be36991d",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"teacher",
+												"q",
+												"667815d352fc9de2be36991d"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "301"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"12d-wI+H7zNmS11o67f2D/s5aJPEpwk\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 23 Jun 2024 12:39:33 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"667815d352fc9de2be36991d\",\n        \"quiz\": \"66748ac3daba098e691e133a\",\n        \"question\": \"what is after B?\",\n        \"options\": [\n            \"A\",\n            \"D\",\n            \"C\",\n            \"F\"\n        ],\n        \"answer\": \"D\",\n        \"time\": 50,\n        \"createdAt\": \"2024-06-23T12:32:19.062Z\",\n        \"updatedAt\": \"2024-06-23T12:39:33.189Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Question updated successfully\"\n}"
+								}
+							]
+						},
+						{
+							"name": "delete question",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/quiz/teacher/q/667815d352fc9de2be36991d?quiz=66748ac3daba098e691e133a",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher",
+										"q",
+										"667815d352fc9de2be36991d"
+									],
+									"query": [
+										{
+											"key": "quiz",
+											"value": "66748ac3daba098e691e133a"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "question deleted",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}"
+											}
+										],
+										"url": {
+											"raw": "{{1}}/quiz/teacher/q/667815d352fc9de2be36991d?quiz=66748ac3daba098e691e133a",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"teacher",
+												"q",
+												"667815d352fc9de2be36991d"
+											],
+											"query": [
+												{
+													"key": "quiz",
+													"value": "66748ac3daba098e691e133a"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "301"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"12d-s234BEEXqWfX36fBurSicjDsXVs\""
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 23 Jun 2024 12:41:05 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"667815d352fc9de2be36991d\",\n        \"quiz\": \"66748ac3daba098e691e133a\",\n        \"question\": \"what is after B?\",\n        \"options\": [\n            \"A\",\n            \"D\",\n            \"C\",\n            \"F\"\n        ],\n        \"answer\": \"D\",\n        \"time\": 50,\n        \"createdAt\": \"2024-06-23T12:32:19.062Z\",\n        \"updatedAt\": \"2024-06-23T12:39:33.189Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Question deleted successfully\"\n}"
+								}
 							]
 						}
-					},
-					"response": []
+					]
+				},
+				{
+					"name": "student",
+					"item": [
+						{
+							"name": "start quiz",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{studenttoken}}"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/quiz/student/66b6779cbbde55bd1a4ec741?status=start",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"student",
+										"66b6779cbbde55bd1a4ec741"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "start"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "start quiz",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{studenttoken}}"
+											}
+										],
+										"url": {
+											"raw": "{{1}}/quiz/student/66748ac3daba098e691e133a?status=start",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"student",
+												"66748ac3daba098e691e133a"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "start"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "354"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"162-ruuZbgP+9//wHFvHmk4Z/UW9XKY\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 24 Jun 2024 19:59:02 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"student\": \"666d8a1e606bf9c50f5c146e\",\n        \"quiz\": \"66748ac3daba098e691e133a\",\n        \"status\": \"start\",\n        \"result\": \"awaiting\",\n        \"questions\": [\n            \"667815d352fc9de2be36991d\"\n        ],\n        \"answers\": [],\n        \"score\": 5,\n        \"_id\": \"6679d00571a1bbad2d98cc27\",\n        \"createdAt\": \"2024-06-24T19:59:01.998Z\",\n        \"updatedAt\": \"2024-06-24T19:59:01.998Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Quiz started successfully\"\n}"
+								}
+							]
+						},
+						{
+							"name": "end quiz",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{studenttoken}}"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/quiz/student/66748ac3daba098e691e133a?status=end",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"student",
+										"66748ac3daba098e691e133a"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "end"
+										}
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "end quiz",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{studenttoken}}"
+											}
+										],
+										"url": {
+											"raw": "{{1}}/quiz/student/66748ac3daba098e691e133a?status=end",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"student",
+												"66748ac3daba098e691e133a"
+											],
+											"query": [
+												{
+													"key": "status",
+													"value": "end"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "359"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"167-a0bgVKCnBekpGs+BknBxPLrY/pw\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 24 Jun 2024 19:59:53 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"6679d00571a1bbad2d98cc27\",\n        \"student\": \"666d8a1e606bf9c50f5c146e\",\n        \"quiz\": \"66748ac3daba098e691e133a\",\n        \"status\": \"complete\",\n        \"result\": \"awaiting\",\n        \"questions\": [\n            \"667815d352fc9de2be36991d\"\n        ],\n        \"answers\": [],\n        \"score\": 5,\n        \"createdAt\": \"2024-06-24T19:59:01.998Z\",\n        \"updatedAt\": \"2024-06-24T19:59:52.879Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Quiz Completed successfully\"\n}"
+								}
+							]
+						},
+						{
+							"name": "input an answer of question of quiz",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2YzM5NzA0YjRlZTBjOTg3MTY4MzM5OCIsImZ1bGxOYW1lIjoiQXphbSIsInVzZXJOYW1lIjoiYXphbSIsImVtYWlsIjoid2FyaXNhbGxhaDkyM0BnbWFpbC5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRjYWI5UDBpcVY3ZHVDOU1ycm8uamZ1dkV5TkVBeGtnaVpyYUIvMnVUV1daOWI1WkhvR3BrSyIsInVzZXJUeXBlIjoiU3R1ZGVudCIsImZ1bGxBZGRyZXNzIjoiTWFuc2VocmEsIEtQSywgUGFraXN0YW4iLCJwcm9maWxlIjp7Il9pZCI6IjY2YzM5NzA0YjRlZTBjOTg3MTY4MzM5YSIsImF1dGgiOiI2NmMzOTcwNGI0ZWUwYzk4NzE2ODMzOTgiLCJncmFkZSI6eyJncmFkZSI6IkdyYWRlIDkiLCJzdHVkZW50cyI6W10sInRlYWNoZXJzIjpbXSwic3ViamVjdHMiOltdLCJfaWQiOiI2NjZiNTEwZTAwYWY2NTI0OTYxNmUyNTAifSwiY29kZSI6IjMzNzQyNiIsImNyZWF0ZWRBdCI6IjIwMjQtMDgtMTlUMTk6MDM6MzMuMjI1WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDgtMTlUMTk6MDM6MzMuMjI1WiIsIl9fdiI6MH0sImNyZWF0ZWRBdCI6IjIwMjQtMDgtMTlUMTk6MDM6MzMuMDk1WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDgtMTlUMjA6NTg6MjYuODQ5WiIsIl9fdiI6MCwib3RwIjoiMjYzOTgzIn0sImlhdCI6MTcyNDQ4OTE5Mn0.gPOQd-TNjPSFn8ITe-zMv7HuJguOzGY7MX4HeBnQgQ8"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"answer\":\"A\",\r\n    \"index\":1\r\n    \r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/quiz/student/a/66b6779cbbde55bd1a4ec741",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"student",
+										"a",
+										"66b6779cbbde55bd1a4ec741"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "input an answer of question of quiz",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{studenttoken}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"answer\":\"D\",\r\n    \"index\":1\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{1}}/quiz/student/a/6679d00571a1bbad2d98cc27",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"student",
+												"a",
+												"6679d00571a1bbad2d98cc27"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "356"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"164-NNlhsIFmPy6rod/TzXtsrf/w9rA\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 24 Jun 2024 20:07:23 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"6679d00571a1bbad2d98cc27\",\n        \"student\": \"666d8a1e606bf9c50f5c146e\",\n        \"quiz\": \"66748ac3daba098e691e133a\",\n        \"status\": \"start\",\n        \"result\": \"awaiting\",\n        \"questions\": [\n            \"667815d352fc9de2be36991d\"\n        ],\n        \"answers\": [\n            \"D\"\n        ],\n        \"score\": 5,\n        \"createdAt\": \"2024-06-24T19:59:01.998Z\",\n        \"updatedAt\": \"2024-06-24T20:07:22.864Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Answer done successfully\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "teacher",
+					"item": [
+						{
+							"name": "add quiz by teacher",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{studenttoken}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"grade\": \"666b510e00af65249616e250\",\r\n    \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\r\n\r\n    \"topic\": \"66b3dcff6d5a262329f94792\",\r\n    \"lesson\": \"66b3f6959a7d59ca4f572d2e\",\r\n\r\n    \"startsAt\": \"2024-08-12T08:00:00\",\r\n    \"endsAt\": \"2024-06-12T09:00:00\",\r\n    \"score\": 10,\r\n    \"questions\": [\r\n        {\r\n            \"question\": \"What is the first step in the scientific research process?\",\r\n            \"options\": [\r\n                \"Analyzing data\",\r\n                \"Drawing conclusions\",\r\n                \"Identifying the problem\",\r\n                \"Conducting experiments\"\r\n            ],\r\n            \"answer\": \"Identifying the problem\",\r\n            \"time\": 60\r\n        },\r\n       {\r\n            \"question\": \"What should you do before forming a hypothesis?\",\r\n            \"options\": [\r\n                \"Conduct an experiment\",\r\n                \"Analyze data\",\r\n                \"Gather information\",\r\n                \"Draw conclusions\"\r\n            ],\r\n            \"answer\": \"Gather information\",\r\n            \"time\": 60\r\n        },\r\n        {\r\n            \"question\": \"What type of information should you look for when gathering data for your research?\",\r\n            \"options\": [\r\n                \"Unreliable sources\",\r\n                \"Opinions\",\r\n                \"Reputable sources\",\r\n                \"Fictional stories\"\r\n            ],\r\n            \"answer\": \"Reputable sources\",\r\n            \"time\": 60\r\n        },{\r\n            \"question\": \"What is a hypothesis?\",\r\n            \"options\": [\r\n                \"A random guess\",\r\n                \"A detailed conclusion\",\r\n                \"An educated guess\",\r\n                \"A known fact\"\r\n            ],\r\n            \"answer\": \"An educated guess\",\r\n            \"time\": 60\r\n        },{\r\n            \"question\": \"Which of the following is an example of collecting data?\",\r\n            \"options\": [\r\n                \"Predicting the outcome of an experiment\",\r\n                \"Reading scientific journals\",\r\n                \"Measuring plant growth\",\r\n                \"Formulating a problem\"\r\n            ],\r\n            \"answer\": \"Measuring plant growth\",\r\n            \"time\": 60\r\n        },{\r\n            \"question\": \"Why is it important to document observations during experiments?\",\r\n            \"options\": [\r\n                \"To have a record for analysis\",\r\n                \"To make the experiment longer\",\r\n                \"To use up supplies\",\r\n                \"To impress the teacher\"\r\n            ],\r\n            \"answer\": \"To have a record for analysis\",\r\n            \"time\": 60\r\n        }\r\n\r\n        ,{\r\n            \"question\": \"What does analyzing data help you understand?\",\r\n            \"options\": [\r\n                \"How to conduct experiments\",\r\n                \"Whether your hypothesis is supported\",\r\n                \"How to write a hypothesis\",\r\n                \"How to identify a problem\"\r\n            ],\r\n            \"answer\": \"Whether your hypothesis is supported\",\r\n            \"time\": 60\r\n        },{\r\n            \"question\": \"Which step comes immediately after conducting experiments?\",\r\n            \"options\": [\r\n                \"Drawing conclusions\",\r\n                \"Observing and collecting data\",\r\n                \"Formulating a hypothesis\",\r\n                \"Gathering information\"\r\n            ],\r\n            \"answer\": \"Observing and collecting data\",\r\n            \"time\": 60\r\n        },{\r\n            \"question\": \"What is the purpose of drawing conclusions in the scientific process?\",\r\n            \"options\": [\r\n                \"To start the research process\",\r\n                \"To summarize your findings\",\r\n                \"To decide on the problem\",\r\n                \"To choose an experiment\"\r\n            ],\r\n            \"answer\": \"To summarize your findings\",\r\n            \"time\": 60\r\n        }\r\n        ,{\r\n            \"question\": \"What should a good experiment be able to do?\",\r\n            \"options\": [\r\n                \"Prove a hypothesis beyond doubt\",\r\n                \"Be repeated with the same results\",\r\n                \"Use a lot of resources\",\r\n                \"Take a long time to complete\"\r\n            ],\r\n            \"answer\": \"Be repeated with the same results\",\r\n            \"time\": 60\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/quiz/teacher",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "add quiz by teacher",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"grade\": \"666b510e00af65249616e24a\",\r\n    \"topic\": \"667488bc99eba246d7102b71\",\r\n    \"subject\": \"666b598cec5d3c31d5f96267\",\r\n    \"startsAt\": \"2024-06-21T08:00:00\",\r\n    \"endsAt\": \"2024-06-21T09:00:00\",\r\n    \"score\": 5,\r\n    \"questions\": [\r\n        {\r\n            \"question\": \"what is after B?\",\r\n            \"options\": [\r\n                \"A\",\r\n                \"D\",\r\n                \"C\",\r\n                \"F\"\r\n            ],\r\n            \"answer\": \"C\",\r\n            \"time\": 60\r\n        },\r\n       {\r\n            \"question\": \"what is after B?\",\r\n            \"options\": [\r\n                \"A\",\r\n                \"D\",\r\n                \"C\",\r\n                \"F\"\r\n            ],\r\n            \"answer\": \"C\",\r\n            \"time\": 60\r\n        },\r\n        {\r\n            \"question\": \"what is after B?\",\r\n            \"options\": [\r\n                \"A\",\r\n                \"D\",\r\n                \"C\",\r\n                \"F\"\r\n            ],\r\n            \"answer\": \"C\",\r\n            \"time\": 60\r\n        },{\r\n            \"question\": \"what is after B?\",\r\n            \"options\": [\r\n                \"A\",\r\n                \"D\",\r\n                \"C\",\r\n                \"F\"\r\n            ],\r\n            \"answer\": \"C\",\r\n            \"time\": 60\r\n        },{\r\n            \"question\": \"what is after B?\",\r\n            \"options\": [\r\n                \"A\",\r\n                \"D\",\r\n                \"C\",\r\n                \"F\"\r\n            ],\r\n            \"answer\": \"C\",\r\n            \"time\": 60\r\n        }\r\n    ]\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{1}}/quiz/teacher",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"teacher"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "559"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"22f-/QjtUMZKDmarPEKScgmJNjmBvlc\""
+										},
+										{
+											"key": "Date",
+											"value": "Thu, 20 Jun 2024 20:05:41 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n        \"questions\": [\n            \"66748b9296fb28922ed6cc5b\",\n            \"66748b9296fb28922ed6cc5d\",\n            \"66748b9296fb28922ed6cc5a\",\n            \"66748b9296fb28922ed6cc5c\",\n            \"66748b9296fb28922ed6cc5e\"\n        ],\n        \"grade\": \"666b510e00af65249616e24a\",\n        \"topic\": \"667488bc99eba246d7102b71\",\n        \"subject\": \"666b598cec5d3c31d5f96267\",\n        \"startsAt\": \"2024-06-21T03:00:00.000Z\",\n        \"endsAt\": \"2024-06-21T04:00:00.000Z\",\n        \"score\": 5,\n        \"_id\": \"66748b9296fb28922ed6cc59\",\n        \"createdAt\": \"2024-06-20T20:05:40.737Z\",\n        \"updatedAt\": \"2024-06-20T20:05:40.737Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Quiz added successfully\"\n}"
+								}
+							]
+						},
+						{
+							"name": "update quiz",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    // \"grade\": \"666b510e00af65249616e24a\",\r\n    // \"topic\": \"667488bc99eba246d7102b71\",\r\n    // \"subject\": \"666b598cec5d3c31d5f96267\",\r\n    // \"startsAt\": \"2024-06-21T08:00:00\",\r\n    // \"endsAt\": \"2024-06-21T09:00:00\",\r\n    \"score\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/quiz/teacher/66748ac3daba098e691e133a",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher",
+										"66748ac3daba098e691e133a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get student quizes",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teachertoken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/quiz/teacher/student/66748ac3daba098e691e133a",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher",
+										"student",
+										"66748ac3daba098e691e133a"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "get student quizes",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{admintoken}}"
+											}
+										],
+										"url": {
+											"raw": "{{1}}/quiz/teacher/student/66748ac3daba098e691e133a",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"teacher",
+												"student",
+												"66748ac3daba098e691e133a"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "902"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"386-+SaWrS+GPtLLORCM5fvhKwumsDQ\""
+										},
+										{
+											"key": "Date",
+											"value": "Mon, 24 Jun 2024 20:15:43 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"_id\": \"6679d00571a1bbad2d98cc27\",\n            \"student\": {\n                \"_id\": \"666d8a1e606bf9c50f5c146e\",\n                \"auth\": \"666d8a1e606bf9c50f5c146c\",\n                \"grade\": \"666b510e00af65249616e251\",\n                \"code\": \"319575\",\n                \"createdAt\": \"2024-06-15T12:33:35.974Z\",\n                \"updatedAt\": \"2024-06-15T12:33:35.974Z\",\n                \"__v\": 0\n            },\n            \"quiz\": {\n                \"_id\": \"66748ac3daba098e691e133a\",\n                \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n                \"questions\": [\n                    \"667815d352fc9de2be36991d\"\n                ],\n                \"grade\": \"666b510e00af65249616e24a\",\n                \"topic\": \"667488bc99eba246d7102b71\",\n                \"subject\": \"666b598cec5d3c31d5f96267\",\n                \"startsAt\": \"2024-06-21T03:00:00.000Z\",\n                \"endsAt\": \"2024-06-21T04:00:00.000Z\",\n                \"score\": 5,\n                \"createdAt\": \"2024-06-20T20:02:11.057Z\",\n                \"updatedAt\": \"2024-06-23T12:44:42.351Z\",\n                \"__v\": 1,\n                \"status\": \"end\"\n            },\n            \"status\": \"complete\",\n            \"result\": \"awaiting\",\n            \"questions\": [],\n            \"answers\": [\n                \"D\"\n            ],\n            \"score\": 5,\n            \"createdAt\": \"2024-06-24T19:59:01.998Z\",\n            \"updatedAt\": \"2024-06-24T20:15:30.211Z\",\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"Student Quizes done successfully\"\n}"
+								}
+							]
+						},
+						{
+							"name": "update result of student quiz",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"score\":5,\r\n    \"result\":\"pass\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/quiz/teacher/s/6679d00571a1bbad2d98cc27",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher",
+										"s",
+										"6679d00571a1bbad2d98cc27"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "update result of student quiz",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{token}}"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"score\":5,\r\n    \"result\":\"pass\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{1}}/quiz/teacher/s/6679d00571a1bbad2d98cc27",
+											"host": [
+												"{{1}}"
+											],
+											"path": [
+												"quiz",
+												"teacher",
+												"s",
+												"6679d00571a1bbad2d98cc27"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "Access-Control-Allow-Credentials",
+											"value": "true"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json; charset=utf-8"
+										},
+										{
+											"key": "Content-Length",
+											"value": "897"
+										},
+										{
+											"key": "ETag",
+											"value": "W/\"381-LNYjiW2Oo2SdnB8xFYdKsa9rwcw\""
+										},
+										{
+											"key": "Date",
+											"value": "Tue, 25 Jun 2024 20:11:15 GMT"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Keep-Alive",
+											"value": "timeout=5"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"6679d00571a1bbad2d98cc27\",\n        \"student\": {\n            \"_id\": \"666d8a1e606bf9c50f5c146e\",\n            \"auth\": \"666d8a1e606bf9c50f5c146c\",\n            \"grade\": \"666b510e00af65249616e251\",\n            \"code\": \"319575\",\n            \"createdAt\": \"2024-06-15T12:33:35.974Z\",\n            \"updatedAt\": \"2024-06-15T12:33:35.974Z\",\n            \"__v\": 0\n        },\n        \"quiz\": {\n            \"_id\": \"66748ac3daba098e691e133a\",\n            \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n            \"questions\": [\n                \"667815d352fc9de2be36991d\"\n            ],\n            \"grade\": \"666b510e00af65249616e24a\",\n            \"topic\": \"667488bc99eba246d7102b71\",\n            \"subject\": \"666b598cec5d3c31d5f96267\",\n            \"startsAt\": \"2024-06-21T03:00:00.000Z\",\n            \"endsAt\": \"2024-06-21T04:00:00.000Z\",\n            \"score\": 5,\n            \"createdAt\": \"2024-06-20T20:02:11.057Z\",\n            \"updatedAt\": \"2024-06-23T12:44:42.351Z\",\n            \"__v\": 1,\n            \"status\": \"end\"\n        },\n        \"status\": \"result\",\n        \"result\": \"pass\",\n        \"questions\": [],\n        \"answers\": [\n            \"D\"\n        ],\n        \"score\": 5,\n        \"createdAt\": \"2024-06-24T19:59:01.998Z\",\n        \"updatedAt\": \"2024-06-25T20:11:15.141Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Student Quizes updated successfully\"\n}"
+								}
+							]
+						},
+						{
+							"name": "delete quiz",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{1}}/quiz/teacher/66748ac3daba098e691e133a",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"teacher",
+										"66748ac3daba098e691e133a"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "get quizes",
@@ -2995,7 +4091,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{1}}/quiz?grade&teacher&student",
+							"raw": "{{1}}/quiz?grade=666b510e00af65249616e24a&teacher=",
 							"host": [
 								"{{1}}"
 							],
@@ -3005,115 +4101,105 @@
 							"query": [
 								{
 									"key": "grade",
-									"value": null
+									"value": "666b510e00af65249616e24a"
 								},
 								{
 									"key": "teacher",
-									"value": null
+									"value": ""
 								},
 								{
-									"key": "student",
-									"value": null
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "start quiz",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{1}}/quiz/student/:id?status=start",
-							"host": [
-								"{{1}}"
-							],
-							"path": [
-								"quiz",
-								"student",
-								":id"
-							],
-							"query": [
-								{
 									"key": "status",
-									"value": "start"
-								}
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
+									"value": "pending",
+									"description": "pending || start || complete",
+									"disabled": true
 								}
 							]
 						}
 					},
-					"response": []
-				},
-				{
-					"name": "end quiz",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{1}}/quiz/student/:id?status=end",
-							"host": [
-								"{{1}}"
-							],
-							"path": [
-								"quiz",
-								"student",
-								":id"
-							],
-							"query": [
+					"response": [
+						{
+							"name": "get quizes",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/quiz",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz"
+									],
+									"query": [
+										{
+											"key": "grade",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "teacher",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "pending || start || complete",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
 								{
-									"key": "status",
-									"value": "end"
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2330"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"91a-X4aVs1DfcI4vKX9zQK67a9w19tM\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 20 Jun 2024 20:26:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
 								}
 							],
-							"variable": [
-								{
-									"key": "id",
-									"value": ""
-								}
-							]
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"status\": \"pending\",\n            \"_id\": \"66748ac3daba098e691e133a\",\n            \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n            \"questions\": [],\n            \"grade\": \"666b510e00af65249616e24a\",\n            \"topic\": \"667488bc99eba246d7102b71\",\n            \"subject\": \"666b598cec5d3c31d5f96267\",\n            \"startsAt\": \"2024-06-21T03:00:00.000Z\",\n            \"endsAt\": \"2024-06-21T04:00:00.000Z\",\n            \"score\": 5,\n            \"createdAt\": \"2024-06-20T20:02:11.057Z\",\n            \"updatedAt\": \"2024-06-20T20:02:11.057Z\",\n            \"__v\": 0\n        },\n        {\n            \"status\": \"pending\",\n            \"_id\": \"66748b4ccb27ec2d4a87aeda\",\n            \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n            \"questions\": [],\n            \"grade\": \"666b510e00af65249616e24a\",\n            \"topic\": \"667488bc99eba246d7102b71\",\n            \"subject\": \"666b598cec5d3c31d5f96267\",\n            \"startsAt\": \"2024-06-21T03:00:00.000Z\",\n            \"endsAt\": \"2024-06-21T04:00:00.000Z\",\n            \"score\": 5,\n            \"createdAt\": \"2024-06-20T20:04:28.562Z\",\n            \"updatedAt\": \"2024-06-20T20:04:28.562Z\",\n            \"__v\": 0\n        },\n        {\n            \"status\": \"pending\",\n            \"_id\": \"66748b9296fb28922ed6cc59\",\n            \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n            \"questions\": [\n                {\n                    \"_id\": \"66748b9296fb28922ed6cc5b\",\n                    \"quiz\": \"66748b9296fb28922ed6cc59\",\n                    \"question\": \"what is after B?\",\n                    \"options\": [\n                        \"A\",\n                        \"D\",\n                        \"C\",\n                        \"F\"\n                    ],\n                    \"time\": 60,\n                    \"createdAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"updatedAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"__v\": 0\n                },\n                {\n                    \"_id\": \"66748b9296fb28922ed6cc5d\",\n                    \"quiz\": \"66748b9296fb28922ed6cc59\",\n                    \"question\": \"what is after B?\",\n                    \"options\": [\n                        \"A\",\n                        \"D\",\n                        \"C\",\n                        \"F\"\n                    ],\n                    \"time\": 60,\n                    \"createdAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"updatedAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"__v\": 0\n                },\n                {\n                    \"_id\": \"66748b9296fb28922ed6cc5a\",\n                    \"quiz\": \"66748b9296fb28922ed6cc59\",\n                    \"question\": \"what is after B?\",\n                    \"options\": [\n                        \"A\",\n                        \"D\",\n                        \"C\",\n                        \"F\"\n                    ],\n                    \"time\": 60,\n                    \"createdAt\": \"2024-06-20T20:05:38.602Z\",\n                    \"updatedAt\": \"2024-06-20T20:05:38.602Z\",\n                    \"__v\": 0\n                },\n                {\n                    \"_id\": \"66748b9296fb28922ed6cc5c\",\n                    \"quiz\": \"66748b9296fb28922ed6cc59\",\n                    \"question\": \"what is after B?\",\n                    \"options\": [\n                        \"A\",\n                        \"D\",\n                        \"C\",\n                        \"F\"\n                    ],\n                    \"time\": 60,\n                    \"createdAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"updatedAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"__v\": 0\n                },\n                {\n                    \"_id\": \"66748b9296fb28922ed6cc5e\",\n                    \"quiz\": \"66748b9296fb28922ed6cc59\",\n                    \"question\": \"what is after B?\",\n                    \"options\": [\n                        \"A\",\n                        \"D\",\n                        \"C\",\n                        \"F\"\n                    ],\n                    \"time\": 60,\n                    \"createdAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"updatedAt\": \"2024-06-20T20:05:38.603Z\",\n                    \"__v\": 0\n                }\n            ],\n            \"grade\": \"666b510e00af65249616e24a\",\n            \"topic\": \"667488bc99eba246d7102b71\",\n            \"subject\": \"666b598cec5d3c31d5f96267\",\n            \"startsAt\": \"2024-06-21T03:00:00.000Z\",\n            \"endsAt\": \"2024-06-21T04:00:00.000Z\",\n            \"score\": 5,\n            \"createdAt\": \"2024-06-20T20:05:40.737Z\",\n            \"updatedAt\": \"2024-06-20T20:05:40.737Z\",\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"Quizes get successfully\"\n}"
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "input an answer of question of quiz",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{token}}"
-							}
-						],
-						"url": {
-							"raw": "{{1}}/quiz/student",
-							"host": [
-								"{{1}}"
-							],
-							"path": [
-								"quiz",
-								"student"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -3127,8 +4213,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{admintoken}}",
-								"type": "text"
+								"value": "{{admintoken}}"
 							}
 						],
 						"body": {
@@ -3231,6 +4316,425 @@
 			]
 		},
 		{
+			"name": "teacher",
+			"item": [
+				{
+					"name": "my students",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{1}}/teacher/mystudents",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"teacher",
+								"mystudents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add student",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"stdId\":[\"319575\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/teacher/addstudent",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"teacher",
+								"addstudent"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "add student",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"stdId\":[\"319575\"]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/teacher/addstudent",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"teacher",
+										"addstudent"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "55"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"37-CawJeA5oVrxBAWU1wJeNJbbSDzU\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 14 Aug 2024 11:56:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Request added successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "student",
+			"item": [
+				{
+					"name": "get requests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studenttoken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{1}}/student/myrequests",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"student",
+								"myrequests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update Request",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studenttoken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"Completed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/student/request/66bc9b6937f61769e0c48650",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"student",
+								"request",
+								"66bc9b6937f61769e0c48650"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "update Request",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{studenttoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"status\":\"Completed\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/student/request/66bc9b6937f61769e0c48650",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"student",
+										"request",
+										"66bc9b6937f61769e0c48650"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "57"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"39-cRXYgVyln86RsXTipz8hAlVTxfA\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 14 Aug 2024 12:28:59 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"message\": \"Request updated successfully\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "games",
+			"item": [
+				{
+					"name": "add games",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teachertoken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n    {\r\n        \"title\":\"Puzzle game\",\r\n        \"grade\": \"666b510e00af65249616e250\",\r\n    \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\r\n\r\n    \"topic\": \"66b3dcff6d5a262329f94792\",\r\n    \"score\":10,\r\n    \"image\":\"http://res.cloudinary.com/deiylfley/image/upload/v1723824481/iskpdsvud6etlmdwpjxb.png\"\r\n    \r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{1}}/game",
+							"host": [
+								"{{1}}"
+							],
+							"path": [
+								"game"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "add games",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{teachertoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "\r\n    {\"grade\": \"666b510e00af65249616e250\",\r\n    \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\r\n\r\n    \"topic\": \"66b3dcff6d5a262329f94792\",\r\n    \"score\":10,\r\n    \"image\":\"http://res.cloudinary.com/deiylfley/image/upload/v1723824481/iskpdsvud6etlmdwpjxb.png\"\r\n    \r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{1}}/game",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"game"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "452"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c4-0D+nf2eg8C8WHgPFFRbo+bo0DuI\""
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 16 Aug 2024 16:08:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"messgae\": \"Game added successfully\",\n    \"data\": {\n        \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n        \"grade\": \"666b510e00af65249616e250\",\n        \"topic\": \"66b3dcff6d5a262329f94792\",\n        \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n        \"image\": \"http://res.cloudinary.com/deiylfley/image/upload/v1723824481/iskpdsvud6etlmdwpjxb.png\",\n        \"status\": \"pending\",\n        \"score\": 10,\n        \"_id\": \"66bf797f8e0947d81cb9f42f\",\n        \"createdAt\": \"2024-08-16T16:08:31.551Z\",\n        \"updatedAt\": \"2024-08-16T16:08:31.551Z\",\n        \"__v\": 0\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "get games",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studenttoken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{2}}/game?grade=666b510e00af65249616e250",
+							"host": [
+								"{{2}}"
+							],
+							"path": [
+								"game"
+							],
+							"query": [
+								{
+									"key": "grade",
+									"value": "666b510e00af65249616e250"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "admin login",
 			"event": [
 				{
@@ -3265,7 +4769,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n     \"userName\":\"admin\",\r\n      \"password\":\"admin\"\r\n}",
+					"raw": "{\r\n     \"userName\":\"admin\",\r\n      \"password\":\"admin\"\r\n      \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -3366,17 +4870,17 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/E:/worktJourneyReplay.png"
+							"src": "/D:/Geekslogicity/classerly/images/1.png"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{1}}/upload",
+					"raw": "{{1}}/uploadimage",
 					"host": [
 						"{{1}}"
 					],
 					"path": [
-						"upload"
+						"uploadimage"
 					]
 				}
 			},
@@ -3392,7 +4896,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/E:/worktJourneyReplay.png"
+									"src": "/D:/pexels-photo-3314294.jpeg"
 								}
 							]
 						},
@@ -3458,14 +4962,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/uploads/1717512710189-worktJourneyReplay.png",
+					"raw": "localhost:8080/uploads/Science/A1/A1.1.docx",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"uploads",
-						"1717512710189-worktJourneyReplay.png"
+						"Science",
+						"A1",
+						"A1.1.docx"
 					]
 				}
 			},
@@ -3508,6 +5014,19 @@
 		{
 			"key": "admintoken",
 			"value": ""
+		},
+		{
+			"key": "teachertoken",
+			"value": ""
+		},
+		{
+			"key": "studenttoken",
+			"value": ""
+		},
+		{
+			"key": "2",
+			"value": "https://classerly-c7ee10cd4558.herokuapp.com/api/v1",
+			"type": "string"
 		}
 	]
 }

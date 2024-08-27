@@ -275,7 +275,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
           );
           return res.send({
             success: true,
-            data: { ...quizsdata._doc, marks },
+            data: { ...quizsdata._doc, marks,score },
             message: "Quiz Completed successfully",
           });
         }
