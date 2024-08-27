@@ -32,7 +32,7 @@ const quizesSchema=new mongoose.Schema({
     endsAt:{
         type:Date
     },
-    image:String,
+    image:{type:String,default:"https://res.cloudinary.com/deiylfley/image/upload/v1724794748/image_2024-08-28_023903555_xek0vx.png"},
 
     status: {
         type: String,
