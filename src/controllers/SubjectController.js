@@ -89,7 +89,10 @@ exports.AddSubject = asyncHandler(async (req, res) => {
 exports.getAllsubjectsbygrade = asyncHandler(async (req, res) => {
   try {
     let  { id } = req.params;
-    id = id.split(",")
+    if(id){
+
+      id = id.split(",")
+    }
     
     let data = await subjectModel.find({ grade: {$in:id} }).populate(["grade","topics","teachers"]);
     if (data.length > 0) {

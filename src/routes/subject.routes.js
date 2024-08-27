@@ -16,6 +16,7 @@ const router=Router();
 
 router.route('/').post(verifyadmintoken,AddSubject);
 router.route('/grade/:id').get(getAllsubjectsbygrade);
+router.route('/grade').get(getAllsubjectsbygrade);
 
 router.route('/:id').delete(verifyadmintoken,deleteSubject);
 router.route('/:id').put(verifyadmintoken,updateSubject);

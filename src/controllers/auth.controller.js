@@ -14,6 +14,7 @@ const studentModel = require("../models/student");
 const parentModel = require("../models/parent");
 const teacherModel = require("../models/teacher");
 const subjectModel = require("../models/subject");
+const NotificationModel = require("../models/notification");
 const validategradeandsubjectforStudent =async(grade,subject)=>{
   let gradeData,subjectData
   if (grade) {
@@ -211,7 +212,9 @@ exports.register = asyncHandler(async (req, res) => {
       throw Error("UserType must be Student, Teacher or Parent");
     }
     auth.profile = profile._id;
-
+await(new NotificationModel({
+  forType:auth.userType,for:profile._id,title:"Wellcome to Classerly"
+})).save()
     await auth.save();
     
     await profile.save();

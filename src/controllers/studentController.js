@@ -154,7 +154,7 @@ exports.getmyteacher= async (req,res)=>{
 exports.myresult=async (req,res)=>{
   try{
     let data =await StudentquizesModel.find({student:req.user?.profile?._id});
-    let data1 =await StudentgamesModel .find({student:req.user?.profile?._id});
+    let data1 =await StudentgamesModel.find({student:req.user?.profile?._id});
 
     return res.send({
       success: true,         

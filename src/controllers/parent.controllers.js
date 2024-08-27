@@ -10,6 +10,7 @@ const teacherModel = require("../models/teacher");
 const FeedbackModel = require("../models/feedback");
 const StudentquizesModel = require("../models/studentquizes");
 const studentModel = require("../models/student");
+const NotificationModel = require("../models/notification");
 
 exports.addNewChild = asyncHandler(async (req, res) => {
   const { stdid } = req.body;
@@ -146,3 +147,19 @@ exports.getQuizInfo = async (req, res) => {
       });
   }
 };
+exports.getnotification = async (req,res)=>{
+  try {
+    
+    const data = await NotificationModel.find({$or:[{ for: req.user?.profile?._id},{forAll:true}] }).sort({_id:-1}).limit(10)
+    return res
+      .status(200)
+      .json({ success: true, data, message: "Notification get Successfully" });
+  } catch (error) {
+    return res
+      .status(200)
+      .json({
+        success: false,
+        message: error.message || "Something went wrong",
+      });
+  }
+}
