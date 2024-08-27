@@ -10,6 +10,7 @@ const teacherstudentrequestModel = require("../models/teacherstudentrequest");
 const teacherModel = require("../models/teacher");
 const topicModel = require("../models/topic");
 const { default: mongoose } = require("mongoose");
+const studentModel = require("../models/student");
 
 exports.registerTeacher = asyncHandler(async (req, res) => {
   try {
@@ -144,9 +145,9 @@ exports.feedBacktoTeacher = asyncHandler(async (req, res) => {
 exports.myFeedBacks = asyncHandler(async (req, res) => {
   try {
     const findTeacher = await FeedbackModel.find({
-      teacher: req.user.profile._id,
+      to: req.user.profile._id,
     }).populate({
-      path: "childern",
+      path: "from",
       populate: {
         path: "auth",
         select: "-password", // Exclude the 'password' field
@@ -331,3 +332,50 @@ exports.addstudent = async (req, res) => {
         });
     }
   }
+  
+  exports.addfeedback = asyncHandler(async (req, res) => {
+    try {
+      const { student, feedback, star, grade } = req.body;
+      const existStudent = await studentModel.findOne({ _id: student });
+      // const existfeedback = await FeedbackModel.findOne({
+      //   student,
+      //   teacher: req.user.profile._id,
+      //   grade,
+      // });
+  
+      if (!existStudent) {
+        throw new Error("Invalid student id");
+      }
+      // if (existfeedback) {
+      //   throw new Error("already added feedback");
+      // }
+      if (star > 5) {
+        throw new Error("value of star must be equal to or less than 5");
+      }
+      // if(!existStudent.teacher.includes(req.user.profile._id)){
+      //   throw new Error("You can't add feedback for this teacher");
+  
+      // }
+      const feedbackdata = await FeedbackModel.findOneAndUpdate({
+        fromType:"Teacher",
+        to:student,
+        toType:"Student",
+        from:req.user.profile._id,        
+      },{$set:{
+        fromType:"Teacher",
+        to:student,
+        toType:"Student",
+        from:req.user.profile._id,   
+        grade,        
+        feedback,
+        star: parseInt(star),
+      }},{upsert:true,new: true})
+      return res.send({
+        success: true,
+        data: feedbackdata,
+        message: "Feedback done successfully",
+      });
+    } catch (error) {
+      res.status(200).json({ success: false, message: error.message });
+    }
+  });

@@ -16,7 +16,7 @@ const AuthSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       refPath: "userType"
     },
-    image: String,
+    image: {type:String,default:""},
     fullAddress: String,
     otp: String
   },

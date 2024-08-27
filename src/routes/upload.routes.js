@@ -25,9 +25,9 @@ const fileupload = multer({
   fileFilter: function(req, file, callback) {
     // Optional: You can define allowed file types here
     
-    if (!file.originalname.match(/\.(jpg|jpeg|png|pdf)$/)) {
-      return callback(new Error('Only JPG, JPEG, PNG and PDF files are allowed!'), false);
-    }
+    // if (!file.originalname.match(/\.(jpg|jpeg|png|pdf)$/)) {
+    //   return callback(new Error('Only JPG, JPEG, PNG and PDF files are allowed!'), false);
+    // }
     callback(null, true);
   },
 });

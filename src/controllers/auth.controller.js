@@ -153,12 +153,22 @@ exports.register = asyncHandler(async (req, res) => {
     } else if (userType == "Teacher") {
       profile = new TeacherModel({ auth: auth._id, grade,subjects:subject });
       if (gradeData) {
-        gradeData.teachers.push(profile._id);
-        await gradeData.save();
+        await gradeModel.findOneAndUpdate({
+          _id:{$in:grade}
+        },{
+          $addToSet:{
+          teachers:profile._id}
+        })
       }
       if (subjectData) {
-        subjectData.teachers.push(profile._id);
-        await subjectData.save();
+        await subjectModel.findOneAndUpdate({
+          _id:{$in:subject}
+        },{
+          $addToSet:{
+          teachers:profile._id}
+        })
+        // subjectData.teachers.push(profile._id);
+        // await subjectData.save();
       }
     } else if (userType == "Parent") {
       if (childIds) {
@@ -203,14 +213,15 @@ exports.register = asyncHandler(async (req, res) => {
     auth.profile = profile._id;
 
     await auth.save();
-
+    
     await profile.save();
+    auth._doc.profile=profile._doc
     await session.commitTransaction();
     return res.status(200).json({
       success: true,
       data: {
         ...auth._doc,
-        ...profile._doc,
+        // ...profile._doc,
 
         token: tokengenerate(auth),
       },

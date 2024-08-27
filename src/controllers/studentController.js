@@ -55,18 +55,18 @@ exports.addfeedback = asyncHandler(async (req, res) => {
   try {
     const { teacher, feedback, star, grade } = req.body;
     const existTeacher = await teacherModel.findOne({ _id: teacher });
-    const existfeedback = await FeedbackModel.findOne({
-      teacher,
-      parent: req.user.profile._id,
-      grade,
-    });
+    // const existfeedback = await FeedbackModel.findOne({
+    //   teacher,
+    //   parent: req.user.profile._id,
+    //   grade,
+    // });
 
     if (!existTeacher) {
       throw new Error("Invalid teacher id");
     }
-    if (existfeedback) {
-      throw new Error("already added feedback");
-    }
+    // if (existfeedback) {
+    //   throw new Error("already added feedback");
+    // }
     if (star > 5) {
       throw new Error("value of star must be equal to or less than 5");
     }
@@ -74,13 +74,22 @@ exports.addfeedback = asyncHandler(async (req, res) => {
       throw new Error("You can't add feedback for this teacher");
 
     }
-    const feedbackdata = await new FeedbackModel({
-      childern: req.user.profile._id,
-      grade,
-      teacher,
+   
+    const feedbackdata = await FeedbackModel.findOneAndUpdate( {
+      fromType:"Student",
+      from:req.user.profile._id,
+      toType:"Teacher",
+      to:teacher,        
+    },{$set:{
+      fromType:"Student",
+      from:req.user.profile._id,
+      toType:"Teacher",
+      to:teacher   ,
+      grade,        
       feedback,
       star: parseInt(star),
-    }).save();
+    }},{upsert:true,new: true})
+    
     return res.send({
       success: true,
       data: feedbackdata,
@@ -97,7 +106,7 @@ exports.updatefeedback = asyncHandler(async (req, res) => {
 
     const existfeedback = await FeedbackModel.findOne({
       _id: id,
-      childern: req.user.profile._id,
+      from: req.user.profile._id,
     });
 
     if (!existfeedback) {
@@ -109,7 +118,7 @@ exports.updatefeedback = asyncHandler(async (req, res) => {
     const feedbackdata = await FeedbackModel.findOneAndUpdate(
       {
         _id: id,
-        childern: req.user.profile._id,
+        from: req.user.profile._id,
       },
       {
         feedback,
@@ -162,3 +171,24 @@ exports.myresult=async (req,res)=>{
     res.status(200).json({ message: error.message });
   }
 }
+
+exports.myFeedBacks = asyncHandler(async (req, res) => {
+  try {
+    const findTeacher = await FeedbackModel.find({
+      to: req.user.profile._id,
+    }).populate({
+      path: "teacher",
+      populate: {
+        path: "auth",
+        select: "-password", // Exclude the 'password' field
+      }
+      
+    });
+
+    res
+      .status(201)
+      .json(new ApiResponse(200, findTeacher, "feedbacks Found Successfully"));
+  } catch (error) {
+    res.status(200).json({ message: error.message || "Something went wrong" });
+  }
+});
