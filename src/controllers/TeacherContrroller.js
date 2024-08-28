@@ -11,6 +11,7 @@ const teacherModel = require("../models/teacher");
 const topicModel = require("../models/topic");
 const { default: mongoose } = require("mongoose");
 const studentModel = require("../models/student");
+const StudentquizesModel = require("../models/studentquizes");
 
 exports.registerTeacher = asyncHandler(async (req, res) => {
   try {
@@ -151,8 +152,7 @@ exports.myFeedBacks = asyncHandler(async (req, res) => {
       populate: {
         path: "auth",
         select: "-password", // Exclude the 'password' field
-      }
-      
+      },
     });
 
     res
@@ -165,22 +165,59 @@ exports.myFeedBacks = asyncHandler(async (req, res) => {
 
 exports.mystudents = async (req, res) => {
   try {
-    let data = await teacherModel.findOne({
-      _id: req.user?.profile?._id
-      
-    },{students:1}).populate({path:"students", select:"auth" ,
-    populate:{path:"auth", select:["userName","fullName","email","image","fullAddress"]},
-  
-  
-  }).populate({path:"students", select:"auth" ,
-  
-  populate:{path:"grade",select:["grade","subjects"],populate:{path:"subjects",select:["image","name"]}}
+    let data = await teacherModel
+      .findOne(
+        {
+          _id: req.user?.profile?._id,
+        },
+        { students: 1 }
+      )
+      .populate({
+        path: "students",
+        select: "auth",
+        populate: {
+          path: "auth",
+          select: ["userName", "fullName", "email", "image", "fullAddress"],
+        },
+      })
+      .populate({
+        path: "students",
+        select: "auth",
 
-});
-    
-    return res
-    .status(200)
-    .json({ success: true,data:data?.students, message: "get Student successfully" });
+        populate: {
+          path: "grade",
+          select: ["grade", "subjects"],
+          populate: { path: "subjects", select: ["image", "name"] },
+        },
+      });
+    let val = [];
+    if (data?.students.length > 0) {
+      data?.students.map(async (i, index) => {
+        
+        let q = await StudentquizesModel.find({ student: i?._id });
+        let quiz = {
+          total: q.length,
+          pass: q.filter((i) => {
+            return i.result == "pass";
+          }).length,
+        };
+        val.push({ ...i._doc, quiz });
+
+        if (index == data?.students.length - 1) {
+          return res
+            .status(200)
+            .json({
+              success: true,
+              data: val,
+              message: "get Student successfully",
+            });
+        }
+      });
+    } else {
+      return res
+        .status(200)
+        .jsoon({ success: true, data: [], message: "You have no any student" });
+    }
   } catch (error) {
     res.status(200).json({ message: error.message || "Something went wrong" });
   }
@@ -203,17 +240,23 @@ exports.addstudent = async (req, res) => {
       } else {
         let alreadyregisted = await teacherstudentrequestModel.findOne({
           teacher: req.user.profile._id,
-          student: std._id
-        })
-        if(alreadyregisted){
-          if(alreadyregisted.status=="Pwnding"||alreadyregisted.status=="Rejected"){
+          student: std._id,
+        });
+        if (alreadyregisted) {
+          if (
+            alreadyregisted.status == "Pwnding" ||
+            alreadyregisted.status == "Rejected"
+          ) {
             return res
-            .status(200)
-            .json({ success: false, message: "Already applied for addition" });
-          }else{
+              .status(200)
+              .json({
+                success: false,
+                message: "Already applied for addition",
+              });
+          } else {
             return res
-            .status(200)
-            .json({ success: false, message: "Already a student" });
+              .status(200)
+              .json({ success: false, message: "Already a student" });
           }
         }
         let str = await new teacherstudentrequestModel({
@@ -228,154 +271,151 @@ exports.addstudent = async (req, res) => {
       }
     });
   } catch (error) {
-    res
-      .status(200)
-      .json({
-        success: false,
-        message: error.message || "Something went wrong",
-      });
+    res.status(200).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
 };
-  exports.mydashboard =async(req,res)=>{
-    try{
-
-      let data =  await  teacherModel.aggregate([
-        {
-          $match: {
-            
-           _id: new mongoose.Types.ObjectId(req.user?.profile?._id),
-          },
+exports.mydashboard = async (req, res) => {
+  try {
+    let data = await teacherModel.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(req.user?.profile?._id),
         },
-        {
-          $lookup: {
-            from: "quizes",
-            let: { teacherId: { $toString: "$_id" } }, // Convert _id to string
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $eq: [{ $toString: "$createdBy" }, "$$teacherId"], // Convert topic field to string and compare
-                  },
+      },
+      {
+        $lookup: {
+          from: "quizes",
+          let: { teacherId: { $toString: "$_id" } }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: "$createdBy" }, "$$teacherId"], // Convert topic field to string and compare
                 },
               },
-            ],
-            as: "quizes",
-          },
+            },
+          ],
+          as: "quizes",
         },
-        {
-          $lookup: {
-            from: "games",
-            let: { teacherId: { $toString: "$_id" } }, // Convert _id to string
-            pipeline: [
-              {
-                $match: {
-                  $expr: {
-                    $eq: [{ $toString: "$createdBy" }, "$$teacherId"], // Convert topic field to string and compare
-                  },
+      },
+      {
+        $lookup: {
+          from: "games",
+          let: { teacherId: { $toString: "$_id" } }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: "$createdBy" }, "$$teacherId"], // Convert topic field to string and compare
                 },
               },
-            ],
-            as: "games",
-          },
+            },
+          ],
+          as: "games",
         },
-      
-      ])
-      // let data = await teacherModel.findOne({
-      //   _id: req.user?.profile?._id
-        
-      // })
-      
-      res
-        .status(200)
-        .json({
-          success:true,
-          message: "Data get successfully",
-          data:{
-            students:data[0]?.students?.length,
-            subject:data[0]?.subjects?.length,
-            quizes:data[0]?.quizes?.length,
-            games:data[0]?.games?.length,
+      },
+    ]);
+    // let data = await teacherModel.findOne({
+    //   _id: req.user?.profile?._id
 
+    // })
 
-
-          }
-        });
-    } catch (error) {
-      res
-        .status(200)
-        .json({
-          success: false,
-          message: error.message || "Something went wrong",
-        });
-    }
+    res.status(200).json({
+      success: true,
+      message: "Data get successfully",
+      data: {
+        students: data[0]?.students?.length,
+        subject: data[0]?.subjects?.length,
+        quizes: data[0]?.quizes?.length,
+        games: data[0]?.games?.length,
+      },
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
-  exports.mycourses = async (req,res)=>{
-    try{
-      const mycourses = await subjectModel.find({_id:{$in:req.user?.profile?.subjects}})
-      const newcourses = await subjectModel.find({_id:{$nin:req.user?.profile?.subjects}, grade:req.user?.profile?.grade?._id}).sort({_id:-1})
-      res
-      .status(200)
-      .json({
-        success:true,
-        message: "Data get successfully",
-        data:{
-          mycourses,newcourses
-
-        }
-      });
-    } catch (error) {
-      res
-        .status(200)
-        .json({
-          success: false,
-          message: error.message || "Something went wrong",
-        });
-    }
+};
+exports.mycourses = async (req, res) => {
+  try {
+    const mycourses = await subjectModel.find({
+      _id: { $in: req.user?.profile?.subjects },
+    });
+    const newcourses = await subjectModel
+      .find({
+        _id: { $nin: req.user?.profile?.subjects },
+        grade: req.user?.profile?.grade?._id,
+      })
+      .sort({ _id: -1 });
+    res.status(200).json({
+      success: true,
+      message: "Data get successfully",
+      data: {
+        mycourses,
+        newcourses,
+      },
+    });
+  } catch (error) {
+    res.status(200).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
-  
-  exports.addfeedback = asyncHandler(async (req, res) => {
-    try {
-      const { student, feedback, star, grade } = req.body;
-      const existStudent = await studentModel.findOne({ _id: student });
-      // const existfeedback = await FeedbackModel.findOne({
-      //   student,
-      //   teacher: req.user.profile._id,
-      //   grade,
-      // });
-  
-      if (!existStudent) {
-        throw new Error("Invalid student id");
-      }
-      // if (existfeedback) {
-      //   throw new Error("already added feedback");
-      // }
-      if (star > 5) {
-        throw new Error("value of star must be equal to or less than 5");
-      }
-      // if(!existStudent.teacher.includes(req.user.profile._id)){
-      //   throw new Error("You can't add feedback for this teacher");
-  
-      // }
-      const feedbackdata = await FeedbackModel.findOneAndUpdate({
-        fromType:"Teacher",
-        to:student,
-        toType:"Student",
-        from:req.user.profile._id,        
-      },{$set:{
-        fromType:"Teacher",
-        to:student,
-        toType:"Student",
-        from:req.user.profile._id,   
-        grade,        
-        feedback,
-        star: parseInt(star),
-      }},{upsert:true,new: true})
-      return res.send({
-        success: true,
-        data: feedbackdata,
-        message: "Feedback done successfully",
-      });
-    } catch (error) {
-      res.status(200).json({ success: false, message: error.message });
+};
+
+exports.addfeedback = asyncHandler(async (req, res) => {
+  try {
+    const { student, feedback, star, grade } = req.body;
+    const existStudent = await studentModel.findOne({ _id: student });
+    // const existfeedback = await FeedbackModel.findOne({
+    //   student,
+    //   teacher: req.user.profile._id,
+    //   grade,
+    // });
+
+    if (!existStudent) {
+      throw new Error("Invalid student id");
     }
-  });
+    // if (existfeedback) {
+    //   throw new Error("already added feedback");
+    // }
+    if (star > 5) {
+      throw new Error("value of star must be equal to or less than 5");
+    }
+    // if(!existStudent.teacher.includes(req.user.profile._id)){
+    //   throw new Error("You can't add feedback for this teacher");
+
+    // }
+    const feedbackdata = await FeedbackModel.findOneAndUpdate(
+      {
+        fromType: "Teacher",
+        to: student,
+        toType: "Student",
+        from: req.user.profile._id,
+      },
+      {
+        $set: {
+          fromType: "Teacher",
+          to: student,
+          toType: "Student",
+          from: req.user.profile._id,
+          grade,
+          feedback,
+          star: parseInt(star),
+        },
+      },
+      { upsert: true, new: true }
+    );
+    return res.send({
+      success: true,
+      data: feedbackdata,
+      message: "Feedback done successfully",
+    });
+  } catch (error) {
+    res.status(200).json({ success: false, message: error.message });
+  }
+});

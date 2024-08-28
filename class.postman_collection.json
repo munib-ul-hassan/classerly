@@ -1791,16 +1791,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://classerly-c7ee10cd4558.herokuapp.com/api/v1/auth/login",
-							"protocol": "https",
+							"raw": "{{1}}/auth/login",
 							"host": [
-								"classerly-c7ee10cd4558",
-								"herokuapp",
-								"com"
+								"{{1}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"auth",
 								"login"
 							]
@@ -2661,7 +2656,7 @@
 			"name": "feedbacks",
 			"item": [
 				{
-					"name": "feedback to teacher",
+					"name": "feedback to teacher(student)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -2672,7 +2667,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"feedback\": \"Nice teacher\",\r\n    \"star\": 4,\r\n    \"grade\": \"666b510e00af65249616e24a\",\r\n    \"teacher\": \"666d92ed204678a7b0d4aa5a\"\r\n}",
+							"raw": "{\r\n    \"feedback\": \"Nice teacher\",\r\n    \"star\": 4,    \r\n    \"student\": \"66cf7ed73b22de46c9973043\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2680,19 +2675,19 @@
 							}
 						},
 						"url": {
-							"raw": "{{1}}/parent/feedback",
+							"raw": "{{1}}/teacher/feedback",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
-								"parent",
+								"teacher",
 								"feedback"
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "feedback to teacher",
+							"name": "feedback to student(teacher)",
 							"originalRequest": {
 								"method": "POST",
 								"header": [
@@ -2703,7 +2698,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"feedback\": \"Nice teacher\",\r\n    \"star\": 4,\r\n    \"grade\": \"666b510e00af65249616e24a\",\r\n    \"teacher\": \"666d92ed204678a7b0d4aa5a\"\r\n}",
+									"raw": "{\r\n    \"feedback\": \"Nice teacher\",\r\n    \"star\": 4,    \r\n    \"student\": \"66cf7ed73b22de46c9973043\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2711,12 +2706,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{1}}/parent/feedback",
+									"raw": "{{1}}/teacher/feedback",
 									"host": [
 										"{{1}}"
 									],
 									"path": [
-										"parent",
+										"teacher",
 										"feedback"
 									]
 								}
@@ -2743,15 +2738,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "177"
+									"value": "324"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"b1-8LwFS5kWEZ7HcDb1QqbXlRhOEzQ\""
+									"value": "W/\"144-mHO2iO0F7KoP7+WgIi6in11mySg\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 15 Jun 2024 13:35:14 GMT"
+									"value": "Wed, 28 Aug 2024 20:19:24 GMT"
 								},
 								{
 									"key": "Connection",
@@ -2763,23 +2758,23 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"teacher\": \"666d92ed204678a7b0d4aa5a\",\n        \"feedback\": \"Nice teacher\",\n        \"star\": 4,\n        \"_id\": \"666d9892e9a4a52f5f8731e3\",\n        \"__v\": 0\n    },\n    \"message\": \"Feedback done successfully\"\n}"
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"66cf831a2d68e4d659041fd3\",\n        \"to\": \"66cf7ed73b22de46c9973043\",\n        \"from\": \"666d92ed204678a7b0d4aa5a\",\n        \"toType\": \"Student\",\n        \"fromType\": \"Teacher\",\n        \"__v\": 0,\n        \"createdAt\": \"2024-08-28T20:05:47.059Z\",\n        \"feedback\": \"Nice teacher\",\n        \"star\": 4,\n        \"updatedAt\": \"2024-08-28T20:19:24.344Z\"\n    },\n    \"message\": \"Feedback done successfully\"\n}"
 						}
 					]
 				},
 				{
-					"name": "update feedback of tescher",
+					"name": "feedback to teacher(student)",
 					"request": {
-						"method": "PUT",
+						"method": "POST",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}"
+								"value": "{{studenttoken}}"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"feedback\": \"Fabulous teacher\",\r\n    \"star\": 5\r\n    \r\n}",
+							"raw": "{\r\n    \"feedback\": \"Nice teacher\",\r\n    \"star\": 4,    \r\n    \"teacher\":\"666d92ed204678a7b0d4aa5a\"\r\n\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2787,31 +2782,30 @@
 							}
 						},
 						"url": {
-							"raw": "{{1}}/parent/feedback/666d9d1b53cc728ddcd84c02",
+							"raw": "{{1}}/student/feedback",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
-								"parent",
-								"feedback",
-								"666d9d1b53cc728ddcd84c02"
+								"student",
+								"feedback"
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "update feedback",
+							"name": "feedback to teacher(student)",
 							"originalRequest": {
-								"method": "PUT",
+								"method": "POST",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}"
+										"value": "{{studenttoken}}"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"feedback\": \"Fabulous teacher\",\r\n    \"star\": 5\r\n    \r\n}",
+									"raw": "{\r\n    \"feedback\": \"Nice teacher\",\r\n    \"star\": 4,    \r\n    \"teacher\":\"666d92ed204678a7b0d4aa5a\"\r\n\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -2819,14 +2813,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{1}}/parent/feedback/666d9d1b53cc728ddcd84c02",
+									"raw": "{{1}}/student/feedback",
 									"host": [
 										"{{1}}"
 									],
 									"path": [
-										"parent",
-										"feedback",
-										"666d9d1b53cc728ddcd84c02"
+										"student",
+										"feedback"
 									]
 								}
 							},
@@ -2852,15 +2845,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "183"
+									"value": "324"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"b7-QUoMEnvl2X7JThZ0cU0txre21n8\""
+									"value": "W/\"144-sTJLQqUaDADzeW4YBnFjpnjvv6s\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 15 Jun 2024 13:56:07 GMT"
+									"value": "Wed, 28 Aug 2024 20:29:07 GMT"
 								},
 								{
 									"key": "Connection",
@@ -2872,7 +2865,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"666d9d1b53cc728ddcd84c02\",\n        \"teacher\": \"666d92ed204678a7b0d4aa5a\",\n        \"feedback\": \"Fabulous teacher\",\n        \"star\": 5,\n        \"__v\": 0\n    },\n    \"message\": \"Feedback update successfully\"\n}"
+							"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"66cdfb332d68e4d65968d31b\",\n        \"from\": \"666d8a1e606bf9c50f5c146e\",\n        \"to\": \"666d92ed204678a7b0d4aa5a\",\n        \"__v\": 0,\n        \"createdAt\": \"2024-08-27T16:13:37.656Z\",\n        \"feedback\": \"Nice teacher\",\n        \"fromType\": \"Student\",\n        \"star\": 4,\n        \"toType\": \"Teacher\",\n        \"updatedAt\": \"2024-08-28T20:29:07.697Z\"\n    },\n    \"message\": \"Feedback done successfully\"\n}"
 						}
 					]
 				},
@@ -2883,44 +2876,46 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}"
+								"value": "{{parenttoken}}"
 							}
 						],
 						"url": {
-							"raw": "{{1}}/parent/feedback",
+							"raw": "{{1}}/parent/feedback/66cf7ed73b22de46c9973043",
 							"host": [
 								"{{1}}"
 							],
 							"path": [
 								"parent",
-								"feedback"
+								"feedback",
+								"66cf7ed73b22de46c9973043"
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "feedback to teacher Copy",
+							"name": "get feedbacks by parents by child id",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
 									{
 										"key": "Authorization",
-										"value": "{{token}}"
+										"value": "{{parenttoken}}"
 									}
 								],
 								"url": {
-									"raw": "{{1}}/parent/feedback",
+									"raw": "{{1}}/parent/feedback/66cf7ed73b22de46c9973043",
 									"host": [
 										"{{1}}"
 									],
 									"path": [
 										"parent",
-										"feedback"
+										"feedback",
+										"66cf7ed73b22de46c9973043"
 									]
 								}
 							},
-							"status": "Created",
-							"code": 201,
+							"status": "OK",
+							"code": 200,
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
@@ -2941,15 +2936,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "1167"
+									"value": "882"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"48f-1mAXHrfsZ7ZISezmReCFW6K7e7E\""
+									"value": "W/\"372-r5CVGxhs9+GK1cmmlDLNnc1eHus\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 15 Jun 2024 14:02:56 GMT"
+									"value": "Wed, 28 Aug 2024 20:20:48 GMT"
 								},
 								{
 									"key": "Connection",
@@ -2961,7 +2956,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"666d9a35a8763b4a52593f7d\",\n            \"teacher\": {\n                \"_id\": \"666d92ed204678a7b0d4aa5a\",\n                \"auth\": {\n                    \"_id\": \"666d92ed204678a7b0d4aa59\",\n                    \"fullName\": \"teacher\",\n                    \"userName\": \"teacher\",\n                    \"email\": \"teacher@yopmail.com\",\n                    \"userType\": \"Teacher\",\n                    \"fullAddress\": \"teacher\",\n                    \"profile\": \"666d92ed204678a7b0d4aa5a\",\n                    \"createdAt\": \"2024-06-15T13:11:09.227Z\",\n                    \"updatedAt\": \"2024-06-15T13:11:09.227Z\",\n                    \"__v\": 0\n                },\n                \"subjects\": [],\n                \"createdAt\": \"2024-06-15T13:11:09.566Z\",\n                \"updatedAt\": \"2024-06-15T13:56:07.692Z\",\n                \"__v\": 0,\n                \"grade\": \"666b510e00af65249616e24a\"\n            },\n            \"feedback\": \"Nice teacher\",\n            \"star\": 4,\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"666d9d1b53cc728ddcd84c02\",\n            \"teacher\": {\n                \"_id\": \"666d92ed204678a7b0d4aa5a\",\n                \"auth\": {\n                    \"_id\": \"666d92ed204678a7b0d4aa59\",\n                    \"fullName\": \"teacher\",\n                    \"userName\": \"teacher\",\n                    \"email\": \"teacher@yopmail.com\",\n                    \"userType\": \"Teacher\",\n                    \"fullAddress\": \"teacher\",\n                    \"profile\": \"666d92ed204678a7b0d4aa5a\",\n                    \"createdAt\": \"2024-06-15T13:11:09.227Z\",\n                    \"updatedAt\": \"2024-06-15T13:11:09.227Z\",\n                    \"__v\": 0\n                },\n                \"subjects\": [],\n                \"createdAt\": \"2024-06-15T13:11:09.566Z\",\n                \"updatedAt\": \"2024-06-15T13:56:07.692Z\",\n                \"__v\": 0,\n                \"grade\": \"666b510e00af65249616e24a\"\n            },\n            \"feedback\": \"Fabulous teacher\",\n            \"star\": 5,\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"feedbacks Found Successfully\",\n    \"success\": true\n}"
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"66cf831a2d68e4d659041fd3\",\n            \"to\": \"66cf7ed73b22de46c9973043\",\n            \"from\": {\n                \"_id\": \"666d92ed204678a7b0d4aa5a\",\n                \"auth\": {\n                    \"_id\": \"666d92ed204678a7b0d4aa59\",\n                    \"fullName\": \"teacher\",\n                    \"userName\": \"teacher9\",\n                    \"profile\": \"666d92ed204678a7b0d4aa5a\",\n                    \"image\": \"http://res.cloudinary.com/deiylfley/image/upload/v1723564769/dny1yfffspfwgmwsr1nl.jpg\"\n                },\n                \"subjects\": [\n                    \"66b3d6bf935d0e0a6cf48f92\",\n                    \"66b3d6bf935d0e0a6cf48f7e\",\n                    \"66b3d6bf935d0e0a6cf48f7d\"\n                ],\n                \"createdAt\": \"2024-06-15T13:11:09.566Z\",\n                \"updatedAt\": \"2024-08-28T20:04:48.961Z\",\n                \"__v\": 0,\n                \"grade\": [\n                    \"666b510e00af65249616e250\",\n                    \"666b510e00af65249616e249\"\n                ],\n                \"students\": [\n                    \"666d8a1e606bf9c50f5c146e\",\n                    \"66cf7ed73b22de46c9973043\"\n                ]\n            },\n            \"toType\": \"Student\",\n            \"fromType\": \"Teacher\",\n            \"__v\": 0,\n            \"createdAt\": \"2024-08-28T20:05:47.059Z\",\n            \"feedback\": \"Nice teacher\",\n            \"star\": 4,\n            \"updatedAt\": \"2024-08-28T20:19:24.344Z\"\n        }\n    ],\n    \"message\": \"feedbacks Found Successfully\",\n    \"success\": true\n}"
 						}
 					]
 				},
@@ -3030,15 +3025,15 @@
 								},
 								{
 									"key": "Content-Length",
-									"value": "903"
+									"value": "937"
 								},
 								{
 									"key": "ETag",
-									"value": "W/\"387-CqG/iZuOW0oEUYr2HUkqCyC9Whw\""
+									"value": "W/\"3a9-WPSIEY+2CV0h3YepBTUg34M8sns\""
 								},
 								{
 									"key": "Date",
-									"value": "Sat, 15 Jun 2024 14:09:34 GMT"
+									"value": "Wed, 28 Aug 2024 20:19:50 GMT"
 								},
 								{
 									"key": "Connection",
@@ -3050,7 +3045,7 @@
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"666d9a35a8763b4a52593f7d\",\n            \"teacher\": \"666d92ed204678a7b0d4aa5a\",\n            \"feedback\": \"Nice teacher\",\n            \"star\": 4,\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"666d9d1b53cc728ddcd84c02\",\n            \"teacher\": \"666d92ed204678a7b0d4aa5a\",\n            \"feedback\": \"Fabulous teacher\",\n            \"star\": 5,\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"666d9fd80fe77d7ad1d34bc7\",\n            \"parent\": {\n                \"_id\": \"666d8a79606bf9c50f5c1473\",\n                \"auth\": {\n                    \"_id\": \"666d8a79606bf9c50f5c1472\",\n                    \"fullName\": \"parent\",\n                    \"userName\": \"parent\",\n                    \"email\": \"parent@gmail.com\",\n                    \"userType\": \"Parent\",\n                    \"fullAddress\": \"parent\",\n                    \"profile\": \"666d8a79606bf9c50f5c1473\",\n                    \"createdAt\": \"2024-06-15T12:35:05.951Z\",\n                    \"updatedAt\": \"2024-06-15T13:32:41.889Z\",\n                    \"__v\": 0,\n                    \"otp\": \"461200\"\n                },\n                \"code\": \"764643\",\n                \"createdAt\": \"2024-06-15T12:35:06.294Z\",\n                \"updatedAt\": \"2024-06-15T12:37:20.134Z\",\n                \"__v\": 1\n            },\n            \"teacher\": \"666d92ed204678a7b0d4aa5a\",\n            \"grade\": \"666b510e00af65249616e24a\",\n            \"feedback\": \"Nice teacher\",\n            \"star\": 4,\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"feedbacks Found Successfully\",\n    \"success\": true\n}"
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"66cdfb332d68e4d65968d31b\",\n            \"from\": {\n                \"feedback\": {\n                    \"counts\": {\n                        \"1\": 0,\n                        \"2\": 0,\n                        \"3\": 0,\n                        \"4\": 1,\n                        \"5\": 0\n                    },\n                    \"total\": 1,\n                    \"average\": 4\n                },\n                \"_id\": \"666d8a1e606bf9c50f5c146e\",\n                \"auth\": {\n                    \"_id\": \"666d8a1e606bf9c50f5c146c\",\n                    \"fullName\": \"abc\",\n                    \"userName\": \"std9\",\n                    \"email\": \"std9@yopmail.com\",\n                    \"userType\": \"Student\",\n                    \"fullAddress\": \"abc\",\n                    \"profile\": \"666d8a1e606bf9c50f5c146e\",\n                    \"createdAt\": \"2024-06-15T12:33:35.605Z\",\n                    \"updatedAt\": \"2024-08-26T19:34:24.691Z\",\n                    \"__v\": 0,\n                    \"image\": \"http://res.cloudinary.com/deiylfley/image/upload/v1724700860/rt7d6jtoufuojd0mp8lg.jpg\",\n                    \"otp\": \"941415\"\n                },\n                \"grade\": \"666b510e00af65249616e250\",\n                \"code\": \"319575\",\n                \"createdAt\": \"2024-06-15T12:33:35.974Z\",\n                \"updatedAt\": \"2024-08-27T18:40:04.059Z\",\n                \"__v\": 0\n            },\n            \"to\": \"666d92ed204678a7b0d4aa5a\",\n            \"__v\": 0,\n            \"createdAt\": \"2024-08-27T16:13:37.656Z\",\n            \"feedback\": \"Nice\",\n            \"fromType\": \"Student\",\n            \"star\": 3,\n            \"toType\": \"Teacher\",\n            \"updatedAt\": \"2024-08-27T16:14:03.443Z\"\n        }\n    ],\n    \"message\": \"feedbacks Found Successfully\",\n    \"success\": true\n}"
 						}
 					]
 				}
@@ -5027,6 +5022,10 @@
 			"key": "2",
 			"value": "https://classerly-c7ee10cd4558.herokuapp.com/api/v1",
 			"type": "string"
+		},
+		{
+			"key": "parenttoken",
+			"value": ""
 		}
 	]
 }
