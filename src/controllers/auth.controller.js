@@ -24,9 +24,16 @@ const validategradeandsubjectforStudent =async(grade,subject)=>{
     }
   }
   
-  if (subject) {
-    subjectData = await subjectModel.findOne({ _id:subject });
-    if (!subjectData) {
+  // if (subject) {
+  //   subjectData = await subjectModel.findOne({ _id:subject });
+  //   if (!subjectData) {
+  //     throw Error("Invalid subject selected");
+  //   }
+  // }
+  if (subject.length>0) {
+    subjectData = await subjectModel.find({ _id:{$in:subject} });
+    
+    if (subjectData.length!=subject.length) {
       throw Error("Invalid subject selected");
     }
   }
@@ -50,6 +57,7 @@ const validategradeandsubjectforTeacher =async(grade,subject)=>{
   }
   return {gradeData,subjectData}
 }
+
 exports.register = asyncHandler(async (req, res) => {
   const session = await mongoose.startSession();
   try {
@@ -83,6 +91,7 @@ exports.register = asyncHandler(async (req, res) => {
       email,
       fullAddress,
       userType,
+      image:userType=="Student"?"https://res.cloudinary.com/deiylfley/image/upload/v1724965124/profile_hhfjdh.png":""
     });
     // let gradeData;
     // if (grade) {
@@ -139,6 +148,7 @@ exports.register = asyncHandler(async (req, res) => {
           auth: auth._id,
           code: generateSixDigitCode(),
           grade,
+          subject
         });
         if (gradeData) {
           gradeData.students.push(profile._id);
@@ -448,7 +458,7 @@ exports.updateuser = asyncHandler(async (req, res) => {
               auth: req.user._id,
             },
             {
-              grade,
+              grade,subjects
             },
             { new: true }
           );
@@ -465,7 +475,7 @@ exports.updateuser = asyncHandler(async (req, res) => {
           );
         }
         case "Teacher": {
-          await validategradeandsubjectforTeacher(grade,subjects)
+          // await validategradeandsubjectforTeacher(grade,subjects)
           await teacherModel.findOneAndUpdate(
             {
               auth: req.user._id,

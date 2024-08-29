@@ -7,6 +7,12 @@ const studentSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "auth"
     },
+    subjects: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "subject",
+      },
+    ],
     grade: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Grade"

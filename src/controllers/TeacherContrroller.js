@@ -185,11 +185,14 @@ exports.mystudents = async (req, res) => {
         path: "students",
         select: "auth",
 
-        populate: {
+        populate: [{
           path: "grade",
-          select: ["grade", "subjects"],
-          populate: { path: "subjects", select: ["image", "name"] },
+          select: ["grade"]
+          
         },
+        { path: "subjects", select: ["image", "name"] },
+        
+        ],
       });
       if (data?.students?.length > 0) {
       let val = [];
@@ -203,15 +206,16 @@ exports.mystudents = async (req, res) => {
             return i.result == "pass";
           }).length
         } });
-
+console.log(index, data?.students.length)
         if (index == data?.students.length - 1) {
+          setTimeout(()=>{
           return res
             .status(200)
             .json({
               success: true,
               data: val,
               message: "get Student successfully",
-            });
+            });},2000)
         }
       });
     } else {

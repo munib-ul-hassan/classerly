@@ -9,7 +9,7 @@ const questionsSchema = new mongoose.Schema(
     question: { type: String },
     options: [{ type: String }],
     answer: { type: String },
-    score: Number,
+    score: {type:Number,defaut:0},
   },
   {
     timestamps: true,

@@ -24,16 +24,22 @@ exports.addNewChild = asyncHandler(async (req, res) => {
     const child = await StudentModel.findOne({ code: stdid });
 
     if (!child) {
-      return res.status(200).json({success:false, message: "Invalid child Code" });
+      return res
+        .status(200)
+        .json({ success: false, message: "Invalid child Code" });
     }
-    if(findParent.childIds.includes(child._id)){
-      return res.status(200).json({success:false, message: "Child Already added" });
-
+    if (findParent.childIds.includes(child._id)) {
+      return res
+        .status(200)
+        .json({ success: false, message: "Child Already added" });
     }
 
     findParent.childIds.push(child._id);
     findParent.save();
-    await StudentModel.findOneAndUpdate({ code: stdid },{parent:findParent._id});
+    await StudentModel.findOneAndUpdate(
+      { code: stdid },
+      { parent: findParent._id }
+    );
     res
       .status(200)
       .json(new ApiResponse(200, findParent, "child added successfully"));
@@ -48,19 +54,27 @@ exports.getMyChilds = asyncHandler(async (req, res) => {
   try {
     const findMychilds = await ParentModel.findOne({
       _id: req.user?.profile?._id,
-    }).populate({
-      path: "childIds",
-      select: "-password",
-      populate: [
-        {
+    })
+      .populate({
+        path: "childIds",
+        select: "-password",
+        populate: {
           path: "grade",
-          select: ["grade", "subjects"],
-          populate: { path: "subjects", select: ["image", "name"] },
+          select: "grade",
+          // populate: { path: "subjects", select: ["image", "name"] },
         },
-        { path: "auth", select: "-password" },
-      ],
-    });
-
+      })
+      .populate({
+        path: "childIds",
+        select: "-password",
+        populate: { path: "subjects", select: ["image", "name"] },
+      })
+      .populate({
+        path: "childIds",
+        select: "-password",
+        populate: { path: "auth", select: "-password" },
+      });
+console.log(findMychilds.childIds[0].subjects)
     const childs = findMychilds.childIds;
     res
       .status(200)
@@ -70,22 +84,23 @@ exports.getMyChilds = asyncHandler(async (req, res) => {
   }
 });
 
-
-exports.getMyChildbyId= asyncHandler(async (req, res) => {
+exports.getMyChildbyId = asyncHandler(async (req, res) => {
   try {
-    const {id} = req.params
+    const { id } = req.params;
 
-    const findMychilds = await studentModel.findOne({
-      _id: id,
-    }).populate(
-     ["grade","auth"]
-      // {
-      //   path: "grade",
-      //   select: ["grade", "subjects"],
-      //   // populate: { path: "subjects", select: ["image", "name"] },
-      // },
-      // { path: "auth", select: "-password" }, 
-    )
+    const findMychilds = await studentModel
+      .findOne({
+        _id: id,
+      })
+      .populate(
+        ["grade", "auth"]
+        // {
+        //   path: "grade",
+        //   select: ["grade", "subjects"],
+        //   // populate: { path: "subjects", select: ["image", "name"] },
+        // },
+        // { path: "auth", select: "-password" },
+      );
     // populate({
     //   path: "childIds",
     //   select: "-password",
@@ -110,56 +125,59 @@ exports.getMyChildbyId= asyncHandler(async (req, res) => {
 
 exports.myFeedBacks = asyncHandler(async (req, res) => {
   try {
-    const {id}= req.params
+    const { id } = req.params;
     const findTeacher = await FeedbackModel.find({
       to: id,
     }).populate({
       path: "from",
       select: "-feedback",
-      populate: { path: "auth", select: ["fullName","image","profile","userName"] }, // Exclude the 'password' field
+      populate: {
+        path: "auth",
+        select: ["fullName", "image", "profile", "userName"],
+      }, // Exclude the 'password' field
     });
 
     res
       .status(200)
       .json(new ApiResponse(200, findTeacher, "feedbacks Found Successfully"));
   } catch (error) {
-    return res
-      .status(200)
-      .json({
-        success: false,
-        message: error.message || "Something went wrong",
-      });
+    return res.status(200).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
 });
 exports.getQuizInfo = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = await StudentquizesModel.find({ student: id ,status:"complete"}).populate({path:"quiz",populate:{path:"subject"}});
+    const data = await StudentquizesModel.find({
+      student: id,
+      status: "complete",
+    }).populate({ path: "quiz", populate: { path: "subject" } });
     return res
       .status(200)
       .json({ success: true, data, message: "Quiz data found Successfully" });
   } catch (error) {
-    return res
-      .status(200)
-      .json({
-        success: false,
-        message: error.message || "Something went wrong",
-      });
+    return res.status(200).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
 };
-exports.getnotification = async (req,res)=>{
+exports.getnotification = async (req, res) => {
   try {
-    
-    const data = await NotificationModel.find({$or:[{ for: req.user?.profile?._id},{forAll:true}] }).sort({_id:-1}).limit(10)
+    const data = await NotificationModel.find({
+      $or: [{ for: req.user?.profile?._id }, { forAll: true }],
+    })
+      .sort({ _id: -1 })
+      .limit(10);
     return res
       .status(200)
       .json({ success: true, data, message: "Notification get Successfully" });
   } catch (error) {
-    return res
-      .status(200)
-      .json({
-        success: false,
-        message: error.message || "Something went wrong",
-      });
+    return res.status(200).json({
+      success: false,
+      message: error.message || "Something went wrong",
+    });
   }
-}
+};
