@@ -254,7 +254,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
       });
     } else if (status == "end") {
       let marks = 0,score=0;
-      console.log(quizdata.questions)
+      
       quizdata.questions.map(async (q, index) => {
         if (q.answer == studentdata.answers[index]) {
           marks+=q.score;
@@ -262,7 +262,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
         score+=q.score;
 
         if (index == quizdata?.questions?.length - 1) {
-console.log(score,marks)
+
           const quizsdata = await StudentquizesModel.findOneAndUpdate(
             {
               quiz: id,

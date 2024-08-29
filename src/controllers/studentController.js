@@ -26,7 +26,7 @@ exports.mysubjects = async (req, res) => {
 //       { students: { $in: [req.user?.profile?._id] } },
 //       { auth: 1 ,feedback:0,grade:0,students:0,subjects:0}
 //     );
-//     console.log(req.user?.profile?._id);
+
 //     return res.send({
 //       success: true,
 //       data,

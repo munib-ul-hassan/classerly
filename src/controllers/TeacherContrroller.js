@@ -206,16 +206,16 @@ exports.mystudents = async (req, res) => {
             return i.result == "pass";
           }).length
         } });
-console.log(index, data?.students.length)
+
         if (index == data?.students.length - 1) {
-          setTimeout(()=>{
+          
           return res
             .status(200)
             .json({
               success: true,
               data: val,
               message: "get Student successfully",
-            });},2000)
+            });
         }
       });
     } else {

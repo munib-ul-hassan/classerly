@@ -74,7 +74,7 @@ exports.getMyChilds = asyncHandler(async (req, res) => {
         select: "-password",
         populate: { path: "auth", select: "-password" },
       });
-console.log(findMychilds.childIds[0].subjects)
+
     const childs = findMychilds.childIds;
     res
       .status(200)
