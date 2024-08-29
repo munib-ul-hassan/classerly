@@ -165,6 +165,7 @@ exports.myFeedBacks = asyncHandler(async (req, res) => {
 
 exports.mystudents = async (req, res) => {
   try {
+   
     let data = await teacherModel
       .findOne(
         {
@@ -190,18 +191,18 @@ exports.mystudents = async (req, res) => {
           populate: { path: "subjects", select: ["image", "name"] },
         },
       });
-    let val = [];
-    if (data?.students.length > 0) {
+      if (data?.students?.length > 0) {
+      let val = [];
       data?.students.map(async (i, index) => {
         
         let q = await StudentquizesModel.find({ student: i?._id });
-        let quiz = {
+        
+        val.push({ ...i._doc, quiz:{
           total: q.length,
           pass: q.filter((i) => {
             return i.result == "pass";
-          }).length,
-        };
-        val.push({ ...i._doc, quiz });
+          }).length
+        } });
 
         if (index == data?.students.length - 1) {
           return res
