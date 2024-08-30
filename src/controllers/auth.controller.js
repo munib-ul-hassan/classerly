@@ -148,7 +148,7 @@ exports.register = asyncHandler(async (req, res) => {
           auth: auth._id,
           code: generateSixDigitCode(),
           grade,
-          subject
+          subjects:subject
         });
         if (gradeData) {
           gradeData.students.push(profile._id);
