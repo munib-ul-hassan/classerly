@@ -308,7 +308,7 @@ exports.getquizes = asyncHandler(async (req, res) => {
     req.query = cleanObject(req.query)
     
 
-    const Quizdata = await QuizesModel.find(req.query)
+    let Quizdata = await QuizesModel.find(req.query)
       .skip(page * limit)
       .limit(limit)
       .populate({ path: "questions", select: "-answer" })
@@ -326,7 +326,11 @@ exports.getquizes = asyncHandler(async (req, res) => {
         select: ["_id", "image", "name", "difficulty", "type"],
       })
       // .populate({ path: "lesson", select: ["_id", "image", "name"] });
-
+if(req.user.userType=="Student"){
+  Quizdata=Quizdata.filter((i)=>{
+    return req.user?.profile?.subjects?.includes(i.subject._id)
+  })
+}
     if (Quizdata.length > 0) {
       return res.send({
         success: true,
