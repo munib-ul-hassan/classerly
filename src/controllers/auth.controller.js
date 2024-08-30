@@ -250,6 +250,7 @@ await(new NotificationModel({
     return res.status(200).json({ success: false, message: e.message });
   }
 });
+
 exports.login = asyncHandler(async (req, res) => {
   try {
     const { userName, password } = req.body;
@@ -317,7 +318,7 @@ let auth
 auth = await authModel.findOne({ userName }).populate({
       path: "profile",
       populate: {
-        path: "grade",
+        path: "grade",select:["grade","_id"]
       },
     })
     // .populate({
@@ -347,6 +348,7 @@ auth = await authModel.findOne({ userName }).populate({
     res.status(200).json({ success: false, message: e.message });
   }
 });
+
 exports.forgotpassword = asyncHandler(async (req, res) => {
   try {
     const { userName } = req.body;
@@ -536,7 +538,10 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
     if (req.user.userType == "Student") {
       data = await authModel
         .findOne({ _id: req.user._id }, { password: 0 })
-        .populate(["profile", "profile.parent", "profile.grade"]);
+        .populate("profile")
+        // .populate(["profile", "profile.parent","profile.subjects"])
+
+        .populate({path:"profile",populate:{path:"grade", select:["grade","_id"]}})
       // return res.status(200).json(data)
     }
     if (req.user.userType == "Teacher") {
@@ -544,10 +549,11 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
         .findOne({ _id: req.user._id }, { password: 0 })
         .populate([
           "profile",
-          "profile.grade",
-          "profile.subjects",
-          "profile.feedback",
-        ]);
+          // "profile.grade",
+          // "profile.subjects",
+          // "profile.feedback",
+        ])
+        .populate({path:"profile",populate:{path:"grade", select:["grade","_id"]}})
       // return res.status(200).json(data)
     }
     if (req.user.userType == "Parent") {
