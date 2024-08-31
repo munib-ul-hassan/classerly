@@ -426,10 +426,16 @@ exports.getcontentOfLesson = asyncHandler(async (req, res) => {
 exports.getAllLessonsOfTopics = asyncHandler(async (req, res) => {
   const topicId = req.params.id;
   try {
+    
     // const findTopicLesson = await topicModel
     //   .findById(topicId)
     //   .populate({ path: "lessons", select: "_id name image" });
-    const findTopicLesson = await LessonsModel.find({ topic: topicId });
+    const findTopicLesson = await LessonsModel.aggregate([{
+      $match:{
+        topic:  new mongoose.Types.ObjectId(topicId)
+      }
+    }])
+    
     // .populate({ path: "lessons", select: "_id name image" });
 
     if (!findTopicLesson) {
@@ -440,6 +446,6 @@ exports.getAllLessonsOfTopics = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, findTopicLesson, "lesson found sucessfully"));
   } catch (error) {
-    res.status(200).json({ mesage: "error.message" || "somthing went wrong" });
+    res.status(200).json({ mesage: error.message || "somthing went wrong" });
   }
 });

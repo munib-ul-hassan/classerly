@@ -18,6 +18,8 @@ const { verifytoken, verifyteachertoken, verifystudenttoken } = require("../midd
 const router = Router();
 //teacher
 router.route("/teacher").post(verifyteachertoken, addquiz);
+
+
 router.route("/teacher/:id").put(verifyteachertoken, updatequiz);
 router.route("/teacher/:id").delete(verifyteachertoken, deletequiz);
 router.route("/teacher/student/:id").get(verifyteachertoken, getstudentquizesbyquizid);

@@ -17,7 +17,7 @@ exports.addquiz = asyncHandler(async (req, res) => {
       endsAt,
       score,
       questions,
-      // lesson,
+      lesson,
       image
     } = req.body;
     const gradedata = await gradeModel.findById(grade);
@@ -25,11 +25,11 @@ exports.addquiz = asyncHandler(async (req, res) => {
     if (!gradedata) {
       throw new Error("Grade not found");
     }
-    // const lessondata = await LessonsModel.findById(lesson);
+    const lessondata = await LessonsModel.findById(lesson);
 
-    // if (!lessondata) {
-    //   throw new Error("Lesson not found");
-    // }
+    if (!lessondata) {
+      throw new Error("Lesson not found");
+    }
 
     const topicdata = await topicModel.findById(topic);
 
@@ -46,7 +46,7 @@ exports.addquiz = asyncHandler(async (req, res) => {
       grade,
       topic,
       subject,
-      // lesson,
+      lesson,
       startsAt: new Date(startsAt),
       endsAt: new Date(endsAt),
       score,
@@ -79,6 +79,7 @@ exports.addquiz = asyncHandler(async (req, res) => {
   }
 });
 
+
 exports.updatequiz = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,11 +103,11 @@ exports.updatequiz = asyncHandler(async (req, res) => {
     if (!subjectdata) {
       throw new Error("Subject not found");
     }
-    // const lessondata = await gradeModel.findById(lesson);
+    const lessondata = await gradeModel.findById(lesson);
 
-    // if (!lessondata) {
-    //   throw new Error("Lesson not found");
-    // }
+    if (!lessondata) {
+      throw new Error("Lesson not found");
+    }
     const data = await QuizesModel.findByIdAndUpdate(id, req.body, {
       new: true,
     });
@@ -229,6 +230,15 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
       student: req.user?.profile?._id,
     });
     if (status == "start") {
+      const alreadyquiz = await StudentquizesModel.findOne(
+        {
+          quiz: id,
+          student: req.user.profile._id,
+        })
+        if(alreadyquiz ){
+      throw new Error("Already done quiz");
+
+        }
       const quizsdata = await StudentquizesModel.findOneAndUpdate(
         {
           quiz: id,
@@ -325,11 +335,12 @@ exports.getquizes = asyncHandler(async (req, res) => {
         path: "topic",
         select: ["_id", "image", "name", "difficulty", "type"],
       })
-      // .populate({ path: "lesson", select: ["_id", "image", "name"] });
+      .populate({ path: "lesson", select: ["_id", "image", "name"] });
+   
 if(req.user.userType=="Student"){
-  Quizdata=Quizdata.filter((i)=>{
-    return req.user?.profile?.subjects?.includes(i.subject._id)
-  })
+  // Quizdata=Quizdata.filter((i)=>{
+  //   return req.user?.profile?.subjects?.includes(i.subject._id)
+  // })
 }
     if (Quizdata.length > 0) {
       return res.send({

@@ -208,14 +208,14 @@ exports.mystudents = async (req, res) => {
         } });
 
         if (index == data?.students.length - 1) {
-          
+          setTimeout(()=>{
           return res
             .status(200)
             .json({
               success: true,
               data: val,
               message: "get Student successfully",
-            });
+            });},100)
         }
       });
     } else {
@@ -424,3 +424,17 @@ exports.addfeedback = asyncHandler(async (req, res) => {
     res.status(200).json({ success: false, message: error.message });
   }
 });
+exports.mysubjects = async (req, res) => {
+  try {
+    let data = await teacherModel
+      .findOne({ _id: req.user?.profile?._id })
+      .populate({ path: "subjects", select: ["name", "image"] });
+    return res.send({
+      success: true,
+      data: data.subjects,
+      message: "subjects get Successfully",
+    });
+  } catch (error) {
+    return res.status(200).json({ success: false, message: error.message });
+  }
+};

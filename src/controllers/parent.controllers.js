@@ -52,6 +52,7 @@ exports.addNewChild = asyncHandler(async (req, res) => {
 
 exports.getMyChilds = asyncHandler(async (req, res) => {
   try {
+
     const findMychilds = await ParentModel.findOne({
       _id: req.user?.profile?._id,
     })
@@ -74,11 +75,14 @@ exports.getMyChilds = asyncHandler(async (req, res) => {
         select: "-password",
         populate: { path: "auth", select: "-password" },
       });
+setTimeout(()=>{
 
-    const childs = findMychilds.childIds;
-    res
-      .status(200)
-      .json(new ApiResponse(200, childs, "childs founded succesfully"));
+  const childs = findMychilds.childIds;
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, childs, "childs founded succesfully"));
+},100)
   } catch (error) {
     res.status(200).json({ message: error.message });
   }
