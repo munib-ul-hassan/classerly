@@ -289,7 +289,73 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
           ],
           as: "quizes",
         },
+      }
+      ,{
+        $unwind:{
+        path: "$quizes", // Specify the field you want to unwind
+        preserveNullAndEmptyArrays: true }
       },
+      
+      {
+        $lookup: {
+          from: "studentquizes",
+          let: { topicId: { $toString: "$quizes._id" } , stdId :{$toString:req.user?.profile?._id}}, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and:[
+                    {
+
+                      $eq: [{ $toString: "$quiz" }, "$$topicId"], // Convert topic field to string and compare
+                    },
+                    {
+
+                      $eq: [{ $toString: "$student" }, "$$stdId"], // Convert topic field to string and compare
+                    }
+                  ]
+                },
+              },
+            },
+          ],
+          as: "studentquizes",
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",       
+          name: 
+          { $first: "$name" },
+          
+          image: { $first: "$image" },       
+
+          subject: { $first: "$subject" },  
+          difficulty: { $first: "$difficulty" },    
+          type: { $first: "$type" }, 
+          lessons: { $first: "$lessons" },     
+            
+
+                       // Group by topic ID
+          // subject: { $first: "$subject" }, // Keep other fields from the original topic
+          // name: { $first: "$name" },
+          quizes: {
+            $push: {
+              _id: "$quizes._id",          // Keep quiz fields
+              title: "$quizes.createdBy",
+              questions: "$quizes.questions",
+              status: "$quizes.status",
+              grade: "$quizes.grade",
+              topic: "$quizes.topic",
+              subject: "$quizes.subject",
+              image: "$quizes.image",
+              endsAt: "$quizes.endsAt",
+              startsAt: "$quizes.startsAt",
+
+              studentQuizData: "$studentquizes"  // Embed the student quiz data
+            }
+          }
+        }
+      }
     ]);
     // find({ subject });
 

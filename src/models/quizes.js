@@ -25,7 +25,11 @@ const quizesSchema=new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref : "subject"
     },
- 
+type:{
+    type:String,
+    enum:["universal", "private"],
+    default:"universal"
+},
     startsAt:{
         type:Date
     },

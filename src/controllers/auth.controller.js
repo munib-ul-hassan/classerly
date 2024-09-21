@@ -188,7 +188,7 @@ exports.register = asyncHandler(async (req, res) => {
           [];
 
         if (std.length != childIds.length) {
-          throw Error("Some or all of Student Ids are invalid");
+          throw Error("This student is already been added to some other parent");
         }
         profile = new ParentModel({
           auth: auth._id,
@@ -314,7 +314,6 @@ exports.login = asyncHandler(async (req, res) => {
 
     // Assuming you're using async/await
 let auth
-    
 auth = await authModel.findOne({ userName }).populate({
       path: "profile",
       populate: {
@@ -521,9 +520,9 @@ exports.updateuser = asyncHandler(async (req, res) => {
     // });
     return res.status(200).json({
       success: true,
+      message:"user updated successfully",
       data: {
         data,
-
         token: tokengenerate(data),
       },
     });

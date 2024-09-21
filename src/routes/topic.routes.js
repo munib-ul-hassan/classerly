@@ -1,9 +1,9 @@
 const { Router } = require('express');
-const { verifyadmintoken } = require('../middlewares/auth');
+const { verifyadmintoken, verifytoken } = require('../middlewares/auth');
 const {AddTopic,getAlltopicsbysubject,deletetopic,updatetopic,getAllLessonsOfTopics,getcontentOfLesson,addlesson,updatelesson} =require("../controllers/Topics.Controllers")
 const router=Router();
 router.route('/').post(verifyadmintoken,AddTopic);
-router.route('/').get(getAlltopicsbysubject);
+router.route('/').get(verifytoken, getAlltopicsbysubject);
 router.route('/:id').delete(verifyadmintoken,deletetopic);
 router.route('/:id').put(verifyadmintoken,updatetopic);
 

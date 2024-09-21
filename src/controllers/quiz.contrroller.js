@@ -18,7 +18,7 @@ exports.addquiz = asyncHandler(async (req, res) => {
       score,
       questions,
       lesson,
-      image
+      image,
     } = req.body;
     const gradedata = await gradeModel.findById(grade);
 
@@ -43,6 +43,7 @@ exports.addquiz = asyncHandler(async (req, res) => {
     }
     const data = new QuizesModel({
       createdBy: req.user?.profile?._id,
+      type: req.user.userType == "Teacher" ? "private" : "universal",
       grade,
       topic,
       subject,
@@ -50,7 +51,7 @@ exports.addquiz = asyncHandler(async (req, res) => {
       startsAt: new Date(startsAt),
       endsAt: new Date(endsAt),
       score,
-      image
+      image,
     });
     let questionarr = [];
     await Promise.all(
@@ -78,7 +79,6 @@ exports.addquiz = asyncHandler(async (req, res) => {
     return res.status(200).json({ success: false, message: error.message });
   }
 });
-
 
 exports.updatequiz = asyncHandler(async (req, res) => {
   try {
@@ -220,7 +220,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.query;
-    
+
     const quizdata = await QuizesModel.findById(id).populate("questions");
     if (!quizdata) {
       throw new Error("Invalid id");
@@ -230,15 +230,13 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
       student: req.user?.profile?._id,
     });
     if (status == "start") {
-      const alreadyquiz = await StudentquizesModel.findOne(
-        {
-          quiz: id,
-          student: req.user.profile._id,
-        })
-        if(alreadyquiz ){
-      throw new Error("Already done quiz");
-
-        }
+      const alreadyquiz = await StudentquizesModel.findOne({
+        quiz: id,
+        student: req.user.profile._id,
+      });
+      if (alreadyquiz) {
+        throw new Error("Already done quiz");
+      }
       const quizsdata = await StudentquizesModel.findOneAndUpdate(
         {
           quiz: id,
@@ -247,7 +245,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
         {
           questions: quizdata.questions,
           score: quizdata.score,
-          marks:0
+          marks: 0,
         },
         { upsert: true }
       );
@@ -263,16 +261,16 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
         message: "Quiz started successfully",
       });
     } else if (status == "end") {
-      let marks = 0,score=0;
-      
+      let marks = 0,
+        score = 0;
+
       quizdata.questions.map(async (q, index) => {
         if (q.answer == studentdata.answers[index]) {
-          marks+=q.score;
+          marks += q.score;
         }
-        score+=q.score;
+        score += q.score;
 
         if (index == quizdata?.questions?.length - 1) {
-
           const quizsdata = await StudentquizesModel.findOneAndUpdate(
             {
               quiz: id,
@@ -280,20 +278,19 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
             },
             {
               status: "complete",
-              result:marks/score*100>45?"pass":"fail",
+              result: (marks / score) * 100 > 45 ? "pass" : "fail",
               marks,
             },
             { new: true }
           );
           return res.send({
             success: true,
-            data: { ...quizsdata._doc, marks,score },
+            data: { ...quizsdata._doc, marks, score },
             message: "Quiz Completed successfully",
           });
         }
       });
     } else {
-      
       throw Error("Invalid reqt");
     }
   } catch (error) {
@@ -303,6 +300,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
 
 exports.getquizes = asyncHandler(async (req, res) => {
   try {
+    console.log(req.user);
     let { limit, page } = req.query;
     delete req.query.limit;
     delete req.query.page;
@@ -310,13 +308,13 @@ exports.getquizes = asyncHandler(async (req, res) => {
     limit = limit || 10;
     const cleanObject = (obj) => {
       return Object.fromEntries(
-        Object.entries(obj)
-          .filter(([key, value]) => value !== null &&value !== 'null' && value !== '')
+        Object.entries(obj).filter(
+          ([key, value]) => value !== null && value !== "null" && value !== ""
+        )
       );
     };
-    
-    req.query = cleanObject(req.query)
-    
+
+    req.query = cleanObject(req.query);
 
     let Quizdata = await QuizesModel.find(req.query)
       .skip(page * limit)
@@ -335,13 +333,14 @@ exports.getquizes = asyncHandler(async (req, res) => {
         path: "topic",
         select: ["_id", "image", "name", "difficulty", "type"],
       })
-      .populate({ path: "lesson", select: ["_id", "image", "name"] });
-   
-if(req.user.userType=="Student"){
-  // Quizdata=Quizdata.filter((i)=>{
-  //   return req.user?.profile?.subjects?.includes(i.subject._id)
-  // })
-}
+      .populate({ path: "lesson", select: ["_id", "image", "name"] })
+      .sort({ _id: -1 });
+
+    if (req.user.userType == "Student") {
+      // Quizdata=Quizdata.filter((i)=>{
+      //   return req.user?.profile?.subjects?.includes(i.subject._id)
+      // })
+    }
     if (Quizdata.length > 0) {
       return res.send({
         success: true,
@@ -384,14 +383,13 @@ exports.addananswer = asyncHandler(async (req, res) => {
       message: "Answer done successfully",
     });
   } catch (error) {
-    
     return res.status(200).json({ success: false, message: error.message });
   }
 });
 exports.getstudentquizesbyquizid = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const studentquizdata = (
       await StudentquizesModel
         // .aggregate([
