@@ -87,7 +87,7 @@ exports.updatequiz = asyncHandler(async (req, res) => {
     if (!quizdata) {
       throw new Error("Invalid id");
     }
-    const { grade, topic, subject, startsAt, endsAt, score } = req.body;
+    const { grade, topic, subject,lesson, startsAt, endsAt, score } = req.body;
     const gradedata = grade ?? (await gradeModel.findById(grade));
 
     if (!gradedata) {
@@ -108,13 +108,27 @@ exports.updatequiz = asyncHandler(async (req, res) => {
     if (!lessondata) {
       throw new Error("Lesson not found");
     }
+    let {questions} = req.body
+    delete req.body.questions
     const data = await QuizesModel.findByIdAndUpdate(id, req.body, {
       new: true,
     });
+let newQuestions=  await Promise.all(questions.map(async (question)=>{
 
+return  await QuestionsModel.findOneAndUpdate({
+    question,   
+    quiz,
+    },{
+      question,
+      options,
+      answer,
+      score,
+      quiz,
+    },{upsert:true}, {new:true})
+  }))
     return res.send({
       success: true,
-      data,
+      data:{...data,...newQuestions},
       message: "Quize Update Successfully",
     });
   } catch (error) {
@@ -230,13 +244,13 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
       student: req.user?.profile?._id,
     });
     if (status == "start") {
-      const alreadyquiz = await StudentquizesModel.findOne({
-        quiz: id,
-        student: req.user.profile._id,
-      });
-      if (alreadyquiz) {
-        throw new Error("Already done quiz");
-      }
+      // const alreadyquiz = await StudentquizesModel.findOne({
+      //   quiz: id,
+      //   student: req.user.profile._id,
+      // });
+      // if (alreadyquiz) {
+      //   throw new Error("Already done quiz");
+      // }
       const quizsdata = await StudentquizesModel.findOneAndUpdate(
         {
           quiz: id,
@@ -247,7 +261,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
           score: quizdata.score,
           marks: 0,
         },
-        { upsert: true }
+        { upsert: true },{new:true}
       );
       // const quizsdata = await new StudentquizesModel({
       //   quiz: id,
@@ -265,6 +279,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
         score = 0;
 
       quizdata.questions.map(async (q, index) => {
+        console.log(q.answer , studentdata.answers)
         if (q.answer == studentdata.answers[index]) {
           marks += q.score;
         }
@@ -278,8 +293,9 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
             },
             {
               status: "complete",
-              result: (marks / score) * 100 > 45 ? "pass" : "fail",
+              result: (marks / score) * 100 > 70 ? "pass" : "fail",
               marks,
+              score
             },
             { new: true }
           );
@@ -300,7 +316,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
 
 exports.getquizes = asyncHandler(async (req, res) => {
   try {
-    console.log(req.user);
+    
     let { limit, page } = req.query;
     delete req.query.limit;
     delete req.query.page;
@@ -317,9 +333,9 @@ exports.getquizes = asyncHandler(async (req, res) => {
     req.query = cleanObject(req.query);
 
     let Quizdata = await QuizesModel.find(req.query)
-      .skip(page * limit)
-      .limit(limit)
-      .populate({ path: "questions", select: "-answer" })
+      // .skip(page * limit)
+      // .limit(limit)
+      .populate({ path: "questions" })
       .populate({
         path: "createdBy",
         select: "auth",
@@ -328,6 +344,7 @@ exports.getquizes = asyncHandler(async (req, res) => {
           select: ["userName", "fullName", "email", "userType"],
         },
       })
+      .populate({ path: "grade", select: ["_id", "grade"] })
       .populate({ path: "subject", select: ["_id", "image", "name"] })
       .populate({
         path: "topic",
@@ -336,29 +353,82 @@ exports.getquizes = asyncHandler(async (req, res) => {
       .populate({ path: "lesson", select: ["_id", "image", "name"] })
       .sort({ _id: -1 });
 
-    if (req.user.userType == "Student") {
-      // Quizdata=Quizdata.filter((i)=>{
-      //   return req.user?.profile?.subjects?.includes(i.subject._id)
-      // })
-    }
-    if (Quizdata.length > 0) {
-      return res.send({
-        success: true,
-        data: Quizdata,
-        message: "Quizes get successfully",
-      });
-    } else {
-      return res.send({
-        success: false,
-        data: [],
-        message: "Quizes not found",
-      });
+    if (req.user.userType == "Teacher") {
+      
+      if (Quizdata.length > 0) {
+        return res.send({
+          success: true,
+          data: Quizdata,
+          message: "Quizes get successfully",
+        });
+      } else {
+        return res.send({
+          success: false,
+          data: [],
+          message: "Quizes not found",
+        });
+      }
+    }else{
+      if (Quizdata.length > 0) {
+        return res.send({
+          success: true,
+          data: Quizdata.map((i)=>{
+            return {
+              ...i,
+              questions:i.questions.map((j)=>{
+              delete j.answer
+              return j
+            })}
+
+            
+          }),
+          message: "Quizes get successfully",
+        });
+      } else {
+        return res.send({
+          success: false,
+          data: [],
+          message: "Quizes not found",
+        });
+      }
     }
   } catch (error) {
     return res.status(200).json({ success: false, message: error.message });
   }
 });
 
+exports.getMyQuizesByResult=asyncHandler(async (req, res) => {
+  try {
+    const {result}= req.query
+   let data = await StudentquizesModel.find({
+      result,
+      student: req.user?.profile?._id,      
+    },{questions:0,answers:0})
+    .populate({ path: "quiz"
+  })
+  .populate({path:"quiz",populate:{path:"questions", 
+  // select:"-answer"
+}})
+  
+    .populate({path:"quiz",populate:{path:"grade", select:"grade"}})
+    .populate({path:"quiz",populate:{path:"topic", select:"name"}})
+    .populate({path:"quiz",populate:{path:"subject", select:"name"}})
+    .populate({path:"quiz",populate:{path:"lesson", select:"name"}})
+
+    // .populate({ path: "quiz", populate: {
+    //   path:["grade","subject","lesson","topic"]
+    // } })
+
+ 
+    return res.send({
+      success:true,
+      data ,
+      message: "Student Quizes found successfully",
+    });
+   }catch (error) {
+    return res.status(200).json({ success: false, message: error.message });
+  }
+});
 exports.addananswer = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
@@ -375,7 +445,7 @@ exports.addananswer = asyncHandler(async (req, res) => {
     if (index > studentquizdata.questions.length) {
       throw Error("Invalid index");
     }
-    studentquizdata.answers[index - 1] = answer;
+    studentquizdata.answers[index] = answer;
     await studentquizdata.save();
     return res.send({
       success: true,

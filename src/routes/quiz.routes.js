@@ -11,7 +11,8 @@ const {
   updatequestion,
   deletequestions,
   getstudentquizesbyquizid,
-updatestudentquize
+updatestudentquize,
+getMyQuizesByResult
 } = require("../controllers/quiz.contrroller.js");
 const { verifytoken, verifyteachertoken, verifystudenttoken } = require("../middlewares/auth");
 
@@ -32,6 +33,8 @@ router.route("/teacher/q/:id").delete(verifyteachertoken, deletequestions);
 
 //student
 router.route("/student/:id").post(verifystudenttoken, updatestatusquiz);
+router.route("/student/myquiz").get(verifystudenttoken, getMyQuizesByResult);
+
 router.route("/student/a/:id").post(verifytoken, addananswer);
 router.route("/").get(verifytoken, getquizes);
 

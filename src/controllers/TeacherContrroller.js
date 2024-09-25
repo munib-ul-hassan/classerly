@@ -178,18 +178,20 @@ exports.mystudents = async (req, res) => {
         select: "auth",
         populate: {
           path: "auth",
+         
           select: ["userName", "fullName", "email", "image", "fullAddress"],
         },
       })
       .populate({
         path: "students",
-        select: "auth",
+        select: ["auth","code"],
 
         populate: [{
           path: "grade",
           select: ["grade"]
           
         },
+        
         { path: "subjects", select: ["image", "name"] },
         
         ],

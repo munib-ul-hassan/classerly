@@ -427,7 +427,7 @@ exports.resetpassword = asyncHandler(async (req, res) => {
 });
 exports.updateuser = asyncHandler(async (req, res) => {
   try {
-    const { userName, image, password, grade ,subjects} = req.body;
+    const { userName, image, grade ,subjects, emailNotification,notification} = req.body;
     const cleanObject = (obj) => {
       return Object.fromEntries(
         Object.entries(obj).filter(
@@ -440,12 +440,21 @@ exports.updateuser = asyncHandler(async (req, res) => {
         )
       );
     };
-    if (userName || image) {
+    console.log( emailNotification,notification,cleanObject({
+      userName,
+      image,
+      emailNotification,notification
+    }))
+    console.log(userName || image||emailNotification!=null||notification!=null)
+    console.log(userName , image,emailNotification!=null,notification!=null)
+
+    if (userName || image||emailNotification!=null||notification!=null) {
       await authModel.findByIdAndUpdate(
         { _id: req.user._id },
         cleanObject({
           userName,
           image,
+          emailNotification,notification
         })
       );
     }

@@ -18,7 +18,9 @@ const AuthSchema = new Schema(
     },
     image: {type:String,default:""},
     fullAddress: String,
-    otp: String
+    otp: String,
+    emailNotification:{type:Boolean,default:true},
+    notification:{type:Boolean,default:true}
   },
   {
     timestamps: true

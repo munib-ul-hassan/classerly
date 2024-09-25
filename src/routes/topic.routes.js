@@ -12,7 +12,7 @@ router.route('/lesson').post(verifyadmintoken,addlesson)
 router.route('/lesson/:id').put(verifyadmintoken,updatelesson)
 
 
-router.route('/lesson/:id').get(getAllLessonsOfTopics)
-router.route('/lesson/content/:id').get(getcontentOfLesson)
+router.route('/lesson/:id').get(verifytoken,getAllLessonsOfTopics)
+router.route('/lesson/content/:id').get(verifytoken,getcontentOfLesson)
 
 module.exports=router;

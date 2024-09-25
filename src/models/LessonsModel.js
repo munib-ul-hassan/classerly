@@ -20,7 +20,11 @@ const lessonsSchema= mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"Topic"
     },
+readby:[{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:"Student"
 
+}]
 
 },{
     timestamps:true,

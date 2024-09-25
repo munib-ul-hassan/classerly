@@ -45,26 +45,33 @@ const main = async () => {
   fs.readFile(__dirname + "/data2.json", "utf8", async (e, d) => {
     let keys = Object.keys(JSON.parse(d));
     let values = Object.values(JSON.parse(d));
-    
+
     keys.map(async (item, i) => {
       let grade = await gradeModel.findOne({ grade: item });
       if (grade) {
         values[i].map(async (item2, j) => {
-          if ( !item2.includes("https")) {
-            try{
-            await subjectModel.findOneAndUpdate({
-              grade: grade._id,
-              name: item2.trim()
-                   },{$set:{grade: grade._id,
-                    name: item2.trim(),topics:[],image: values[i][j + 1]}},{upsert:true})}catch(err){
-                      
-                    }
-            
+          if (!item2.includes("https")) {
+            try {
+              await subjectModel.findOneAndUpdate(
+                {
+                  grade: grade._id,
+                  name: item2.trim(),
+                },
+                {
+                  $set: {
+                    grade: grade._id,
+                    name: item2.trim(),
+                    topics: [],
+                    image: values[i][j + 1],
+                  },
+                },
+                { upsert: true }
+              );
+            } catch (err) {}
           }
         });
       }
     });
-   
   });
 
   //   let subject= await subjectModel.findOne({name:"Scienve"})
@@ -266,7 +273,7 @@ exports.updatetopic = asyncHandler(async (req, res) => {
 
 exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
   const { subject } = req.query;
-  
+
   try {
     const findTopicLesson = await topicModel.aggregate([
       {
@@ -274,6 +281,27 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
           subject: new mongoose.Types.ObjectId(subject),
         },
       },
+      {
+        $lookup: {
+          from: "lessons",
+          let: { topicId: { $toString: "$_id" } }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: "$topic" }, "$$topicId"], // Convert topic field to string and compare
+                },
+              },
+            },
+          ],
+          as: "lessons",
+        },
+      },
+      // {
+      //   $match:{
+      //     "lessons.readyby":{$in:[new mongoose.Types.ObjectId(req.user.profile._id)]}
+      //   }
+      // },
       {
         $lookup: {
           from: "quizes",
@@ -289,31 +317,33 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
           ],
           as: "quizes",
         },
-      }
-      ,{
-        $unwind:{
-        path: "$quizes", // Specify the field you want to unwind
-        preserveNullAndEmptyArrays: true }
       },
-      
+      {
+        $unwind: {
+          path: "$quizes", // Specify the field you want to unwind
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
       {
         $lookup: {
           from: "studentquizes",
-          let: { topicId: { $toString: "$quizes._id" } , stdId :{$toString:req.user?.profile?._id}}, // Convert _id to string
+          let: {
+            topicId: { $toString: "$quizes._id" },
+            stdId: { $toString: req.user?.profile?._id },
+          }, // Convert _id to string
           pipeline: [
             {
               $match: {
                 $expr: {
-                  $and:[
+                  $and: [
                     {
-
                       $eq: [{ $toString: "$quiz" }, "$$topicId"], // Convert topic field to string and compare
                     },
                     {
-
                       $eq: [{ $toString: "$student" }, "$$stdId"], // Convert topic field to string and compare
-                    }
-                  ]
+                    },
+                  ],
                 },
               },
             },
@@ -323,24 +353,22 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
       },
       {
         $group: {
-          _id: "$_id",       
-          name: 
-          { $first: "$name" },
-          
-          image: { $first: "$image" },       
+          _id: "$_id",
+          name: { $first: "$name" },
 
-          subject: { $first: "$subject" },  
-          difficulty: { $first: "$difficulty" },    
-          type: { $first: "$type" }, 
-          lessons: { $first: "$lessons" },     
-            
+          image: { $first: "$image" },
 
-                       // Group by topic ID
+          subject: { $first: "$subject" },
+          difficulty: { $first: "$difficulty" },
+          type: { $first: "$type" },
+          lessons: { $first: "$lessons" },
+
+          // Group by topic ID
           // subject: { $first: "$subject" }, // Keep other fields from the original topic
           // name: { $first: "$name" },
           quizes: {
             $push: {
-              _id: "$quizes._id",          // Keep quiz fields
+              _id: "$quizes._id", // Keep quiz fields
               title: "$quizes.createdBy",
               questions: "$quizes.questions",
               status: "$quizes.status",
@@ -350,12 +378,11 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
               image: "$quizes.image",
               endsAt: "$quizes.endsAt",
               startsAt: "$quizes.startsAt",
-
-              studentQuizData: "$studentquizes"  // Embed the student quiz data
-            }
-          }
-        }
-      }
+              studentQuizData: "$studentquizes", // Embed the student quiz data
+            },
+          },
+        },
+      },
     ]);
     // find({ subject });
 
@@ -363,9 +390,30 @@ exports.getAlltopicsbysubject = asyncHandler(async (req, res) => {
       throw new Error("Topics not found");
     }
 
-    res
-      .status(200)
-      .json(new ApiResponse(200, findTopicLesson, "lesson found sucessfully"));
+    res.status(200).json(
+      new ApiResponse(
+        200,
+        await Promise.all(
+          findTopicLesson.map(async(i) => {
+            let c = 0;
+            await Promise.all(   i.lessons.map((j) => {
+             
+              if (
+                j?.readby
+                  ?.map((id) => {return id.toString()})
+                  ?.includes(req.user.profile._id.toString())
+              ) {
+                c++;
+              }
+            }));
+            i.read = (c / i.lessons.length).toFixed(2)
+          
+            return i;
+          })
+        ),
+        "lesson found sucessfully"
+      )
+    );
   } catch (error) {
     res.status(200).json({ mesage: error.message || "somthing went wrong" });
   }
@@ -473,8 +521,13 @@ exports.getcontentOfLesson = asyncHandler(async (req, res) => {
   const LessonId = req.params.id;
 
   try {
-    const findLesson = await LessonsModel.findById(LessonId);
-
+    if (req.user.userType == "Student") {
+      await LessonsModel.findByIdAndUpdate(
+        LessonId,
+        { $addToSet: { readby: req.user.profile._id } } // Add only if not already in array
+      );
+    }
+    const findLesson = await LessonsModel.findById(LessonId, { readyby: 0 });
     if (!findLesson) {
       return res.status(200).json(new ApiResponse(404, "Lesson not found"));
     }
@@ -482,6 +535,7 @@ exports.getcontentOfLesson = asyncHandler(async (req, res) => {
     return res.status(200).json({
       message: "Content Found",
       data: findLesson,
+      success: true,
     });
   } catch (error) {
     const errorMessage = error.message || "Something went wrong";
@@ -492,25 +546,38 @@ exports.getcontentOfLesson = asyncHandler(async (req, res) => {
 exports.getAllLessonsOfTopics = asyncHandler(async (req, res) => {
   const topicId = req.params.id;
   try {
-    
-    // const findTopicLesson = await topicModel
-    //   .findById(topicId)
-    //   .populate({ path: "lessons", select: "_id name image" });
-    const findTopicLesson = await LessonsModel.aggregate([{
-      $match:{
-        topic:  new mongoose.Types.ObjectId(topicId)
-      }
-    }])
-    
+    const findTopicLesson = await LessonsModel.aggregate([
+      {
+        $match: {
+          topic: new mongoose.Types.ObjectId(topicId),
+        },
+      },
+    ]);
+
     // .populate({ path: "lessons", select: "_id name image" });
 
     if (!findTopicLesson) {
       throw new Error("Topic not found");
     }
-    const Lessons = findTopicLesson.lessons;
-    return res
-      .status(200)
-      .json(new ApiResponse(200, findTopicLesson, "lesson found sucessfully"));
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        findTopicLesson.map((i) => {
+          if (
+            i?.readby
+              ?.map((id) =>{return id.toString()})
+              ?.includes(req.user.profile._id)
+          ) {
+            i.status = "complete";
+          } else {
+            i.status = "incomplete";
+          }
+          return i;
+        }),
+        "lesson found sucessfully"
+      )
+    );
   } catch (error) {
     res.status(200).json({ mesage: error.message || "somthing went wrong" });
   }
