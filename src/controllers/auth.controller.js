@@ -188,7 +188,7 @@ exports.register = asyncHandler(async (req, res) => {
           [];
 
         if (std.length != childIds.length) {
-          throw Error("This student is already been added to some other parent");
+          throw Error("This user is already been added to some other parent");
         }
         profile = new ParentModel({
           auth: auth._id,
@@ -440,14 +440,7 @@ exports.updateuser = asyncHandler(async (req, res) => {
         )
       );
     };
-    console.log( emailNotification,notification,cleanObject({
-      userName,
-      image,
-      emailNotification,notification
-    }))
-    console.log(userName || image||emailNotification!=null||notification!=null)
-    console.log(userName , image,emailNotification!=null,notification!=null)
-
+    
     if (userName || image||emailNotification!=null||notification!=null) {
       await authModel.findByIdAndUpdate(
         { _id: req.user._id },

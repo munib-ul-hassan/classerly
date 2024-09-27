@@ -1,5 +1,7 @@
 const {Router}=require('express');
-const { addNewChild, getMyChilds ,addfeedback, updatefeedback,getnotification,myFeedBacks,getQuizInfo, getMyChildbyId} = require("../controllers/parent.controllers");
+const { addNewChild, getMyChilds ,addfeedback, updatefeedback,
+    getMyChildbysubjectId,
+    getnotification,myFeedBacks,getQuizInfo, getMyChildbyId} = require("../controllers/parent.controllers");
 const { verifytoken, verifyparenttoken } = require('../middlewares/auth');
 
 
@@ -18,6 +20,7 @@ router.route('/parent/feedback/:id').get(verifyparenttoken,myFeedBacks);
 router.route('/mychilds').get(verifytoken,getMyChilds);
 
 router.route('/mychild/:id').get(verifytoken,getMyChildbyId);
+router.route('/mychildbysubject/:id').get(verifytoken,getMyChildbysubjectId);
 
 
 router.route("/getquizinfo/:id").get(verifytoken,getQuizInfo);

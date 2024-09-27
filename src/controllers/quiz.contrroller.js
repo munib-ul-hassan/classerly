@@ -279,7 +279,7 @@ exports.updatestatusquiz = asyncHandler(async (req, res) => {
         score = 0;
 
       quizdata.questions.map(async (q, index) => {
-        console.log(q.answer , studentdata.answers)
+      
         if (q.answer == studentdata.answers[index]) {
           marks += q.score;
         }
@@ -374,13 +374,11 @@ exports.getquizes = asyncHandler(async (req, res) => {
           success: true,
           data: Quizdata.map((i)=>{
             return {
-              ...i,
+              ...i._doc,
               questions:i.questions.map((j)=>{
               delete j.answer
-              return j
-            })}
-
-            
+              return j._doc
+            })}            
           }),
           message: "Quizes get successfully",
         });
