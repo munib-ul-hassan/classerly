@@ -448,6 +448,7 @@ exports.getMyChildbysubjectId = asyncHandler(async (req, res) => {
               lessons: await Promise.all(
                 i.lessons.map(async (j) => {
                   let { name, image, topic, readby } = j;
+                  readby= readby?.map(id2 => id2.toString());                  
                   return {
                     name,
                     image,
