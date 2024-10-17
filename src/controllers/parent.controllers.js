@@ -45,7 +45,7 @@ exports.addNewChild = asyncHandler(async (req, res) => {
       .status(200)
       .json(new ApiResponse(200, findParent, "child added successfully"));
   } catch (error) {
-    console.error("Error in sign-up:");
+    
 
     res.status(200).json({ message: error.message });
   }
@@ -302,20 +302,20 @@ exports.getMyChildsubjectdata = asyncHandler(async (req, res) => {
     const auth = await studentModel
       .findById(id)
       .populate("subjects")
+    // const sub = await subjectModel.aggregate([
+    //   {
+    //     $match: {
+    //       _id: {
+    //         $in: auth.subjects
+    //           .map((i) => {
+    //             return i._id;
+    //           })
+    //           .flat(),
+    //       },
+    //     },
+    //   },
+    // ]);
     
-    const sub = await subjectModel.aggregate([
-      {
-        $match: {
-          _id: {
-            $in: auth.subjects
-              .map((i) => {
-                return i._id;
-              })
-              .flat(),
-          },
-        },
-      },
-    ]);
 
     let findTopicLesson = await topicModel.aggregate([
       {
@@ -544,17 +544,37 @@ exports.getMyChildsubjectdata = asyncHandler(async (req, res) => {
         return i;
       })
     )
+    
+    function groupbysubject(arr){
+    
+      let value = {
+
+      }
+      arr.map((i)=>{
+        if(!value[i.name]||value[i.name]?.result==0){
+
+          value[i.name]={
+  ...i
+          }
+        }
+      })
+      return Object.values(value)
+    }
     return res.status(200).json(
       new ApiResponse(
         200,
-        [...sub.filter((i)=>{
-return findTopicLesson.filter((j)=>{
-  return j.name!=i.name
-}).length>0
-        }).map((i)=>{
-          i.result=0
-          return i
-        }), ...findTopicLesson],
+        groupbysubject([...auth.subjects.map((j)=>{
+          return {...j._doc,result:0}
+        })
+//           .filter((i)=>{
+// return findTopicLesson.filter((j)=>{
+//   return j.name!=i.name
+// }).length>0
+//         }).map((i)=>{
+//           i.result=0
+//           return i
+//         })
+        , ...findTopicLesson]),
         "Subject details succesfully"
       )
     );
