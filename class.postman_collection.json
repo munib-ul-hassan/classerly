@@ -783,7 +783,13 @@
 					"name": "get topics by subject id",
 					"request": {
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2YzIzYzA0YmRjMzliZjZhOThlYzI1NSIsImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJzdGQ1IiwiZW1haWwiOiJzdGQ1QHlvcG1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkYnVQOURRUXpoMTRvaURZdGxDNExmT0JxdEVOS2xiemtzLnFPOGl1SkJYQzRmV2U2dG9CbEMiLCJ1c2VyVHlwZSI6IlN0dWRlbnQiLCJmdWxsQWRkcmVzcyI6ImFiYyIsInByb2ZpbGUiOnsiX2lkIjoiNjZjMjNjMDRiZGMzOWJmNmE5OGVjMjU3IiwiYXV0aCI6IjY2YzIzYzA0YmRjMzliZjZhOThlYzI1NSIsImdyYWRlIjp7Il9pZCI6IjY2NmI1MTBlMDBhZjY1MjQ5NjE2ZTI1MCIsImdyYWRlIjoiR3JhZGUgOSIsInN0dWRlbnRzIjpbIjY2YzM5NzA0YjRlZTBjOTg3MTY4MzM5YSIsIjY2YzVkZWUxZmVhYzIzYjdmZmZjNjEzYyIsIjY2Y2Y3ZWQ3M2IyMmRlNDZjOTk3MzA0MyIsIjY2Y2ZiYjU1ZjBkYzdjZTNjNTM5MDllNyIsIjY2ZDExMjk4Y2QwNWFmZDBlMzYzYTIzMSIsIjY2ZDExOGFlY2QwNWFmZDBlMzYzYTNiNiIsIjY2ZDIwOTExOWVjMmVmZjFmOTZhNzBkMSIsIjY2ZDIxNDYwOWVjMmVmZjFmOTZhNzVlYiIsIjY2ZDIxYmI2OWVjMmVmZjFmOTZhNzc2ZCIsIjY2ZDIxYzAzOWVjMmVmZjFmOTZhNzdhMCIsIjY2ZDMyZDk2ZWY4ZmQ3MTY3OTU1NDMyMyJdLCJ0ZWFjaGVycyI6WyI2NmNmYmMxYmYwZGM3Y2UzYzUzOTBhMTgiLCI2NmQyMWQwZjllYzJlZmYxZjk2YTc4N2IiLCI2NmVhN2UxYWJkNDM0YzFiNDE0NWVjZjgiXSwic3ViamVjdHMiOlsiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdjIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdkIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdlIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgwIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgxIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgzIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgyIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg0IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg1IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg3IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg4IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg5IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhhIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhjIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhiIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhkIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhlIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhmIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjkwIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjkxIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjkyIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg2IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdmIl0sImNyZWF0ZWRBdCI6IjIwMjQtMDYtMTNUMjA6MDU6MzQuMDcxWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDktMThUMDc6MTU6MzguMzI5WiIsIl9fdiI6MTF9LCJjb2RlIjoiMTE3ODY2IiwiY3JlYXRlZEF0IjoiMjAyNC0wOC0xOFQxODoyMzowMC41NDJaIiwidXBkYXRlZEF0IjoiMjAyNC0wOS0xOFQxODoyODozMS45MDdaIiwiX192IjowLCJwYXJlbnQiOiI2NjZkOGE3OTYwNmJmOWM1MGY1YzE0NzMiLCJzdWJqZWN0cyI6WyI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2MiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2QiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2UiXX0sImNyZWF0ZWRBdCI6IjIwMjQtMDgtMThUMTg6MjM6MDAuNDA2WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDgtMThUMTg6MjM6MDAuNDA2WiIsIl9fdiI6MCwiaW1hZ2UiOiJodHRwczovL3Jlcy5jbG91ZGluYXJ5LmNvbS9kZWl5bGZsZXkvaW1hZ2UvdXBsb2FkL3YxNzI0OTY1MTI0L3Byb2ZpbGVfaGhmamRoLnBuZyJ9LCJpYXQiOjE3MjY2ODQxMTJ9.ekcaqfxQYwUUo39Pq7pRh68-HeZCIalhs3BAIpUxlFU",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{1}}/topic?subject=66b3d6bf935d0e0a6cf48f92",
 							"host": [
@@ -865,6 +871,77 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"6668875ebf018d40d84711f0\",\n            \"name\": \"transportation of life\",\n            \"subject\": \"6660c46dd765cd3ccd8e03bf\",\n            \"difficulty\": \"Beginner\",\n            \"lessons\": [],\n            \"quizes\": [],\n            \"practices\": [],\n            \"createdAt\": \"2024-06-11T17:20:30.212Z\",\n            \"updatedAt\": \"2024-06-11T17:20:30.212Z\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"6668877fbf018d40d84711f7\",\n            \"name\": \"transportation of life\",\n            \"image\": \"1717512710189-worktJourneyReplay - Copy (6).png\",\n            \"subject\": \"6660c46dd765cd3ccd8e03bf\",\n            \"difficulty\": \"Beginner\",\n            \"lessons\": [],\n            \"quizes\": [],\n            \"practices\": [],\n            \"createdAt\": \"2024-06-11T17:21:03.923Z\",\n            \"updatedAt\": \"2024-06-11T17:21:03.923Z\",\n            \"__v\": 0\n        }\n    ],\n    \"message\": \"lesson found sucessfully\",\n    \"success\": true\n}"
+						},
+						{
+							"name": "get topics by subject id new",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2YzIzYzA0YmRjMzliZjZhOThlYzI1NSIsImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJzdGQ1IiwiZW1haWwiOiJzdGQ1QHlvcG1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkYnVQOURRUXpoMTRvaURZdGxDNExmT0JxdEVOS2xiemtzLnFPOGl1SkJYQzRmV2U2dG9CbEMiLCJ1c2VyVHlwZSI6IlN0dWRlbnQiLCJmdWxsQWRkcmVzcyI6ImFiYyIsInByb2ZpbGUiOnsiX2lkIjoiNjZjMjNjMDRiZGMzOWJmNmE5OGVjMjU3IiwiYXV0aCI6IjY2YzIzYzA0YmRjMzliZjZhOThlYzI1NSIsImdyYWRlIjp7Il9pZCI6IjY2NmI1MTBlMDBhZjY1MjQ5NjE2ZTI1MCIsImdyYWRlIjoiR3JhZGUgOSIsInN0dWRlbnRzIjpbIjY2YzM5NzA0YjRlZTBjOTg3MTY4MzM5YSIsIjY2YzVkZWUxZmVhYzIzYjdmZmZjNjEzYyIsIjY2Y2Y3ZWQ3M2IyMmRlNDZjOTk3MzA0MyIsIjY2Y2ZiYjU1ZjBkYzdjZTNjNTM5MDllNyIsIjY2ZDExMjk4Y2QwNWFmZDBlMzYzYTIzMSIsIjY2ZDExOGFlY2QwNWFmZDBlMzYzYTNiNiIsIjY2ZDIwOTExOWVjMmVmZjFmOTZhNzBkMSIsIjY2ZDIxNDYwOWVjMmVmZjFmOTZhNzVlYiIsIjY2ZDIxYmI2OWVjMmVmZjFmOTZhNzc2ZCIsIjY2ZDIxYzAzOWVjMmVmZjFmOTZhNzdhMCIsIjY2ZDMyZDk2ZWY4ZmQ3MTY3OTU1NDMyMyJdLCJ0ZWFjaGVycyI6WyI2NmNmYmMxYmYwZGM3Y2UzYzUzOTBhMTgiLCI2NmQyMWQwZjllYzJlZmYxZjk2YTc4N2IiLCI2NmVhN2UxYWJkNDM0YzFiNDE0NWVjZjgiXSwic3ViamVjdHMiOlsiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdjIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdkIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdlIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgwIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgxIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgzIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjgyIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg0IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg1IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg3IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg4IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg5IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhhIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhjIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhiIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhkIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhlIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjhmIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjkwIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjkxIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjkyIiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4Zjg2IiwiNjZiM2Q2YmY5MzVkMGUwYTZjZjQ4ZjdmIl0sImNyZWF0ZWRBdCI6IjIwMjQtMDYtMTNUMjA6MDU6MzQuMDcxWiIsInVwZGF0ZWRBdCI6IjIwMjQtMDktMThUMDc6MTU6MzguMzI5WiIsIl9fdiI6MTF9LCJjb2RlIjoiMTE3ODY2IiwiY3JlYXRlZEF0IjoiMjAyNC0wOC0xOFQxODoyMzowMC41NDJaIiwidXBkYXRlZEF0IjoiMjAyNC0wOS0xOFQxODoyODozMS45MDdaIiwiX192IjowLCJwYXJlbnQiOiI2NjZkOGE3OTYwNmJmOWM1MGY1YzE0NzMiLCJzdWJqZWN0cyI6WyI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2MiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2QiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2UiXX0sImNyZWF0ZWRBdCI6IjIwMjQtMDgtMThUMTg6MjM6MDAuNDA2WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDgtMThUMTg6MjM6MDAuNDA2WiIsIl9fdiI6MCwiaW1hZ2UiOiJodHRwczovL3Jlcy5jbG91ZGluYXJ5LmNvbS9kZWl5bGZsZXkvaW1hZ2UvdXBsb2FkL3YxNzI0OTY1MTI0L3Byb2ZpbGVfaGhmamRoLnBuZyJ9LCJpYXQiOjE3MjY2ODQxMTJ9.ekcaqfxQYwUUo39Pq7pRh68-HeZCIalhs3BAIpUxlFU",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/topic?subject=66b3d6bf935d0e0a6cf48f92",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"topic"
+									],
+									"query": [
+										{
+											"key": "subject",
+											"value": "66b3d6bf935d0e0a6cf48f92"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "10514"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2912-sqITTTniIWwajYILV2aq/T6rmZk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 18 Sep 2024 19:14:44 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"statusCode\": 200,\n    \"data\": [\n        {\n            \"_id\": \"66b3dcff6d5a262329f94792\",\n            \"name\": \"A1 STEM Investigation Skills\",\n            \"image\": \"A1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6959a7d59ca4f572d2e\",\n                \"66b3f6959a7d59ca4f572d2f\",\n                \"66b3f6959a7d59ca4f572d30\",\n                \"66b3f6959a7d59ca4f572d31\",\n                \"66b3f6959a7d59ca4f572d32\"\n            ],\n            \"quizes\": {\n                \"_id\": \"66b6779cbbde55bd1a4ec741\",\n                \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n                \"questions\": [\n                    \"66b6779cbbde55bd1a4ec742\",\n                    \"66b6779cbbde55bd1a4ec745\",\n                    \"66b6779cbbde55bd1a4ec744\",\n                    \"66b6779cbbde55bd1a4ec743\",\n                    \"66b6779cbbde55bd1a4ec748\",\n                    \"66b6779cbbde55bd1a4ec74b\",\n                    \"66b6779cbbde55bd1a4ec749\",\n                    \"66b6779cbbde55bd1a4ec74a\",\n                    \"66b6779cbbde55bd1a4ec747\",\n                    \"66b6779cbbde55bd1a4ec746\"\n                ],\n                \"grade\": \"666b510e00af65249616e250\",\n                \"topic\": \"66b3dcff6d5a262329f94792\",\n                \"lesson\": \"66b3f6959a7d59ca4f572d2e\",\n                \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n                \"startsAt\": \"2024-08-12T03:00:00.000Z\",\n                \"endsAt\": \"2024-06-12T04:00:00.000Z\",\n                \"status\": \"pending\",\n                \"score\": 10,\n                \"createdAt\": \"2024-08-09T20:10:06.019Z\",\n                \"updatedAt\": \"2024-08-09T20:10:06.019Z\",\n                \"__v\": 0,\n                \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724794748/image_2024-08-28_023903555_xek0vx.png\"\n            },\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:43.044Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94793\",\n            \"name\": \"B1. Relating Science to Our Changing World\",\n            \"image\": \"B1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6999a7d59ca4f572d9d\",\n                \"66b3f6999a7d59ca4f572d9e\"\n            ],\n            \"quizes\": {\n                \"_id\": \"66cf818aad2886bebf023f2c\",\n                \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n                \"questions\": [\n                    \"66cf818aad2886bebf023f2e\",\n                    \"66cf818aad2886bebf023f2d\"\n                ],\n                \"grade\": \"666b510e00af65249616e250\",\n                \"topic\": \"66b3dcff6d5a262329f94793\",\n                \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n                \"startsAt\": \"2024-08-28T19:00:00.000Z\",\n                \"endsAt\": \"2024-08-28T20:00:00.000Z\",\n                \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724794748/image_2024-08-28_023903555_xek0vx.png\",\n                \"status\": \"pending\",\n                \"createdAt\": \"2024-08-28T19:59:06.964Z\",\n                \"updatedAt\": \"2024-08-28T19:59:06.964Z\",\n                \"__v\": 0\n            },\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:43.064Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94793\",\n            \"name\": \"B1. Relating Science to Our Changing World\",\n            \"image\": \"B1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6999a7d59ca4f572d9d\",\n                \"66b3f6999a7d59ca4f572d9e\"\n            ],\n            \"quizes\": {\n                \"_id\": \"66cf818aad2886bebf023f31\",\n                \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n                \"questions\": [\n                    \"66cf818aad2886bebf023f33\",\n                    \"66cf818aad2886bebf023f32\"\n                ],\n                \"grade\": \"666b510e00af65249616e250\",\n                \"topic\": \"66b3dcff6d5a262329f94793\",\n                \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n                \"startsAt\": \"2024-08-28T19:00:00.000Z\",\n                \"endsAt\": \"2024-08-28T20:00:00.000Z\",\n                \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724794748/image_2024-08-28_023903555_xek0vx.png\",\n                \"status\": \"pending\",\n                \"createdAt\": \"2024-08-28T19:59:06.966Z\",\n                \"updatedAt\": \"2024-08-28T19:59:06.966Z\",\n                \"__v\": 0\n            },\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:43.064Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94793\",\n            \"name\": \"B1. Relating Science to Our Changing World\",\n            \"image\": \"B1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6999a7d59ca4f572d9d\",\n                \"66b3f6999a7d59ca4f572d9e\"\n            ],\n            \"quizes\": {\n                \"_id\": \"66cfc0f5f0dc7ce3c5390dbc\",\n                \"createdBy\": \"66cfbc1bf0dc7ce3c5390a18\",\n                \"questions\": [\n                    \"66cfc0f5f0dc7ce3c5390dbe\",\n                    \"66cfc0f5f0dc7ce3c5390dbd\"\n                ],\n                \"grade\": \"666b510e00af65249616e250\",\n                \"topic\": \"66b3dcff6d5a262329f94793\",\n                \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n                \"startsAt\": \"2024-08-29T00:00:00.000Z\",\n                \"endsAt\": \"2024-08-29T01:00:00.282Z\",\n                \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724794748/image_2024-08-28_023903555_xek0vx.png\",\n                \"status\": \"pending\",\n                \"createdAt\": \"2024-08-29T00:29:42.052Z\",\n                \"updatedAt\": \"2024-08-29T00:29:42.052Z\",\n                \"__v\": 0\n            },\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:43.064Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94793\",\n            \"name\": \"B1. Relating Science to Our Changing World\",\n            \"image\": \"B1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6999a7d59ca4f572d9d\",\n                \"66b3f6999a7d59ca4f572d9e\"\n            ],\n            \"quizes\": {\n                \"_id\": \"66d0d2032036c5c915c82dbf\",\n                \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n                \"questions\": [\n                    \"66d0d2032036c5c915c82dc4\",\n                    \"66d0d2032036c5c915c82dc2\",\n                    \"66d0d2032036c5c915c82dc3\",\n                    \"66d0d2032036c5c915c82dc5\",\n                    \"66d0d2032036c5c915c82dc0\",\n                    \"66d0d2032036c5c915c82dc1\"\n                ],\n                \"grade\": \"666b510e00af65249616e250\",\n                \"topic\": \"66b3dcff6d5a262329f94793\",\n                \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n                \"startsAt\": \"1970-01-01T00:00:00.000Z\",\n                \"endsAt\": \"1970-01-01T00:00:00.000Z\",\n                \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724794748/image_2024-08-28_023903555_xek0vx.png\",\n                \"status\": \"pending\",\n                \"createdAt\": \"2024-08-29T19:54:43.247Z\",\n                \"updatedAt\": \"2024-08-29T19:54:43.247Z\",\n                \"__v\": 0\n            },\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:43.064Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94794\",\n            \"name\": \"B2. Investigating and Understanding Concepts\",\n            \"image\": \"B2.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6989a7d59ca4f572d80\",\n                \"66b3f6989a7d59ca4f572d81\",\n                \"66b3f6989a7d59ca4f572d82\",\n                \"66b3f6989a7d59ca4f572d83\",\n                \"66b3f6989a7d59ca4f572d84\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:41.543Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94795\",\n            \"name\": \"C1. Relating Science to Our Changing World\",\n            \"image\": \"C1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6969a7d59ca4f572d39\",\n                \"66b3f6969a7d59ca4f572d3a\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:41.571Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94796\",\n            \"name\": \"C2. Investigating and Understanding Concepts\",\n            \"image\": \"C2.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6969a7d59ca4f572d3e\",\n                \"66b3f6969a7d59ca4f572d3f\",\n                \"66b3f6969a7d59ca4f572d40\",\n                \"66b3f6969a7d59ca4f572d41\",\n                \"66b3f6969a7d59ca4f572d42\",\n                \"66b3f6969a7d59ca4f572d43\",\n                \"66b3f6969a7d59ca4f572d44\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:41.813Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94797\",\n            \"name\": \"D1. Relating Science to Our Changing World\",\n            \"image\": \"D1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6969a7d59ca4f572d4d\",\n                \"66b3f6969a7d59ca4f572d4e\",\n                \"66b3f6969a7d59ca4f572d4f\",\n                \"66b3f6969a7d59ca4f572d50\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:41.910Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94799\",\n            \"name\": \"E1. Relating Science to Our Changing World\",\n            \"image\": \"E1.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6979a7d59ca4f572d67\",\n                \"66b3f6979a7d59ca4f572d68\",\n                \"66b3f6979a7d59ca4f572d69\"\n            ],\n            \"quizes\": {\n                \"_id\": \"66bf3cf8523dfb18bdda70b9\",\n                \"createdBy\": \"666d92ed204678a7b0d4aa5a\",\n                \"questions\": [\n                    \"66bf3cf8523dfb18bdda70bb\",\n                    \"66bf3cf8523dfb18bdda70ba\"\n                ],\n                \"grade\": \"666b510e00af65249616e250\",\n                \"topic\": \"66b3dcff6d5a262329f94799\",\n                \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n                \"startsAt\": \"2024-08-19T10:00:00.000Z\",\n                \"endsAt\": \"2024-08-19T10:30:00.000Z\",\n                \"status\": \"pending\",\n                \"createdAt\": \"2024-08-16T11:50:16.738Z\",\n                \"updatedAt\": \"2024-08-16T11:50:16.738Z\",\n                \"__v\": 0,\n                \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724794748/image_2024-08-28_023903555_xek0vx.png\"\n            },\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:41.908Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f9479b\",\n            \"name\": \"Strand A\",\n            \"image\": \"Strand.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6999a7d59ca4f572da2\",\n                \"66b3f6999a7d59ca4f572da3\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:41.912Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f9479c\",\n            \"name\": \"Strand B\",\n            \"image\": \"Strand.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6989a7d59ca4f572d7b\",\n                \"66b3f6989a7d59ca4f572d7c\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.988Z\",\n            \"updatedAt\": \"2024-08-09T19:24:42.131Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f9479d\",\n            \"name\": \"Strand C\",\n            \"image\": \"Strand.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6989a7d59ca4f572d8b\",\n                \"66b3f6989a7d59ca4f572d8c\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.988Z\",\n            \"updatedAt\": \"2024-08-09T19:24:42.213Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f9479e\",\n            \"name\": \"Strand D\",\n            \"image\": \"Strand.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6989a7d59ca4f572d91\",\n                \"66b3f6989a7d59ca4f572d90\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.988Z\",\n            \"updatedAt\": \"2024-08-09T19:24:42.211Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f9479f\",\n            \"name\": \"Strand E\",\n            \"image\": \"Strand.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6989a7d59ca4f572d95\",\n                \"66b3f6989a7d59ca4f572d96\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.988Z\",\n            \"updatedAt\": \"2024-08-09T19:24:42.215Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f94798\",\n            \"name\": \"D2. Investigating and Understanding Concepts\",\n            \"image\": \"D2.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6979a7d59ca4f572d56\",\n                \"66b3f6979a7d59ca4f572d57\",\n                \"66b3f6979a7d59ca4f572d58\",\n                \"66b3f6979a7d59ca4f572d59\",\n                \"66b3f6979a7d59ca4f572d5a\",\n                \"66b3f6979a7d59ca4f572d5b\",\n                \"66b3f6979a7d59ca4f572d5c\",\n                \"66b3f6979a7d59ca4f572d5d\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:42.313Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        },\n        {\n            \"_id\": \"66b3dcff6d5a262329f9479a\",\n            \"name\": \"E2. Investigating and Understanding Concepts\",\n            \"image\": \"E2.jpeg\",\n            \"subject\": \"66b3d6bf935d0e0a6cf48f92\",\n            \"difficulty\": \"Beginner\",\n            \"type\": \"Standard\",\n            \"lessons\": [\n                \"66b3f6979a7d59ca4f572d6e\",\n                \"66b3f6979a7d59ca4f572d6f\",\n                \"66b3f6979a7d59ca4f572d70\",\n                \"66b3f6979a7d59ca4f572d71\",\n                \"66b3f6979a7d59ca4f572d72\",\n                \"66b3f6979a7d59ca4f572d73\"\n            ],\n            \"practices\": [],\n            \"createdAt\": \"2024-08-07T20:45:51.987Z\",\n            \"updatedAt\": \"2024-08-09T19:24:42.440Z\",\n            \"__v\": 0,\n            \"studentquizes\": []\n        }\n    ],\n    \"message\": \"lesson found sucessfully\",\n    \"success\": true\n}"
 						}
 					]
 				},
@@ -1558,7 +1635,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}"
+								"value": "{{parenttoken}}"
 							}
 						],
 						"url": {
@@ -1756,7 +1833,7 @@
 							"script": {
 								"exec": [
 									"var d= pm.response.json().data\r",
-									"pm.collectionVariables.set(\"studenttoken\", \"Bearer \"+d.token); \r",
+									"pm.collectionVariables.set(\"parenttoken\", \"Bearer \"+d.token); \r",
 									"\r",
 									"\r",
 									"\r",
@@ -1783,7 +1860,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userName\": \"std9\",\r\n    \"password\": \"321\"\r\n}",
+							"raw": "{\r\n    \"userName\": \"parent\",\r\n    \"password\": \"123\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2536,13 +2613,13 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}"
+								"value": "{{teachertoken}}"
 							}
 						],
 						"url": {
-							"raw": "{{1}}/auth/profile",
+							"raw": "{{2}}/auth/profile",
 							"host": [
-								"{{1}}"
+								"{{2}}"
 							],
 							"path": [
 								"auth",
@@ -3501,14 +3578,14 @@
 									}
 								],
 								"url": {
-									"raw": "{{1}}/quiz/student/66748ac3daba098e691e133a?status=end",
+									"raw": "{{1}}/quiz/student/66b6779cbbde55bd1a4ec741?status=end",
 									"host": [
 										"{{1}}"
 									],
 									"path": [
 										"quiz",
 										"student",
-										"66748ac3daba098e691e133a"
+										"66b6779cbbde55bd1a4ec741"
 									],
 									"query": [
 										{
@@ -3703,6 +3780,37 @@
 									"body": "{\n    \"success\": true,\n    \"data\": {\n        \"_id\": \"6679d00571a1bbad2d98cc27\",\n        \"student\": \"666d8a1e606bf9c50f5c146e\",\n        \"quiz\": \"66748ac3daba098e691e133a\",\n        \"status\": \"start\",\n        \"result\": \"awaiting\",\n        \"questions\": [\n            \"667815d352fc9de2be36991d\"\n        ],\n        \"answers\": [\n            \"D\"\n        ],\n        \"score\": 5,\n        \"createdAt\": \"2024-06-24T19:59:01.998Z\",\n        \"updatedAt\": \"2024-06-24T20:07:22.864Z\",\n        \"__v\": 0\n    },\n    \"message\": \"Answer done successfully\"\n}"
 								}
 							]
+						},
+						{
+							"name": "my quiz by result",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2YzIzYzA0YmRjMzliZjZhOThlYzI1NSIsImZ1bGxOYW1lIjoiYWJjIiwidXNlck5hbWUiOiJzdGQ1IiwiZW1haWwiOiJzdGQ1QHlvcG1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkYnVQOURRUXpoMTRvaURZdGxDNExmT0JxdEVOS2xiemtzLnFPOGl1SkJYQzRmV2U2dG9CbEMiLCJ1c2VyVHlwZSI6IlN0dWRlbnQiLCJmdWxsQWRkcmVzcyI6ImFiYyIsInByb2ZpbGUiOnsiX2lkIjoiNjZjMjNjMDRiZGMzOWJmNmE5OGVjMjU3IiwiYXV0aCI6IjY2YzIzYzA0YmRjMzliZjZhOThlYzI1NSIsImdyYWRlIjp7Il9pZCI6IjY2NmI1MTBlMDBhZjY1MjQ5NjE2ZTI1MCIsImdyYWRlIjoiR3JhZGUgOSJ9LCJjb2RlIjoiMTE3ODY2IiwiY3JlYXRlZEF0IjoiMjAyNC0wOC0xOFQxODoyMzowMC41NDJaIiwidXBkYXRlZEF0IjoiMjAyNC0wOS0yNFQxOTo1Mzo0Mi40NTdaIiwiX192IjowLCJwYXJlbnQiOiI2NjZkOGE3OTYwNmJmOWM1MGY1YzE0NzMiLCJzdWJqZWN0cyI6WyI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2MiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2QiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmN2UiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmODAiLCI2NmIzZDZiZjkzNWQwZTBhNmNmNDhmOTIiXX0sImNyZWF0ZWRBdCI6IjIwMjQtMDgtMThUMTg6MjM6MDAuNDA2WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDktMjRUMTk6NTE6MjguMDEzWiIsIl9fdiI6MCwiaW1hZ2UiOiJodHRwczovL2kuaWJiLmNvL0Y4WE5qZFMvYXZhdGFyMi5wbmcifSwiaWF0IjoxNzI3MjkwMjY1fQ.zhRVJfJd602i4Fk1cQf-NPnxSvzAEbPYgoMOWnSO1IM",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{1}}/quiz/student/myquiz?result=fail",
+									"host": [
+										"{{1}}"
+									],
+									"path": [
+										"quiz",
+										"student",
+										"myquiz"
+									],
+									"query": [
+										{
+											"key": "result",
+											"value": "fail"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -4082,11 +4190,11 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}"
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImltYWdlIjoiIiwiX2lkIjoiNjY2YjUxMjI3YmZjZTkxNjIzZDMxNmM2IiwiZnVsbE5hbWUiOiJhZG1pbiIsInVzZXJOYW1lIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJFRGMmZOdjJOMXUyM2lJdVRQOXhxR08wekRaenRuNkZ4aVNTYTM1WlJqL0JQRlkwdTh1alBTIiwidXNlclR5cGUiOiJBZG1pbiIsImZ1bGxBZGRyZXNzIjoiYWJjIiwiY3JlYXRlZEF0IjoiMjAyNC0wNi0xM1QyMDowNTo1NC43MTJaIiwidXBkYXRlZEF0IjoiMjAyNC0wNi0xM1QyMDowNTo1NC43MTJaIiwiX192IjowLCJwcm9maWxlIjp7Il9pZCI6IjY2ZWRjZDRjODBhNGI5YWY0MDhmNDA0OCIsImF1dGgiOiI2NjZiNTEyMjdiZmNlOTE2MjNkMzE2YzYiLCJjb2RlIjoiMTIzYWJjIiwiZ3JhZGUiOnsiX2lkIjoiNjY2YjUxMGUwMGFmNjUyNDk2MTZlMjRhIiwiZ3JhZGUiOiJHcmFkZSAzIn19fSwiaWF0IjoxNzI2ODYxMDExfQ.8Vn9apM2SaJmHlotvkYwOYsMn6_fgAZFX1O0_81hzOc"
 							}
 						],
 						"url": {
-							"raw": "{{1}}/quiz?grade=666b510e00af65249616e24a&teacher=",
+							"raw": "{{1}}/quiz?grade=666b510e00af65249616e250&limit=3&page=0",
 							"host": [
 								"{{1}}"
 							],
@@ -4095,18 +4203,22 @@
 							],
 							"query": [
 								{
-									"key": "grade",
-									"value": "666b510e00af65249616e24a"
-								},
-								{
-									"key": "teacher",
-									"value": ""
-								},
-								{
 									"key": "status",
 									"value": "pending",
 									"description": "pending || start || complete",
 									"disabled": true
+								},
+								{
+									"key": "grade",
+									"value": "666b510e00af65249616e250"
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								},
+								{
+									"key": "page",
+									"value": "0"
 								}
 							]
 						}
@@ -4320,14 +4432,14 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "{{token}}",
+								"value": "{{teachertoken}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "{{1}}/teacher/mystudents",
+							"raw": "{{2}}/teacher/mystudents",
 							"host": [
-								"{{1}}"
+								"{{2}}"
 							],
 							"path": [
 								"teacher",
@@ -4583,6 +4695,113 @@
 							],
 							"cookie": [],
 							"body": "{\n    \"success\": true,\n    \"message\": \"Request updated successfully\"\n}"
+						}
+					]
+				},
+				{
+					"name": "get my subjects",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studenttoken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{2}}/student/mysubjects",
+							"host": [
+								"{{2}}"
+							],
+							"path": [
+								"student",
+								"mysubjects"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "New Request",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{studenttoken}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{2}}/student/mysubjects",
+									"host": [
+										"{{2}}"
+									],
+									"path": [
+										"student",
+										"mysubjects"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "Cowboy"
+								},
+								{
+									"key": "Report-To",
+									"value": "{\"group\":\"heroku-nel\",\"max_age\":3600,\"endpoints\":[{\"url\":\"https://nel.heroku.com/reports?ts=1724969239&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&s=X%2FYI2fthMu583dbwXg6TeHa0pueqbhVrkgpIbLKTj%2BU%3D\"}]}"
+								},
+								{
+									"key": "Reporting-Endpoints",
+									"value": "heroku-nel=https://nel.heroku.com/reports?ts=1724969239&sid=c46efe9b-d3d2-4a0c-8c76-bfafa16c5add&s=X%2FYI2fthMu583dbwXg6TeHa0pueqbhVrkgpIbLKTj%2BU%3D"
+								},
+								{
+									"key": "Nel",
+									"value": "{\"report_to\":\"heroku-nel\",\"max_age\":3600,\"success_fraction\":0.005,\"failure_fraction\":0.05,\"response_headers\":[\"Via\"]}"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "516"
+								},
+								{
+									"key": "Etag",
+									"value": "W/\"204-Avlxj0veo6OqZZi/0F6jE//0Jfo\""
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 29 Aug 2024 22:07:19 GMT"
+								},
+								{
+									"key": "Via",
+									"value": "1.1 vegur"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"data\": [\n        {\n            \"_id\": \"66b3d6bf935d0e0a6cf48f7c\",\n            \"name\": \"Dance - open\",\n            \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724182792/dance_t18387.png\"\n        },\n        {\n            \"_id\": \"66b3d6bf935d0e0a6cf48f7e\",\n            \"name\": \"integrated arts - open\",\n            \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724787475/solution_dwb7qa.png\"\n        },\n        {\n            \"_id\": \"66b3d6bf935d0e0a6cf48f7d\",\n            \"name\": \"drama - open\",\n            \"image\": \"https://res.cloudinary.com/deiylfley/image/upload/v1724182799/theater_cnbjrm.png\"\n        }\n    ],\n    \"message\": \"subjects get Successfully\"\n}"
 						}
 					]
 				}
@@ -5025,6 +5244,10 @@
 		},
 		{
 			"key": "parenttoken",
+			"value": ""
+		},
+		{
+			"key": "parenteachertoken",
 			"value": ""
 		}
 	]

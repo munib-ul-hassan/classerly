@@ -20,7 +20,10 @@ const AuthSchema = new Schema(
     fullAddress: String,
     otp: String,
     emailNotification:{type:Boolean,default:true},
-    notification:{type:Boolean,default:true}
+    notification:{type:Boolean,default:true},
+    isSubscribed:{type:Boolean,default:false},
+
+    subscriptionId:{type:String},
   },
   {
     timestamps: true

@@ -15,48 +15,51 @@ const parentModel = require("../models/parent");
 const teacherModel = require("../models/teacher");
 const subjectModel = require("../models/subject");
 const NotificationModel = require("../models/notification");
-const validategradeandsubjectforStudent =async(grade,subject)=>{
-  let gradeData,subjectData
+const Stripe = require("stripe");
+const stripe = Stripe("your-stripe-secret-key");
+
+const validategradeandsubjectforStudent = async (grade, subject) => {
+  let gradeData, subjectData;
   if (grade) {
     gradeData = await gradeModel.findOne({ _id: grade });
     if (!gradeData) {
       throw Error("Invalid grade selected");
     }
   }
-  
+
   // if (subject) {
   //   subjectData = await subjectModel.findOne({ _id:subject });
   //   if (!subjectData) {
   //     throw Error("Invalid subject selected");
   //   }
   // }
-  if (subject.length>0) {
-    subjectData = await subjectModel.find({ _id:{$in:subject} });
-    
-    if (subjectData.length!=subject.length) {
+  if (subject.length > 0) {
+    subjectData = await subjectModel.find({ _id: { $in: subject } });
+
+    if (subjectData.length != subject.length) {
       throw Error("Invalid subject selected");
     }
   }
-  return {gradeData,subjectData}
-}
-const validategradeandsubjectforTeacher =async(grade,subject)=>{
-  let gradeData,subjectData
-  if (grade.length>0) {
-    gradeData = await gradeModel.find({ _id: {$in:grade} });
-    if (gradeData.length!=grade.length) {
+  return { gradeData, subjectData };
+};
+const validategradeandsubjectforTeacher = async (grade, subject) => {
+  let gradeData, subjectData;
+  if (grade.length > 0) {
+    gradeData = await gradeModel.find({ _id: { $in: grade } });
+    if (gradeData.length != grade.length) {
       throw Error("Invalid grade selected");
     }
   }
-  
-  if (subject.length>0) {
-    subjectData = await subjectModel.find({ _id:{$in:subject} });
-    
-    if (subjectData.length!=subject.length) {
+
+  if (subject.length > 0) {
+    subjectData = await subjectModel.find({ _id: { $in: subject } });
+
+    if (subjectData.length != subject.length) {
       throw Error("Invalid subject selected");
     }
   }
-  return {gradeData,subjectData}
-}
+  return { gradeData, subjectData };
+};
 
 exports.register = asyncHandler(async (req, res) => {
   const session = await mongoose.startSession();
@@ -72,7 +75,7 @@ exports.register = asyncHandler(async (req, res) => {
       grade,
       parent,
       childIds,
-      subject
+      subject,
     } = req.body;
     if (
       [fullName, userName, password, email, userType].some(
@@ -91,7 +94,10 @@ exports.register = asyncHandler(async (req, res) => {
       email,
       fullAddress,
       userType,
-      image:userType=="Student"?"https://res.cloudinary.com/deiylfley/image/upload/v1724965124/profile_hhfjdh.png":""
+      image:
+        userType == "Student"
+          ? "https://res.cloudinary.com/deiylfley/image/upload/v1724965124/profile_hhfjdh.png"
+          : "",
     });
     // let gradeData;
     // if (grade) {
@@ -107,22 +113,17 @@ exports.register = asyncHandler(async (req, res) => {
     //     throw Error("Invalid subject selected");
     //   }
     // }
-    let subjectData,gradeData 
-    if(userType!="Teacher"){
-     let result=await validategradeandsubjectforStudent(grade,subject)
-     gradeData=result.gradeData
-     subjectData=result.subjectData
- 
+    let subjectData, gradeData;
+    if (userType != "Teacher") {
+      let result = await validategradeandsubjectforStudent(grade, subject);
+      gradeData = result.gradeData;
+      subjectData = result.subjectData;
+    } else {
+      let result1 = await validategradeandsubjectforTeacher(grade, subject);
+      gradeData = result1.gradeData;
+      subjectData = result1.subjectData;
+    }
 
-  }else{
-     let result1=await validategradeandsubjectforTeacher(grade,subject)
-    gradeData=result1.gradeData
-    subjectData=result1.subjectData
-
-    
-    } 
-    
-    
     let profile;
     if (userType == "Student") {
       if (parent) {
@@ -148,7 +149,7 @@ exports.register = asyncHandler(async (req, res) => {
           auth: auth._id,
           code: generateSixDigitCode(),
           grade,
-          subjects:subject
+          subjects: subject,
         });
         if (gradeData) {
           gradeData.students.push(profile._id);
@@ -162,22 +163,30 @@ exports.register = asyncHandler(async (req, res) => {
 
       await sendEmail(emailsubject, email, message, requestType);
     } else if (userType == "Teacher") {
-      profile = new TeacherModel({ auth: auth._id, grade,subjects:subject });
+      profile = new TeacherModel({ auth: auth._id, grade, subjects: subject });
       if (gradeData) {
-        await gradeModel.findOneAndUpdate({
-          _id:{$in:grade}
-        },{
-          $addToSet:{
-          teachers:profile._id}
-        })
+        await gradeModel.findOneAndUpdate(
+          {
+            _id: { $in: grade },
+          },
+          {
+            $addToSet: {
+              teachers: profile._id,
+            },
+          }
+        );
       }
       if (subjectData) {
-        await subjectModel.findOneAndUpdate({
-          _id:{$in:subject}
-        },{
-          $addToSet:{
-          teachers:profile._id}
-        })
+        await subjectModel.findOneAndUpdate(
+          {
+            _id: { $in: subject },
+          },
+          {
+            $addToSet: {
+              teachers: profile._id,
+            },
+          }
+        );
         // subjectData.teachers.push(profile._id);
         // await subjectData.save();
       }
@@ -222,13 +231,15 @@ exports.register = asyncHandler(async (req, res) => {
       throw Error("UserType must be Student, Teacher or Parent");
     }
     auth.profile = profile._id;
-await(new NotificationModel({
-  forType:auth.userType,for:profile._id,title:"Wellcome to Classerly"
-})).save()
+    await new NotificationModel({
+      forType: auth.userType,
+      for: profile._id,
+      title: "Wellcome to Classerly",
+    }).save();
     await auth.save();
-    
+
     await profile.save();
-    auth._doc.profile=profile._doc
+    auth._doc.profile = profile._doc;
     await session.commitTransaction();
     return res.status(200).json({
       success: true,
@@ -250,7 +261,28 @@ await(new NotificationModel({
     return res.status(200).json({ success: false, message: e.message });
   }
 });
+exports.addPayment = asyncHandler(async (req, res) => {
+  try {
+    const { amount } = req.body;
+    const auth = await authModel.findById(req.user._id);
 
+    // Create a payment intent
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount, // The amount should be in cents (e.g., $10 => 1000)
+      currency: "usd",
+    });
+
+    auth.subscriptionId = paymentIntent.client_secret;
+    await auth.save();
+    return res.status(200).send({
+      clientSecret: paymentIntent.client_secret,
+      message: "Payment saves successfully",
+      success: true,
+    });
+  } catch (e) {
+    return res.status(200).json({ success: false, message: e.message });
+  }
+});
 exports.login = asyncHandler(async (req, res) => {
   try {
     const { userName, password } = req.body;
@@ -313,13 +345,19 @@ exports.login = asyncHandler(async (req, res) => {
     // ]);
 
     // Assuming you're using async/await
-let auth
-auth = await authModel.findOne({ userName }).populate({
+    let auth;
+    auth = await authModel.findOne({ userName }).populate({
       path: "profile",
       populate: {
-        path: "grade",select:["grade","_id"]
+        path: "grade",
+        select: ["grade", "_id"],
       },
-    })
+    });
+    
+    // if(!auth.isSubscribed){
+    //   throw Error("First Subscribe then enjoy the app.");
+    // }
+
     // .populate({
     //   path: "profile",
     //   populate: {
@@ -398,7 +436,6 @@ exports.verifyuser = asyncHandler(async (req, res) => {
       token: tokengenerate(authdata),
     });
   } catch (e) {
-    
     res.status(200).json({ success: false, message: e.message });
   }
 });
@@ -427,7 +464,14 @@ exports.resetpassword = asyncHandler(async (req, res) => {
 });
 exports.updateuser = asyncHandler(async (req, res) => {
   try {
-    const { userName, image, grade ,subjects, emailNotification,notification} = req.body;
+    const {
+      userName,
+      image,
+      grade,
+      subjects,
+      emailNotification,
+      notification,
+    } = req.body;
     const cleanObject = (obj) => {
       return Object.fromEntries(
         Object.entries(obj).filter(
@@ -440,20 +484,25 @@ exports.updateuser = asyncHandler(async (req, res) => {
         )
       );
     };
-    
-    if (userName || image||emailNotification!=null||notification!=null) {
+
+    if (
+      userName ||
+      image ||
+      emailNotification != null ||
+      notification != null
+    ) {
       await authModel.findByIdAndUpdate(
         { _id: req.user._id },
         cleanObject({
           userName,
           image,
-          emailNotification,notification
+          emailNotification,
+          notification,
         })
       );
     }
-    
+
     if (grade) {
-      
       switch (req.user.userType) {
         case "Student": {
           await studentModel.findOneAndUpdate(
@@ -461,7 +510,8 @@ exports.updateuser = asyncHandler(async (req, res) => {
               auth: req.user._id,
             },
             {
-              grade,subjects
+              grade,
+              subjects,
             },
             { new: true }
           );
@@ -483,9 +533,8 @@ exports.updateuser = asyncHandler(async (req, res) => {
             {
               auth: req.user._id,
             },
-            
-              { $addToSet: { grade: grade, subjects:subjects } }
-            ,
+
+            { $addToSet: { grade: grade, subjects: subjects } },
             { new: true }
           );
         }
@@ -506,14 +555,13 @@ exports.updateuser = asyncHandler(async (req, res) => {
       //           grade
       //         },{new:true}
       //       );
-      
     }
     let data = await authModel.findOne({ _id: req.user._id }).populate({
       path: "profile",
       populate: {
         path: "grade",
       },
-    })
+    });
     // .populate({
     //   path: "profile",
     //   populate: {
@@ -522,7 +570,7 @@ exports.updateuser = asyncHandler(async (req, res) => {
     // });
     return res.status(200).json({
       success: true,
-      message:"user updated successfully",
+      message: "user updated successfully",
       data: {
         data,
         token: tokengenerate(data),
@@ -542,7 +590,10 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
         .populate("profile")
         // .populate(["profile", "profile.parent","profile.subjects"])
 
-        .populate({path:"profile",populate:{path:"grade", select:["grade","_id"]}})
+        .populate({
+          path: "profile",
+          populate: { path: "grade", select: ["grade", "_id"] },
+        });
       // return res.status(200).json(data)
     }
     if (req.user.userType == "Teacher") {
@@ -554,7 +605,10 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
           // "profile.subjects",
           // "profile.feedback",
         ])
-        .populate({path:"profile",populate:{path:"grade", select:["grade","_id"]}})
+        .populate({
+          path: "profile",
+          populate: { path: "grade", select: ["grade", "_id"] },
+        });
       // return res.status(200).json(data)
     }
     if (req.user.userType == "Parent") {
@@ -575,16 +629,13 @@ exports.getmyprofile = asyncHandler(async (req, res) => {
 exports.changepassword = async (req, res) => {
   try {
     const { oldPassword, password, confirmPassword } = req.body;
-   
 
     if (password != confirmPassword) {
-      return res
-        .status(200)
-        .json({
-          success: false,
-          message: "password and confirm password must be same",
-        });
-    } else if (!(await bcrypt.compare(oldPassword,req.user.password))) {
+      return res.status(200).json({
+        success: false,
+        message: "password and confirm password must be same",
+      });
+    } else if (!(await bcrypt.compare(oldPassword, req.user.password))) {
       return res
         .status(200)
         .json({ success: false, message: "incorrect old password" });

@@ -292,6 +292,276 @@ exports.getMyChildbyId = asyncHandler(async (req, res) => {
     res.status(200).json({ message: error.message });
   }
 });
+const subjectModel = require("../models/subject");
+const authModel = require("../models/auth");
+
+exports.getMyChildsubjectdata = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    
+    const auth = await studentModel
+      .findById(id)
+      .populate("subjects")
+    
+    const sub = await subjectModel.aggregate([
+      {
+        $match: {
+          _id: {
+            $in: auth.subjects
+              .map((i) => {
+                return i._id;
+              })
+              .flat(),
+          },
+        },
+      },
+    ]);
+
+    let findTopicLesson = await topicModel.aggregate([
+      {
+        $match: {
+          subject: {
+            $in: auth.subjects
+              .map((i) => {
+                return i._id;
+              })
+              .flat(),
+          },
+          // new mongoose.Types.ObjectId(subject),
+        },
+      },
+      {
+        $lookup:{
+          from :"subjects",
+          let: { subjectId: { $toString: "$subject" } }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: "$_id" }, "$$subjectId"], // Convert topic field to string and compare
+                },
+              },
+            },
+          ],
+          as:"subjects",
+        },
+
+      },
+      {
+        $unwind: {
+          path: "$subjects", // Specify the field you want to unwind
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "lessons",
+          let: { topicId: { $toString: "$_id" } }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: "$topic" }, "$$topicId"], // Convert topic field to string and compare
+                },
+              },
+            },
+          ],
+          as: "lessons",
+        },
+      },
+      // {
+      //   $match:{
+      //     "lessons.readyby":{$in:[new mongoose.Types.ObjectId(req.user.profile._id)]}
+      //   }
+      // },
+      {
+        $lookup: {
+          from: "quizes",
+          let: { topicId: { $toString: "$_id" } }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: [{ $toString: "$topic" }, "$$topicId"], // Convert topic field to string and compare
+                },
+              },
+            },
+          ],
+          as: "quizes",
+        },
+      },
+      {
+        $unwind: {
+          path: "$quizes", // Specify the field you want to unwind
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      {
+        $lookup: {
+          from: "studentquizes",
+          let: {
+            topicId: { $toString: "$quizes._id" },
+            stdId: { $toString: id },
+          }, // Convert _id to string
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    {
+                      $eq: [{ $toString: "$quiz" }, "$$topicId"], // Convert topic field to string and compare
+                    },
+                    {
+                      $eq: [{ $toString: "$student" }, "$$stdId"], // Convert topic field to string and compare
+                    },
+                  ],
+                },
+              },
+            },
+          ],
+          as: "studentquizes",
+        },
+      },
+      {
+        $group: {
+          _id: "$subject",
+          name: { $first: "$subjects.name" },
+          topic: { $first: "$name" },
+
+          image: { $first: "$image" },
+          // subject: { $first: "$subjects.name" },
+          // image: { $first: "$subjects.image" },
+
+
+          // subjectId: { $first: "$subject" },
+          // subjectI: { $first: "$subjects._id" },
+
+          difficulty: { $first: "$difficulty" },
+          type: { $first: "$type" },
+          lessons: { $first: "$lessons" },
+
+          // Group by topic ID
+          // subject: { $first: "$subject" }, // Keep other fields from the original topic
+          // name: { $first: "$name" },
+          quizes: {
+            $push: {
+              _id: "$quizes._id", // Keep quiz fields
+              title: "$quizes.createdBy",
+              questions: "$quizes.questions",
+              status: "$quizes.status",
+              grade: "$quizes.grade",
+              topic: "$quizes.topic",
+              subject: "$quizes.subject",
+              image: "$quizes.image",
+              endsAt: "$quizes.endsAt",
+              startsAt: "$quizes.startsAt",
+              studentQuizData: "$studentquizes", // Embed the student quiz data
+            },
+          },
+        },
+      },
+    ]);
+
+
+
+    findTopicLesson = await Promise.all(
+      findTopicLesson.map(async (i) => {
+        let { _id, difficulty, name, image, subject, type, quizes } = i;
+        return {
+          _id,
+          // difficulty,
+          name,
+          // image,
+          subject,
+
+          quizes:
+            i.quizes.length > 0
+              ? // &&i.quizes[0]?.studentQuizData?.length>0
+                await Promise.all(
+                  i.quizes
+                    .filter(async (q) => {
+                      return q?.studentQuizData?.length > 0;
+                    })
+                    .map(async (q) => {
+                      const studentQuizData = await Promise.all(
+                        q.studentQuizData.map(async (qs) => {
+                          let { marks, score, result, status, student, _id } =
+                            qs;
+                          return { marks, score, result, status, student, _id };
+                        })
+                      );
+                      return studentQuizData; // This returns an array of studentQuizData
+                    })
+                ).then((result) => result.flat())
+              : null,
+          lessonsresult: (
+            ([
+              ...(await Promise.all(
+                i.lessons.map(async (j) => {
+                  let { name, image, topic, readby } = j;
+                  readby = readby?.map((id2) => id2.toString());
+                  return {
+                    name,
+                    image,
+                    topic,
+                    // readby,
+                    read: readby
+                      ? readby?.includes(id)
+                        ? true
+                        : false
+                      : false,
+                  };
+                })
+              )),
+            ].filter((j) => {
+              return j.read;
+            }).length /
+              i.lessons.length) *
+            100
+          ).toFixed(2),
+         
+        };
+      })
+    );
+    findTopicLesson= await Promise.all(
+      findTopicLesson.map(async (i) => {
+        let m=0, s=0;
+        await Promise.all(
+          i.quizes.map((j,i) => {
+            m += parseInt(j.marks);
+            s += parseInt(j.score);
+            
+          })
+        )
+        
+        i.quizes = i.quizes.length > 0 ? (m / s) * 100 : 0;
+        i.result = ((i.quizes+parseInt(i.lessonsresult))/2).toFixed(2)
+        
+        i.result = i.result ==0.00||isNaN( i.result )?0:i.result
+        delete i.quizes
+        delete i.lessons
+        return i;
+      })
+    )
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        [...sub.filter((i)=>{
+return findTopicLesson.filter((j)=>{
+  return j.name!=i.name
+}).length>0
+        }).map((i)=>{
+          i.result=0
+          return i
+        }), ...findTopicLesson],
+        "Subject details succesfully"
+      )
+    );
+  } catch (error) {
+    res.status(200).json({ message: error.message });
+  }
+});
 exports.getMyChildbysubjectId = asyncHandler(async (req, res) => {
   try {
     const { id } = req.params;
@@ -419,42 +689,66 @@ exports.getMyChildbysubjectId = asyncHandler(async (req, res) => {
         200,
         await Promise.all(
           findTopicLesson.map(async (i) => {
-            let {_id, difficulty, name, image, subject, type ,quizes} = i;
+            let { _id, difficulty, name, image, subject, type, quizes } = i;
             return {
               _id,
               difficulty,
               name,
               image,
               subject,
-              type,              
-              quizes: (i.quizes.length>0&&i.quizes[0]?.studentQuizData?.length>0) ?(await Promise.all(
-                i.quizes.map(async (q) => {
-                  let { grade, image, status ,_id} = q;
-                  
-                  return {
-                    _id,
-                    grade:grade?grade:null,
-                    image:image?image:null,
-                    status:status?status:null,
-                    studentQuizData:q?.studentQuizData?.length>0? await Promise.all(
-                      q.studentQuizData.map(async (qs) => {
-                        let { marks, score, result, status, student ,_id} = qs;
-                        return {marks, score, result, status, student,_id};
+              type,
+              quizes:
+                i.quizes.length > 0 && i.quizes[0]?.studentQuizData?.length > 0
+                  ? await Promise.all(
+                      i.quizes.map(async (q) => {
+                        let { grade, image, status, _id } = q;
+
+                        return {
+                          _id,
+                          grade: grade ? grade : null,
+                          image: image ? image : null,
+                          status: status ? status : null,
+                          studentQuizData:
+                            q?.studentQuizData?.length > 0
+                              ? await Promise.all(
+                                  q.studentQuizData.map(async (qs) => {
+                                    let {
+                                      marks,
+                                      score,
+                                      result,
+                                      status,
+                                      student,
+                                      _id,
+                                    } = qs;
+                                    return {
+                                      marks,
+                                      score,
+                                      result,
+                                      status,
+                                      student,
+                                      _id,
+                                    };
+                                  })
+                                )
+                              : [],
+                        };
                       })
-                    ):[],
-                  };
-                })
-              )):[],
+                    )
+                  : [],
               lessons: await Promise.all(
                 i.lessons.map(async (j) => {
                   let { name, image, topic, readby } = j;
-                  readby= readby?.map(id2 => id2.toString());                  
+                  readby = readby?.map((id2) => id2.toString());
                   return {
                     name,
                     image,
                     topic,
                     // readby,
-                    read: readby?(readby?.includes(id) ? true : false): false,
+                    read: readby
+                      ? readby?.includes(id)
+                        ? true
+                        : false
+                      : false,
                   };
                 })
               ),
